@@ -24,15 +24,6 @@
   };
   security.sudo.wheelNeedsPassword = false;
 
-  environment.etc."nixos/flake.nix".text = ''
-    {
-      inputs = {
-        iliana.url = "github:iliana/nixos-configs";
-      };
-
-      outputs = { self, iliana, ... }: iliana;
-    }
-  '';
   system.autoUpgrade = {
     enable = true;
     flags = [ "--update-input" "iliana" ];
