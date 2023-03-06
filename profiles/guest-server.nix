@@ -12,6 +12,7 @@
     jq
     ripgrep
   ];
+  programs.command-not-found.enable = false;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -32,6 +33,7 @@
       outputs = { self, iliana, ... }: iliana;
     }
   '';
+  nix.registry.iliana.flake = "github:iliana/nixos-configs";
   system.autoUpgrade = {
     enable = true;
     flags = [ "--update-input" "iliana" ];
