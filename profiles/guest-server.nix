@@ -1,9 +1,27 @@
 { config, lib, pkgs, modulesPath, ... }: {
   imports = [
-    ./base.nix
     ./tailscale.nix
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
+
+  environment.systemPackages = with pkgs; [
+    fd
+    git
+    helix
+    htop
+    jq
+    ripgrep
+  ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  services.chrony.enable = true;
+
+  users.users.iliana = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+  };
+  security.sudo.wheelNeedsPassword = false;
 
   environment.etc."/etc/nixos/flake.nix".text = ''
     {
