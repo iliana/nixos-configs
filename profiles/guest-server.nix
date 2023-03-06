@@ -24,7 +24,7 @@
   };
   security.sudo.wheelNeedsPassword = false;
 
-  environment.etc."/etc/nixos/flake.nix".source = builtins.toFile ''
+  environment.etc."nixos/flake.nix".text = ''
     {
       inputs = {
         iliana.url = "github:iliana/nixos-configs";
