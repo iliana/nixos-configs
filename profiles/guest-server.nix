@@ -24,9 +24,19 @@
   };
   security.sudo.wheelNeedsPassword = false;
 
+  environment.etc."/etc/nixos/flake.nix".source = builtins.toFile ''
+    {
+      inputs = {
+        iliana.url = "github:iliana/nixos-configs";
+      };
+
+      outputs = { self, iliana, ... }: iliana;
+    }
+  '';
   system.autoUpgrade = {
     enable = true;
-    flake = "github:iliana/nixos-configs";
+    flags = [ "--update-input" "iliana" ];
+    flake = "''";
   };
 
   boot.growPartition = true;
