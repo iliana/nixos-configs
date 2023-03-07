@@ -21,7 +21,7 @@ in
   system.autoUpgrade = {
     enable = true;
     dates = "04:40";
-    flags = [ "--update-input" "nixpkgs" ];
+    flags = [ "--update-input" "iliana" "--update-input" "nixpkgs" ];
     flake = "''";
     randomizedDelaySec = "45min";
   };
