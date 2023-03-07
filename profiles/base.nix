@@ -27,6 +27,7 @@
     randomizedDelaySec = "45min";
   };
 
+  nix.registry.iliana.flake = inputs.self;
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   programs.command-not-found.enable = false;
