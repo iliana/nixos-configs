@@ -26,7 +26,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    flags = [ "--update-input" "iliana" ];
+    flags = [ "--update-input" "nixpkgs" ];
     flake = "''";
   };
 
