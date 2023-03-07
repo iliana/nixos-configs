@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
   networking.hostName = "hydrangea";
 
   imports = [
@@ -6,6 +6,8 @@
     ../profiles/base.nix
     ../profiles/tailscale.nix
   ];
+
+  environment.systemPackages = [ pkgs.openssl ];
 
   system.stateVersion = "22.11";
 }
