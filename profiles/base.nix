@@ -18,16 +18,18 @@ in
     ripgrep
   ];
 
-  system.autoUpgrade = {
-    enable = true;
-    dates = "04:40";
-    flags = [ "--update-input" "iliana" "--update-input" "nixpkgs" ];
-    flake = "''";
-    randomizedDelaySec = "45min";
-  };
+  time.timeZone = "Etc/UTC";
+  # maintenance window: 02:30-05:30 Pacific -> 10:30-12:30 UTC (accounting for DST)
   nix.gc = {
     automatic = true;
-    dates = "03:15";
+    dates = "10:30";
+    randomizedDelaySec = "45min";
+  };
+  system.autoUpgrade = {
+    enable = true;
+    dates = "11:30";
+    flags = [ "--update-input" "iliana" "--update-input" "nixpkgs" ];
+    flake = "''";
     randomizedDelaySec = "45min";
   };
 
