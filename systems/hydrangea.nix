@@ -1,4 +1,6 @@
 { config, ... }: {
+  networking.hostName = "hydrangea";
+
   imports = [
     ../hardware/pancake-v1.nix
     ../profiles/base.nix
