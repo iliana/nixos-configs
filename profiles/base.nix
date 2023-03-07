@@ -33,10 +33,11 @@ in
     randomizedDelaySec = "45min";
   };
 
+  networking.firewall.logRefusedConnections = false;
   nix.registry.iliana.flake = inputs.self;
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
-  nix.settings.flake-registry = emptyFlakeRegistry;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.flake-registry = emptyFlakeRegistry;
   programs.command-not-found.enable = false;
   services.chrony.enable = true;
 }
