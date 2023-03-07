@@ -1,4 +1,8 @@
-{ config, pkgs, inputs, ... }: {
+{ config, pkgs, inputs, ... }:
+let
+  emptyFlakeRegistry = pkgs.writeText "flake-registry.json" (builtins.toJSON { flakes = [ ]; version = 2; });
+in
+{
   users.users.iliana = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
@@ -29,6 +33,7 @@
 
   nix.registry.iliana.flake = inputs.self;
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.settings.flake-registry = emptyFlakeRegistry;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   programs.command-not-found.enable = false;
   services.chrony.enable = true;
