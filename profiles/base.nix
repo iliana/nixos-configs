@@ -28,6 +28,7 @@
   };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.flake-registry = "";
   programs.command-not-found.enable = false;
   services.chrony.enable = true;
 }
