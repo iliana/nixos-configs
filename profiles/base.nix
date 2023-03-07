@@ -1,0 +1,33 @@
+{ config, pkgs, ... }: {
+  users.users.iliana = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+  };
+  security.sudo.wheelNeedsPassword = false;
+
+  environment.systemPackages = with pkgs; [
+    fd
+    git
+    helix
+    htop
+    jq
+    ripgrep
+  ];
+
+  system.autoUpgrade = {
+    enable = true;
+    dates = "04:40";
+    flags = [ "--update-input" "nixpkgs" ];
+    flake = "''";
+    randomizedDelaySec = "45min";
+  };
+  nix.gc = {
+    automatic = true;
+    dates = "03:15";
+    randomizedDelaySec = "45min";
+  };
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  programs.command-not-found.enable = false;
+  services.chrony.enable = true;
+}
