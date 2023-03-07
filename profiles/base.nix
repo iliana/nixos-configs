@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, inputs, ... }: {
   users.users.iliana = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
@@ -27,8 +27,8 @@
     randomizedDelaySec = "45min";
   };
 
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.flake-registry = "";
   programs.command-not-found.enable = false;
   services.chrony.enable = true;
 }
