@@ -19,7 +19,7 @@
 
   system.build.rawEfiImage = import (modulesPath + "/../lib/make-disk-image.nix") {
     inherit lib config pkgs;
-    diskSize = 6 * 1024;
+    diskSize = 8 * 1024;
     format = "raw";
     partitionTableType = "efi";
   };

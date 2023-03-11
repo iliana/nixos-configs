@@ -6,6 +6,7 @@ in
   users.users.iliana = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keyFiles = [ ../etc/iliana-ssh.pub ];
   };
   security.sudo.wheelNeedsPassword = false;
 
@@ -15,6 +16,8 @@ in
     helix
     htop
     jq
+    nil
+    nixpkgs-fmt
     ripgrep
   ];
 
@@ -40,4 +43,5 @@ in
   nix.settings.flake-registry = emptyFlakeRegistry;
   programs.command-not-found.enable = false;
   services.chrony.enable = true;
+  services.openssh.enable = true;
 }
