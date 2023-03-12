@@ -70,19 +70,6 @@
       closureInfo = pkgs.closureInfo {
         rootPaths = [ config.system.build.toplevel ];
       };
-      flakeDotNix = pkgs.writeText "flake.nix" ''
-        {
-          inputs = {
-            nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
-            nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-            iliana.url = "github:iliana/nixos-configs";
-            iliana.inputs.nixpkgs.follows = "nixpkgs";
-            iliana.inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
-          };
-
-          outputs = { iliana, ... }: iliana;
-        }
-      '';
     in
     pkgs.vmTools.runInLinuxVM (pkgs.runCommand "raw-efi-image"
       {
@@ -120,8 +107,6 @@
         --system "${config.system.build.toplevel}" \
         --no-root-passwd --no-channel-copy --substituters ""
       nixos-enter --root "$root" -- chown -R root:root /nix
-
-      cp ${flakeDotNix} "$root/nix/persist/etc/nixos/flake.nix"
 
       # impermanence user directories don't get correct permissions, so
       # recreate most of them on first boot

@@ -1,4 +1,8 @@
-{ config, lib, pkgs, pkgs-unstable, inputs, ... }: {
+{ config, lib, pkgs, pkgs-unstable, ... }: {
+  imports = [
+    ./registry.nix
+  ];
+
   options = with lib; {
     iliana.persist.directories = mkOption { default = [ ]; };
     iliana.persist.files = mkOption { default = [ ]; };
@@ -30,7 +34,6 @@
     ];
 
     iliana.persist.directories = [
-      "/etc/nixos"
       "/var/db/dhcpcd"
       "/var/lib/chrony"
       "/var/lib/nixos"
@@ -71,20 +74,7 @@
     };
 
     networking.firewall.logRefusedConnections = false;
-    nix.registry = lib.attrsets.genAttrs [ "nixpkgs" "nixpkgs-unstable" ]
-      (input: {
-        to = with inputs."${input}"; {
-          inherit rev narHash;
-          type = "github";
-          owner = "NixOS";
-          repo = "nixpkgs";
-        };
-      })
-    // {
-      iliana.flake = inputs.self;
-    };
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
-    nix.settings.flake-registry = pkgs.writeText "flake-registry.json" (builtins.toJSON { flakes = [ ]; version = 2; });
     programs.command-not-found.enable = false;
     services.chrony.enable = true;
   };
