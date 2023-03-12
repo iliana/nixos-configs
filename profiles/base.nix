@@ -28,6 +28,7 @@
 
     iliana.persist.directories = [
       "/etc/nixos"
+      "/home/iliana/.dotfiles.git"
       "/var/db/dhcpcd"
       "/var/lib/chrony"
       "/var/lib/nixos"
@@ -46,6 +47,7 @@
     nix.gc = {
       automatic = true;
       dates = "10:30";
+      options = "--delete-older-than 7d";
       randomizedDelaySec = "45min";
     };
     system.autoUpgrade = {

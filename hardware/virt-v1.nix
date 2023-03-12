@@ -108,7 +108,7 @@
       mkdir -p "$root/nix"
       mount /dev/vda2 "$root/nix"
       # ensure these get reasonable default permissions
-      mkdir -p "$root"/nix/persist/{boot/grub,etc,var/lib}
+      mkdir -p "$root"/nix/persist/{boot/grub,var/lib}
 
       export NIX_STATE_DIR=$TMPDIR/state
       nix-store --load-db <"${closureInfo}/registration"
