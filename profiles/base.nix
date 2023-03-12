@@ -69,6 +69,5 @@
     nix.settings.flake-registry = pkgs.writeText "flake-registry.json" (builtins.toJSON { flakes = [ ]; version = 2; });
     programs.command-not-found.enable = false;
     services.chrony.enable = true;
-    services.openssh.enable = true;
   };
 }
