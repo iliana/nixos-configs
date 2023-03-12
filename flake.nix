@@ -5,19 +5,24 @@
     impermanence.url = "github:nix-community/impermanence";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, impermanence, ... }@inputs: {
-    nixosConfigurations = {
-      hydrangea = let system = "x86_64-linux"; in nixpkgs.lib.nixosSystem {
+  outputs = { nixpkgs, nixpkgs-unstable, impermanence, ... }@inputs:
+    let
+      lib = nixpkgs.lib;
+      systems = system: hosts: lib.attrsets.genAttrs hosts (host: lib.nixosSystem {
         inherit system;
         modules = [
-          ./systems/hydrangea.nix
+          ./hosts/${host}.nix
           impermanence.nixosModules.impermanence
         ];
         specialArgs = {
           inherit inputs;
           pkgs-unstable = import nixpkgs-unstable { inherit system; };
         };
-      };
+      });
+    in
+    {
+      nixosConfigurations = systems "x86_64-linux" [
+        "hydrangea"
+      ];
     };
-  };
 }
