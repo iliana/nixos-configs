@@ -2,6 +2,8 @@
   options = with lib; {
     iliana.persist.directories = mkOption { default = [ ]; };
     iliana.persist.files = mkOption { default = [ ]; };
+    iliana.persist.user.directories = mkOption { default = [ ]; };
+    iliana.persist.user.files = mkOption { default = [ ]; };
   };
 
   config = {
@@ -28,7 +30,6 @@
 
     iliana.persist.directories = [
       "/etc/nixos"
-      "/home/iliana/.dotfiles.git"
       "/var/db/dhcpcd"
       "/var/lib/chrony"
       "/var/lib/nixos"
@@ -41,6 +42,7 @@
       "/etc/ssh/ssh_host_rsa_key"
       "/etc/ssh/ssh_host_rsa_key.pub"
     ];
+    iliana.persist.user.directories = [ ".dotfiles.git" ];
 
     time.timeZone = "Etc/UTC";
     # maintenance window: 02:30-05:30 Pacific -> 10:30-12:30 UTC (accounting for DST)

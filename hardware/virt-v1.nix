@@ -25,6 +25,9 @@
   environment.persistence."/nix/persist" = with config.iliana.persist; {
     inherit directories files;
     hideMounts = true;
+    users.iliana = with config.iliana.persist.user; {
+      inherit directories files;
+    };
   };
 
   boot.loader.grub = {
@@ -107,8 +110,7 @@
       mkfs.ext4 -L nixos -T default -i 8192 /dev/vda2
       mkdir -p "$root/nix"
       mount /dev/vda2 "$root/nix"
-      # ensure these get reasonable default permissions
-      mkdir -p "$root"/nix/persist/{boot/grub,var/lib}
+      mkdir -p "$root/nix/persist/boot/grub"
 
       export NIX_STATE_DIR=$TMPDIR/state
       nix-store --load-db <"${closureInfo}/registration"
@@ -118,6 +120,11 @@
       nixos-enter --root "$root" -- chown -R root:root /nix
 
       cp ${flakeDotNix} "$root/nix/persist/etc/nixos/flake.nix"
+
+      # impermanence user directories don't get correct permissions, so
+      # recreate most of them on first boot
+      find "$root/nix/persist" -type d -empty -delete
+      mkdir -p "$root"/nix/persist/{home,var/lib}
 
       umount "$root"/{efi,nix}
       tune2fs -T now -c 0 -i 0 /dev/vda2
