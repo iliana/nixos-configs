@@ -24,6 +24,7 @@
       pkgs.nil
       pkgs.nixpkgs-fmt
       pkgs.ripgrep
+      pkgs.shellcheck
       pkgs.tree
       pkgs-unstable.helix
     ];
