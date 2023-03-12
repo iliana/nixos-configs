@@ -1,5 +1,6 @@
 { config, pkgs, ... }: {
   services.tailscale.enable = true;
+  iliana.persist.directories = [{ directory = "/var/lib/tailscale"; mode = "0700"; }];
 
   networking.firewall.checkReversePath = "loose";
   services.openssh.openFirewall = false;
