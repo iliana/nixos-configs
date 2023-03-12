@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }: {
+{ config, lib, pkgs, pkgs-unstable, inputs, ... }: {
   options = with lib; {
     iliana.persist.directories = mkOption { default = [ ]; };
     iliana.persist.files = mkOption { default = [ ]; };
@@ -15,17 +15,17 @@
     };
     security.sudo.wheelNeedsPassword = false;
 
-    environment.systemPackages = with pkgs; [
-      fd
-      git
-      helix
-      htop
-      jq
-      ncdu
-      nil
-      nixpkgs-fmt
-      ripgrep
-      tree
+    environment.systemPackages = [
+      pkgs.fd
+      pkgs.git
+      pkgs.htop
+      pkgs.jq
+      pkgs.ncdu
+      pkgs.nil
+      pkgs.nixpkgs-fmt
+      pkgs.ripgrep
+      pkgs.tree
+      pkgs-unstable.helix
     ];
 
     iliana.persist.directories = [
@@ -57,7 +57,14 @@
     system.autoUpgrade = {
       enable = true;
       dates = "11:30";
-      flags = [ "--update-input" "iliana" "--update-input" "nixpkgs" ];
+      flags = [
+        "--update-input"
+        "iliana"
+        "--update-input"
+        "nixpkgs"
+        "--update-input"
+        "nixpkgs-unstable"
+      ];
       flake = "''";
       randomizedDelaySec = "45min";
     };
@@ -65,6 +72,7 @@
     networking.firewall.logRefusedConnections = false;
     nix.registry.iliana.flake = inputs.self;
     nix.registry.nixpkgs.flake = inputs.nixpkgs;
+    nix.registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     nix.settings.flake-registry = pkgs.writeText "flake-registry.json" (builtins.toJSON { flakes = [ ]; version = 2; });
     programs.command-not-found.enable = false;
