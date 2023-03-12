@@ -7,7 +7,5 @@
     ../profiles/tailscale.nix
   ];
 
-  environment.systemPackages = [ pkgs.openssl ];
-
   system.stateVersion = "22.11";
 }
