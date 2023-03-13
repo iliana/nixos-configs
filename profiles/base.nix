@@ -27,7 +27,7 @@
 
     environment.systemPackages = [
       pkgs.fd
-      pkgs.git
+      pkgs.gitMinimal
       pkgs.htop
       pkgs.jq
       pkgs.ncdu
