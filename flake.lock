@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "dotfiles": {
+      "locked": {
+        "dir": ".config/dotfiles",
+        "lastModified": 1678658060,
+        "narHash": "sha256-9NIQB+HfXeThD24r/A+CvKDDZ6L0rBuhGlsL3XlbSvg=",
+        "owner": "iliana",
+        "repo": "dotfiles",
+        "rev": "c169f85f2f4a38f3f46032899e6056a46e836100",
+        "type": "github"
+      },
+      "original": {
+        "dir": ".config/dotfiles",
+        "owner": "iliana",
+        "repo": "dotfiles",
+        "type": "github"
+      }
+    },
     "impermanence": {
       "locked": {
         "lastModified": 1675359654,
@@ -49,6 +66,7 @@
     },
     "root": {
       "inputs": {
+        "dotfiles": "dotfiles",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"

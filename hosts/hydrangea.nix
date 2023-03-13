@@ -4,6 +4,7 @@
   imports = [
     ../hardware/virt-v1.nix
     ../profiles/base.nix
+    ../profiles/dotfiles.nix
     ../profiles/tailscale.nix
   ];
 
