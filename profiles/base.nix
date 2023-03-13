@@ -48,7 +48,6 @@
       "/etc/ssh/ssh_host_rsa_key"
       "/etc/ssh/ssh_host_rsa_key.pub"
     ];
-    iliana.persist.user.directories = [ ".dotfiles.git" ];
 
     time.timeZone = "Etc/UTC";
     # maintenance window: 02:30-05:30 Pacific -> 10:30-12:30 UTC (accounting for DST)
