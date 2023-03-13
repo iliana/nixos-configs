@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgs-unstable, ... }: {
+{ config, lib, pkgs, pkgs-unstable, dotfiles, ... }: {
   imports = [
     ./registry.nix
   ];
@@ -18,6 +18,12 @@
       openssh.authorizedKeys.keyFiles = [ ../etc/iliana-ssh.pub ];
     };
     security.sudo.wheelNeedsPassword = false;
+    system.activationScripts.ilianaDotfiles = lib.stringAfter [ "users" ] ''
+      ln -sfn "${dotfiles}" ~iliana/.dotfiles
+      cp -rsf ~iliana/.dotfiles/. ~iliana
+      # find broken links to ~/.dotfiles and delete them
+      find ~iliana -lname ~iliana/.dotfiles/'*' -xtype l -delete
+    '';
 
     environment.systemPackages = [
       pkgs.fd
