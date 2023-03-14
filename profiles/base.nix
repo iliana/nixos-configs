@@ -72,8 +72,6 @@
       dates = "11:30";
       flags = [
         "--update-input"
-        "iliana"
-        "--update-input"
         "nixpkgs"
         "--update-input"
         "nixpkgs-unstable"
