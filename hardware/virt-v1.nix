@@ -107,7 +107,12 @@
       nixos-install --root "$root" \
         --system "${config.system.build.toplevel}" \
         --no-root-passwd --no-channel-copy --substituters ""
-      nixos-enter --root "$root" -- chown -R root:root /nix
+      nixos-enter --root "$root" -- chown -R root:root /nix/store
+
+      # nix has Problems if flake.lock is a broken symlink. copying in our
+      # repo's flake.lock, even if it's not quite right, this is better than
+      # the alternative.
+      cp ${./../flake.lock} "$root/nix/persist/etc/nixos/flake.lock"
 
       umount "$root"/{efi,nix}
       tune2fs -T now -c 0 -i 0 /dev/vda2
