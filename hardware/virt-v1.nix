@@ -35,8 +35,8 @@
     efiSupport = true;
     extraConfig = ''
       serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
-      terminal_input --append serial
-      terminal_output --append serial
+      terminal_input console serial
+      terminal_output console serial
     '';
     # We use mirroredBoots with one boot partition so that we can set `path`.
     mirroredBoots = [{
@@ -67,6 +67,13 @@
 
   system.build.image =
     let
+      binPath = lib.makeBinPath ([
+        config.system.build.nixos-install
+        pkgs.e2fsprogs
+        pkgs.gptfdisk
+        pkgs.nix
+        pkgs.util-linux
+      ] ++ pkgs.stdenv.initialPath);
       closureInfo = pkgs.closureInfo {
         rootPaths = [ config.system.build.toplevel ];
       };
@@ -74,47 +81,55 @@
     pkgs.vmTools.runInLinuxVM (pkgs.runCommand "raw-efi-image"
       {
         preVM = ''
-          mkdir "$out"
+          export PATH=${binPath}
+          chmod 0755 "$TMPDIR"
+
+          root="$TMPDIR/root"
+          mkdir -p "$root" "$out"
           diskImage="$out/nixos.img"
           truncate -s 2G "$diskImage"
+
+          export NIX_STATE_DIR=$TMPDIR/state
+          nix-store --load-db <"${closureInfo}/registration"
+          nixos-install --root "$root" --system "${config.system.build.toplevel}" \
+            --no-bootloader --no-root-passwd --no-channel-copy --substituters ""
+          rm -rf "$root/nix/persist"
+
+          sgdisk -n 1:0:+1M -t 1:ef00 -N 2 -p "$diskImage"
+          offsetBytes=$(( $(partx "$diskImage" -n 2 -g -o START) * 512 ))
+          sizeKB=$(( ( $(partx "$diskImage" -n 2 -g -o SECTORS) * 512 ) / 1024))K
+          mkfs.ext4 -d "$root/nix" -L nixos -T default -i 8192 \
+            "$diskImage" -E offset="$offsetBytes" "$sizeKB"
         '';
         memSize = 1024;
-        nativeBuildInputs = with pkgs; [
+        nativeBuildInputs = [
           config.system.build.nixos-enter
-          config.system.build.nixos-install
-          dosfstools
-          e2fsprogs
-          gptfdisk
-          nix
-          util-linux
+          pkgs.dosfstools
+          pkgs.e2fsprogs
+          pkgs.util-linux
         ];
-      } ''
-      sgdisk -n 1:0:+1M -t 1:ef00 -N 2 /dev/vda -p
-      root="$TMPDIR/root"
+      }
+      ''
+        root="$TMPDIR/root"
 
-      mkfs.vfat -F 12 -n ESP /dev/vda1
-      mkdir -p "$root/efi"
-      mount /dev/vda1 "$root/efi"
+        mkdir -p "$root"/{etc,efi,nix,var}
+        touch "$root/etc/NIXOS"
+        mkfs.vfat -F 12 -n ESP /dev/vda1
+        mount /dev/vda1 "$root/efi"
+        mount /dev/vda2 "$root/nix"
 
-      mkfs.ext4 -L nixos -T default -i 8192 /dev/vda2
-      mkdir -p "$root/nix"
-      mount /dev/vda2 "$root/nix"
-      # work around permissions weirdness
-      mkdir -p "$root/nix/persist"/{boot/grub,var/lib}
+        # work around impermanence permissions weirdness
+        mkdir -p "$root"/nix/persist/{boot/grub,etc/nixos,var/lib}
+        # fix permissions
+        nixos-enter --root "$root" -- chown -R root:root /nix/{store,var}
+        # nix has Problems if flake.lock is a broken symlink. copying in our
+        # repo's flake.lock, even if it's not quite right, is better than the
+        # alternative.
+        cp --no-preserve=mode ${./../flake.lock} "$root/nix/persist/etc/nixos/flake.lock"
+        # install bootloader
+        NIXOS_INSTALL_BOOTLOADER=1 nixos-enter --root "$root" -- /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 
-      export NIX_STATE_DIR=$TMPDIR/state
-      nix-store --load-db <"${closureInfo}/registration"
-      nixos-install --root "$root" \
-        --system "${config.system.build.toplevel}" \
-        --no-root-passwd --no-channel-copy --substituters ""
-      nixos-enter --root "$root" -- chown -R root:root /nix/store
-
-      # nix has Problems if flake.lock is a broken symlink. copying in our
-      # repo's flake.lock, even if it's not quite right, this is better than
-      # the alternative.
-      cp ${./../flake.lock} "$root/nix/persist/etc/nixos/flake.lock"
-
-      umount "$root"/{efi,nix}
-      tune2fs -T now -c 0 -i 0 /dev/vda2
-    '');
+        umount /dev/vda{1,2}
+        tune2fs -T now -c 0 -i 0 /dev/vda2
+      '');
 }
