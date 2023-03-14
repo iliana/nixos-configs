@@ -25,9 +25,6 @@
   environment.persistence."/nix/persist" = with config.iliana.persist; {
     inherit directories files;
     hideMounts = true;
-    users.iliana = with config.iliana.persist.user; {
-      inherit directories files;
-    };
   };
 
   boot.loader.grub = {
