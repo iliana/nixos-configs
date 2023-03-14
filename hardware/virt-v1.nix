@@ -99,7 +99,8 @@
       mkfs.ext4 -L nixos -T default -i 8192 /dev/vda2
       mkdir -p "$root/nix"
       mount /dev/vda2 "$root/nix"
-      mkdir -p "$root/nix/persist/boot/grub"
+      # work around permissions weirdness
+      mkdir -p "$root/nix/persist"/{boot/grub,var/lib}
 
       export NIX_STATE_DIR=$TMPDIR/state
       nix-store --load-db <"${closureInfo}/registration"
@@ -107,11 +108,6 @@
         --system "${config.system.build.toplevel}" \
         --no-root-passwd --no-channel-copy --substituters ""
       nixos-enter --root "$root" -- chown -R root:root /nix
-
-      # impermanence user directories don't get correct permissions, so
-      # recreate most of them on first boot
-      find "$root/nix/persist" -type d -empty -delete
-      mkdir -p "$root"/nix/persist/{home,var/lib}
 
       umount "$root"/{efi,nix}
       tune2fs -T now -c 0 -i 0 /dev/vda2
