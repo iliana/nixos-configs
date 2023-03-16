@@ -64,7 +64,7 @@
     nix.gc = {
       automatic = true;
       dates = "10:30";
-      options = "--delete-older-than 7d";
+      options = "--delete-older-than 2d";
       randomizedDelaySec = "45min";
     };
     system.autoUpgrade = {
