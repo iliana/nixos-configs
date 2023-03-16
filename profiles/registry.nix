@@ -22,18 +22,9 @@ in
 
   iliana.persist.files = [ "/etc/nixos/flake.lock" ];
 
-  nix.registry = lib.attrsets.genAttrs [ "nixpkgs" "nixpkgs-unstable" ]
-    (input: {
-      to = with inputs."${input}"; {
-        inherit rev narHash;
-        type = "github";
-        owner = "NixOS";
-        repo = "nixpkgs";
-      };
-    })
-  // {
-    iliana.flake = inputs.self;
-  };
+  nix.registry.iliana.flake = inputs.self;
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
 
   nix.settings.flake-registry = pkgs.writeText "flake-registry.json" (builtins.toJSON { flakes = [ ]; version = 2; });
 }
