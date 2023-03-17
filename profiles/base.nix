@@ -67,6 +67,7 @@
       options = "--delete-older-than 2d";
       randomizedDelaySec = "45min";
     };
+    nix.settings.auto-optimise-store = true;
     system.autoUpgrade = {
       enable = true;
       dates = "11:30";
