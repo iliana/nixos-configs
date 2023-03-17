@@ -4,6 +4,7 @@
   iliana.persist.directories = [{ directory = "/var/lib/tailscale"; mode = "0700"; }];
 
   networking.firewall.checkReversePath = "loose";
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
   services.openssh.openFirewall = false;
 
   systemd.services.tailscale-up = {
