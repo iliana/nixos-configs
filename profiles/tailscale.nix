@@ -25,4 +25,6 @@
       StandardError = "inherit";
     };
   };
+
+  networking.timeServers = [ "hubble.cat-herring.ts.net" ];
 }

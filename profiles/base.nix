@@ -81,6 +81,14 @@
       randomizedDelaySec = "45min";
     };
 
+    # explicitly set default so we can add timeservers in other profiles
+    networking.timeServers = [
+      "0.nixos.pool.ntp.org"
+      "1.nixos.pool.ntp.org"
+      "2.nixos.pool.ntp.org"
+      "3.nixos.pool.ntp.org"
+    ];
+
     networking.firewall.logRefusedConnections = false;
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     programs.command-not-found.enable = false;
