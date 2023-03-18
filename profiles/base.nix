@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgs-unstable, dotfiles, ... }: {
+{ config, lib, inputs, pkgs, pkgs-unstable, ... }: {
   imports = [
     ./registry.nix
   ];
@@ -17,7 +17,7 @@
     };
     security.sudo.wheelNeedsPassword = false;
     system.activationScripts.ilianaDotfiles = lib.stringAfter [ "users" ] ''
-      ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${./dotfiles.sh} ${dotfiles}
+      ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${./dotfiles.sh} ${inputs.dotfiles.dotfiles}
     '';
 
     environment.systemPackages = [
