@@ -1,22 +1,23 @@
-{ config, lib, ... }: {
+{ config, pkgs, lib, ... }: {
   options = with lib; {
     iliana.containers = mkOption { default = { }; };
   };
 
   config =
     let
-      containerNames = builtins.attrNames config.iliana.containers;
-      mkContainer = _: { cfg }: {
+      names = builtins.attrNames config.iliana.containers;
+      addressOutput = pkgs.runCommand "container-addresses.json"
+        {
+          inherit names;
+        } "${pkgs.python3}/bin/python3 ${../etc/container-addresses.py}";
+      addresses = lib.importJSON addressOutput;
+      mkContainer = name: { cfg }: {
+        inherit (addresses.${name}) hostAddress localAddress hostAddress6 localAddress6;
+
         autoStart = true;
         ephemeral = true;
         extraFlags = [ "-U" ];
         privateNetwork = true;
-
-        # TODO make this uhh. not the same for each container (some sort of hashing?)
-        hostAddress = "192.168.100.10";
-        localAddress = "192.168.100.11";
-        hostAddress6 = "fc00::1";
-        localAddress6 = "fc00::2";
 
         config = lib.mkMerge [
           { system.stateVersion = config.system.stateVersion; }
@@ -29,7 +30,7 @@
       networking.nat = {
         enable = true;
         enableIPv6 = true;
-        internalInterfaces = builtins.map (name: "ve-${name}") containerNames;
+        internalInterfaces = builtins.map (name: "ve-${name}") names;
       };
     };
 }
