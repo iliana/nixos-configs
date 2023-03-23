@@ -7,13 +7,7 @@
     ../profiles/tailscale.nix
   ];
 
-  iliana.persist.directories = [
-    {
-      directory = "/home/iliana";
-      user = "iliana";
-      group = "iliana";
-    }
-  ];
+  environment.persistence."/nix/persist".users.iliana.directories = [ "." ];
 
   system.stateVersion = "22.11";
 }
