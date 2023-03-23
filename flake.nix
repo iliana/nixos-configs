@@ -24,6 +24,7 @@
     in
     {
       nixosConfigurations = systems "x86_64-linux" [
+        "forklift"
         "hydrangea"
       ];
     };

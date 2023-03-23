@@ -116,7 +116,7 @@
         mount /dev/vda2 "$root/nix"
 
         # work around impermanence permissions weirdness
-        mkdir -p "$root"/nix/persist/{boot/grub,etc/nixos,var/lib}
+        mkdir -p "$root"/nix/persist/{boot/grub,etc/nixos,home,var/lib}
         # fix permissions
         nixos-enter --root "$root" -- chown -R root:root /nix/{store,var}
         # nix has Problems if flake.lock is a broken symlink. copying in our
