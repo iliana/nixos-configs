@@ -7,7 +7,5 @@
     ../profiles/tailscale.nix
   ];
 
-  environment.persistence."/nix/persist".users.iliana.directories = [ "." ];
-
   system.stateVersion = "22.11";
 }
