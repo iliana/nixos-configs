@@ -10,6 +10,7 @@
   users.users.builduser = {
     isSystemUser = true;
     group = "builduser";
+    useDefaultShell = true;
   };
   users.groups.builduser = { };
 
