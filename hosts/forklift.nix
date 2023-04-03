@@ -7,6 +7,12 @@
     ../profiles/tailscale.nix
   ];
 
+  users.users.builduser = {
+    isSystemUser = true;
+    group = "builduser";
+  };
+  users.groups.builduser = { };
+
   # disable nightly nix store garbage collection
   nix.gc.automatic = lib.mkForce false;
 
