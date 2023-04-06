@@ -15,20 +15,22 @@
     '';
   };
 
-  iliana.containers.nitter = {
-    cfg = { config, ... }: {
-      services.nitter = {
-        enable = true;
-        openFirewall = true;
-        server = {
-          hostname = "nitter.home.arpa";
-          port = 8080;
-        };
-        preferences = {
-          autoplayGifs = false;
-          hlsPlayback = true;
-          muteVideos = true;
-          replaceTwitter = "nitter.home.arpa";
+  iliana.containers = {
+    nitter = {
+      cfg = { config, ... }: {
+        services.nitter = {
+          enable = true;
+          openFirewall = true;
+          server = {
+            hostname = "nitter.home.arpa";
+            port = 8080;
+          };
+          preferences = {
+            autoplayGifs = false;
+            hlsPlayback = true;
+            muteVideos = true;
+            replaceTwitter = "nitter.home.arpa";
+          };
         };
       };
     };
