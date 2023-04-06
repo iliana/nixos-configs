@@ -37,7 +37,9 @@
       networking.nat = {
         enable = true;
         enableIPv6 = true;
-        internalInterfaces = builtins.map (name: "ve-${name}") names;
+        internalInterfaces = builtins.map
+          (name: lib.mkAssert (builtins.stringLength name <= 12) "container ${name} too long" "ve-${name}")
+          names;
       };
     };
 }
