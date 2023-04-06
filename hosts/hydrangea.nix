@@ -46,6 +46,13 @@
         "wildcard virtual hosts detected: ${toString wildcardHosts}"
         virtualHosts;
   };
+  iliana.persist.directories = [
+    {
+      directory = "/var/lib/caddy";
+      user = "caddy";
+      group = "caddy";
+    }
+  ];
 
   iliana.containerNameservers = [ "8.8.8.8" "8.8.4.4" "2001:4860:4860::8888" "2001:4860:4860::8844" ];
   iliana.containers = {
