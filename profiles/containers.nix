@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }: {
   options = with lib; {
+    iliana.containerNameservers = mkOption { };
     iliana.containers = mkOption { default = { }; };
   };
 
@@ -11,7 +12,9 @@
           inherit names;
         } "${pkgs.python3}/bin/python3 ${../etc/container-addresses.py}";
       addresses = lib.importJSON addressOutput;
-      mkContainer = name: { cfg }: {
+      mkContainer = name: { cfg
+                          , hostDns ? false
+                          }: {
         inherit (addresses.${name}) hostAddress localAddress hostAddress6 localAddress6;
 
         autoStart = true;
@@ -20,7 +23,11 @@
         privateNetwork = true;
 
         config = lib.mkMerge [
-          { system.stateVersion = config.system.stateVersion; }
+          {
+            system.stateVersion = config.system.stateVersion;
+            networking.useHostResolvConf = hostDns;
+            networking.nameservers = lib.mkIf (!hostDns) config.iliana.containerNameservers;
+          }
           cfg
         ];
       };
