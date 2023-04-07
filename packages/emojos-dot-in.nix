@@ -2,8 +2,8 @@
   src = fetchFromGitHub {
     owner = "iliana";
     repo = "emojos.in";
-    rev = "0005b3bd5608c5c892a96a4ca6e7411c2e114f67";
-    sha256 = "sha256-/ILUJ1N0QFsuwnFKZfAyyDoa94rzB2b/N/urmNG6ZAE=";
+    rev = "92c717d9fd96870d18addd8a3980d6cb72c3c7f4";
+    sha256 = "sha256-VcV7kXWzj94GE/6AepVkfpcpAIH7kRTotZOiQu13YBE=";
   };
 
   buildInputs = [ pkgs.pkg-config pkgs.openssl ];
