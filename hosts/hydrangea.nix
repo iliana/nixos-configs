@@ -96,6 +96,8 @@
             hlsPlayback = true;
             muteVideos = true;
             replaceTwitter = "nitter.home.arpa";
+          };
+          cache = {
             rssMinutes = 60;
           };
         };
