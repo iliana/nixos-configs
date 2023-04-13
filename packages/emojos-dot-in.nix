@@ -1,4 +1,4 @@
-{ pkgs, craneLib, fetchFromGitHub, ... }: craneLib.buildPackage {
+{ craneLib, fetchFromGitHub, pkg-config, openssl, ... }: craneLib.buildPackage {
   src = fetchFromGitHub {
     owner = "iliana";
     repo = "emojos.in";
@@ -6,5 +6,5 @@
     sha256 = "sha256-VcV7kXWzj94GE/6AepVkfpcpAIH7kRTotZOiQu13YBE=";
   };
 
-  buildInputs = [ pkgs.pkg-config pkgs.openssl ];
+  buildInputs = [ pkg-config openssl ];
 }
