@@ -85,6 +85,7 @@
     nitter = {
       cfg = { config, ... }: {
         services.nitter = {
+          package = pkgs-iliana.nitter;
           enable = true;
           openFirewall = true;
           server = {

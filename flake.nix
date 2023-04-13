@@ -33,6 +33,7 @@
         in
         {
           emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix { inherit craneLib; };
+          nitter = pkgs.callPackage ./packages/nitter.nix { };
         });
       pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
 
