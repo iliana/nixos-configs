@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ config, lib, ... }: {
   options = with lib; {
     iliana.containerNameservers = mkOption { };
     iliana.containers = mkOption { default = { }; };
@@ -7,11 +7,29 @@
   config =
     let
       names = builtins.attrNames config.iliana.containers;
-      addressOutput = pkgs.runCommand "container-addresses.json"
+
+      octets = builtins.listToAttrs (builtins.genList
+        (n: {
+          name = lib.strings.toLower (lib.strings.fixedWidthString 2 "0" (lib.toHexString n));
+          value = n;
+        }) 256);
+      mkv4 = addr: builtins.concatStringsSep "." (builtins.map toString addr);
+      addresses = lib.attrsets.genAttrs names (name:
+        let
+          h = builtins.hashString "sha256" name;
+          c = octets.${builtins.substring 0 2 h};
+          d = octets.${builtins.substring 2 2 h};
+          d' = builtins.bitAnd d 254;
+          b' = builtins.bitAnd d 1;
+          pfx6 = "fd3b:9df7:c407:${builtins.substring 0 4 h}::";
+        in
         {
-          inherit names;
-        } "${pkgs.python3}/bin/python3 ${../etc/container-addresses.py}";
-      addresses = lib.importJSON addressOutput;
+          hostAddress = mkv4 [ 172 (26 + b') c d' ];
+          localAddress = mkv4 [ 172 (26 + b') c (d' + 1) ];
+          hostAddress6 = pfx6 + "1";
+          localAddress6 = pfx6 + "2";
+        });
+
       mkContainer = name: { cfg
                           , hostDns ? false
                           }: {
