@@ -1,5 +1,6 @@
 { config, lib, hostName, inputs, pkgs, pkgs-unstable, ... }: {
   imports = [
+    ./caddy.nix
     ./containers.nix
     ./registry.nix
     ./tailscale.nix
