@@ -1,4 +1,7 @@
 { craneLib, fetchFromGitHub, pkg-config, openssl, ... }: craneLib.buildPackage {
+  pname = "emojos-dot-in";
+  version = "2.0.0";
+
   src = fetchFromGitHub {
     owner = "iliana";
     repo = "emojos.in";
