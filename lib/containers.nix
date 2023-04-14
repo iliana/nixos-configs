@@ -6,6 +6,7 @@
 
   config =
     let
+      enabled = config.iliana.containers != { };
       names = builtins.attrNames config.iliana.containers;
 
       octets = builtins.listToAttrs (builtins.genList
@@ -50,7 +51,7 @@
         ];
       };
     in
-    {
+    lib.mkIf enabled {
       containers = builtins.mapAttrs mkContainer config.iliana.containers;
       networking.nat = {
         enable = true;

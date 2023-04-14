@@ -1,6 +1,8 @@
-{ config, lib, inputs, pkgs, pkgs-unstable, ... }: {
+{ config, lib, hostName, inputs, pkgs, pkgs-unstable, ... }: {
   imports = [
+    ./containers.nix
     ./registry.nix
+    ./tailscale.nix
   ];
 
   options = with lib; {
@@ -9,6 +11,8 @@
   };
 
   config = {
+    networking.hostName = hostName;
+
     users.mutableUsers = false;
     users.users.iliana = {
       isNormalUser = true;

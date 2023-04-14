@@ -1,4 +1,4 @@
-{ config, pkgs-unstable, ... }: {
+{ pkgs-unstable, ... }: {
   services.tailscale.enable = true;
   services.tailscale.package = pkgs-unstable.tailscale;
   iliana.persist.directories = [{ directory = "/var/lib/tailscale"; mode = "0700"; }];

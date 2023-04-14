@@ -1,11 +1,6 @@
 { config, lib, pkgs-iliana, ... }: {
-  networking.hostName = "hydrangea";
-
   imports = [
     ../hardware/virt-v1.nix
-    ../profiles/base.nix
-    ../profiles/containers.nix
-    ../profiles/tailscale.nix
   ];
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];

@@ -37,14 +37,15 @@
         });
       pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
 
-      hosts = builtins.mapAttrs (host: system: lib.nixosSystem {
+      hosts = builtins.mapAttrs (hostName: system: lib.nixosSystem {
         inherit system;
         modules = [
-          ./hosts/${host}.nix
           impermanence.nixosModules.impermanence
+          ./lib
+          ./hosts/${hostName}.nix
         ];
         specialArgs = {
-          inherit inputs;
+          inherit hostName inputs;
           pkgs-iliana = packages.${system};
           pkgs-unstable = pkgs-unstable.${system};
         };
