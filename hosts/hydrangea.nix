@@ -1,4 +1,4 @@
-{ config, pkgs-iliana, ... }: {
+{ config, pkgs-iliana, pkgs-unstable, ... }: {
   imports = [
     ../hardware/virt-v1.nix
   ];
@@ -41,7 +41,7 @@
     nitter = {
       cfg = { config, ... }: {
         services.nitter = {
-          package = pkgs-iliana.nitter;
+          package = pkgs-unstable.nitter;
           enable = true;
           openFirewall = true;
           server = {
