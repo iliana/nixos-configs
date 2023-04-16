@@ -72,18 +72,13 @@
       options = "--delete-older-than 2d";
       randomizedDelaySec = "45min";
     };
-    system.autoUpgrade = {
-      enable = true;
-      dates = "11:30";
-      flags = [
-        "--update-input"
-        "nixpkgs"
-        "--update-input"
-        "nixpkgs-unstable"
-      ];
-      flake = "''";
-      randomizedDelaySec = "45min";
-    };
+    # system.autoUpgrade = {
+    #   enable = true;
+    #   dates = "11:30";
+    #   flags = [ "--update-input" "iliana" ];
+    #   flake = "''";
+    #   randomizedDelaySec = "45min";
+    # };
     nix.settings = {
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
