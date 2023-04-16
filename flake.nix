@@ -3,6 +3,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     crane = {
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,6 +20,7 @@
   outputs =
     { nixpkgs
     , nixpkgs-unstable
+    , agenix
     , crane
     , flake-utils
     , impermanence
@@ -39,6 +44,7 @@
       hosts = builtins.mapAttrs (hostName: system: lib.nixosSystem {
         inherit system;
         modules = [
+          agenix.nixosModules.default
           impermanence.nixosModules.impermanence
           ./lib
           ./hosts/${hostName}.nix
@@ -56,6 +62,7 @@
 
       nixosConfigurations = hosts {
         hydrangea = system.x86_64-linux;
+        lernie = system.x86_64-linux;
       };
 
       hydraJobs = {

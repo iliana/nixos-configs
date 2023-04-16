@@ -33,12 +33,13 @@
 
       mkContainer = name: { cfg
                           , hostDns ? false
+                          , extraFlags ? [ ]
                           }: {
         inherit (addresses.${name}) hostAddress localAddress hostAddress6 localAddress6;
 
         autoStart = true;
         ephemeral = true;
-        extraFlags = [ "-U" ];
+        extraFlags = [ "-U" ] ++ extraFlags;
         privateNetwork = true;
 
         config = lib.mkMerge [
