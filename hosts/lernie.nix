@@ -7,7 +7,9 @@
   age.secrets.nix-cache.file = ../etc/nix-cache.age;
   age.secrets.hydra-github-auth = {
     file = ../etc/hydra-github-auth.age;
-    owner = "hydra-www";
+    mode = "0440";
+    owner = "hydra";
+    group = "hydra";
   };
 
   services.hydra = {
