@@ -3,8 +3,12 @@
     ../hardware/virt-v1.nix
   ];
 
-  # FIXME
-  system.autoUpgrade.enable = lib.mkForce false;
+  age.identityPaths = [ "/nix/persist/etc/ssh/ssh_host_ed25519_key" ];
+  age.secrets.nix-cache.file = ../etc/nix-cache.age;
+  age.secrets.hydra-github-auth = {
+    file = ../etc/hydra-github-auth.age;
+    owner = "hydra-www";
+  };
 
   services.hydra = {
     enable = true;
@@ -13,6 +17,15 @@
     notificationSender = "hydra@localhost";
     buildMachinesFiles = [ ];
     useSubstitutes = true;
+
+    extraConfig = ''
+      Include ${config.age.secrets.hydra-github-auth.path}
+
+      <githubstatus>
+        jobs = nixos-configs:main:.*
+        useShortContext = 1
+      </githubstatus>
+    '';
   };
 
   iliana.persist.directories = [
@@ -29,9 +42,6 @@
       mode = "0750";
     }
   ];
-
-  age.identityPaths = [ "/nix/persist/etc/ssh/ssh_host_ed25519_key" ];
-  age.secrets.nix-cache.file = ../etc/nix-cache.age;
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
     "nix-cache.ili.fyi" = container "nix-serve" 5000;
