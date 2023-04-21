@@ -21,6 +21,15 @@
                 reverse_proxy ${config.containers.${name}.localAddress}:${toString port}
               '';
             };
+            route = routes: {
+              extraConfig = ''
+                ${common}
+                route {
+                  ${builtins.concatStringsSep "\n" routes}
+                  error 404
+                }
+              '';
+            };
           };
       };
     };

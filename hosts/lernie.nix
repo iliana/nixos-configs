@@ -47,6 +47,10 @@
   ];
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
+    "hydra.ili.fyi" = route [
+      "reverse_proxy /api/push-github :${toString config.services.hydra.port}"
+    ];
+
     "nix-cache.ili.fyi" = container "nix-serve" 5000;
   };
 
