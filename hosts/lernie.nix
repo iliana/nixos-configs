@@ -25,6 +25,7 @@
 
       <githubstatus>
         jobs = nixos-configs:main:.*
+        excludeBuildFromContext = 1
         useShortContext = 1
       </githubstatus>
     '';
