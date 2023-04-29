@@ -82,8 +82,8 @@
     nix.settings = {
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
-      substituters = [ "https://nix-cache.ili.fyi/" ];
-      trusted-public-keys = [ (lib.strings.fileContents ../etc/nix-cache.pub) ];
+      substituters = [ "https://cache.garnix.io" ];
+      trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
     };
 
     # explicitly set default so we can add timeservers in other profiles
