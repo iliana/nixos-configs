@@ -56,17 +56,12 @@
         };
       });
     in
-    rec
     {
       inherit packages;
 
       nixosConfigurations = hosts {
         hydrangea = system.x86_64-linux;
         lernie = system.x86_64-linux;
-      };
-
-      hydraJobs = {
-        hosts = builtins.mapAttrs (_: cfg: cfg.config.system.build.toplevel) nixosConfigurations;
       };
     };
 }
