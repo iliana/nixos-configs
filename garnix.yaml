@@ -1,0 +1,4 @@
+builds:
+  exclude:
+    # prevent wasting CI time on duplicate builds
+    - packages.x86_64-linux.emojos-dot-in
