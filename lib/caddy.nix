@@ -30,6 +30,14 @@
                 }
               '';
             };
+            tsOnly = old: lib.attrsets.recursiveUpdate old {
+              extraConfig = ''
+                @external not remote_ip 100.64.0.0/10 127.0.0.0/24
+                abort @external
+
+                ${old.extraConfig}
+              '';
+            };
           };
       };
     };

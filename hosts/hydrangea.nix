@@ -7,7 +7,7 @@
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
     "emojos.in" = container "emojos" 8000;
-    "nitter.home.arpa:80" = container "nitter" 8080;
+    "nitter.home.arpa:80" = tsOnly (container "nitter" 8080);
   };
 
   iliana.containerNameservers = [ "8.8.8.8" "8.8.4.4" "2001:4860:4860::8888" "2001:4860:4860::8844" ];
