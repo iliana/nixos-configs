@@ -42,12 +42,24 @@
     services.powerdns.extraConfig = ''
       launch=bind
       bind-config=/srv/bind/named.conf
-      disable-axfr=yes
+      consistent-backends=yes
+      default-ttl=900
+
+      # "The BIND backend does not benefit from the packet cache as it is fast enough on its own."
+      cache-ttl=0
       distributor-threads=1
-      security-poll-suffix=
+
       webserver=yes
       webserver-address=0.0.0.0
       webserver-allow-from=100.64.0.0/10
+
+      allow-notify-from=
+      disable-axfr=yes
+      security-poll-suffix=
+      version-string=powerdns
     '';
+
+    networking.firewall.allowedTCPPorts = [ 53 ];
+    networking.firewall.allowedUDPPorts = [ 53 ];
   };
 }
