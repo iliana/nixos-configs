@@ -14,7 +14,7 @@ zone "${zone%.zone}" IN {
 EOF
 done
 
-# We don't use bind-dnssec-db in production, but this is to work around
+# We configure bind-dnssec-db to work around
 # https://github.com/PowerDNS/pdns/issues/8184#issuecomment-520047631
 cat >pdns.conf <<EOF
 launch=bind
@@ -24,6 +24,7 @@ EOF
 pdnsutil --config-dir "$PWD" create-bind-db dnssec.sqlite
 cp dnssec.sqlite{,.orig}
 pdnsutil --config-dir "$PWD" check-all-zones
+# Verify `check-all-zones` didn't insert any records into dnssec.sqlite.
 cmp <(sqlite3 dnssec.sqlite.orig .dump) <(sqlite3 dnssec.sqlite .dump)
 rm pdns.conf dnssec.sqlite{,.orig}
 
