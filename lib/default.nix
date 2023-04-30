@@ -2,6 +2,7 @@
   imports = [
     ./caddy.nix
     ./containers.nix
+    ./pdns.nix
     ./registry.nix
     ./tailscale.nix
   ];
@@ -19,11 +20,20 @@
       isNormalUser = true;
       extraGroups = [ "wheel" ];
       openssh.authorizedKeys.keyFiles = [ ../etc/iliana-ssh.pub ];
+      packages = [
+        pkgs.nil
+        pkgs.nixpkgs-fmt
+        pkgs.shellcheck
+        pkgs-unstable.helix
+      ];
     };
     security.sudo.wheelNeedsPassword = false;
-    system.activationScripts.ilianaDotfiles = lib.stringAfter [ "users" ] ''
-      ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${./dotfiles.sh} ${inputs.dotfiles.dotfiles}
-    '';
+    system.activationScripts.ilianaDotfiles = {
+      deps = [ "users" ];
+      text = ''
+        ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${./dotfiles.sh} ${inputs.dotfiles.dotfiles}
+      '';
+    };
 
     environment.systemPackages = [
       pkgs.fd
@@ -31,12 +41,8 @@
       pkgs.htop
       pkgs.jq
       pkgs.ncdu
-      pkgs.nil
-      pkgs.nixpkgs-fmt
       pkgs.ripgrep
-      pkgs.shellcheck
       pkgs.tree
-      pkgs-unstable.helix
     ];
 
     iliana.persist.directories = [
