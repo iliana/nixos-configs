@@ -55,6 +55,7 @@
 
       nixosConfigurations = hosts {
         hydrangea = system.x86_64-linux;
+        megaera = system.x86_64-linux;
       };
     };
 }
