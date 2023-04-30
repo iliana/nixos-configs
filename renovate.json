@@ -1,4 +1,6 @@
 {
+  "timezone": "America/Los_Angeles",
+  "schedule": ["before 7am"],
   "nix": {
     "enabled": true
   },
