@@ -1,13 +1,17 @@
-{ pkgs-unstable, ... }: {
-  services.tailscale.enable = true;
+{ config, lib, pkgs-unstable, ... }:
+let
+  ifEnabled = lib.mkIf config.services.tailscale.enable;
+in
+{
+  services.tailscale.enable = lib.mkDefault true;
   services.tailscale.package = pkgs-unstable.tailscale;
   iliana.persist.directories = [{ directory = "/var/lib/tailscale"; mode = "0700"; }];
 
-  networking.firewall.checkReversePath = "loose";
-  networking.firewall.trustedInterfaces = [ "tailscale0" ];
-  services.openssh.openFirewall = false;
+  networking.firewall.checkReversePath = ifEnabled "loose";
+  networking.firewall.trustedInterfaces = ifEnabled [ "tailscale0" ];
+  services.openssh.openFirewall = ifEnabled false;
 
-  systemd.services.tailscale-up = {
+  systemd.services.tailscale-up = ifEnabled {
     description = "tailscale up";
 
     after = [ "tailscale.service" "network-online.target" ];
@@ -26,5 +30,5 @@
     };
   };
 
-  networking.timeServers = [ "hubble.cat-herring.ts.net" ];
+  networking.timeServers = ifEnabled [ "hubble.cat-herring.ts.net" ];
 }

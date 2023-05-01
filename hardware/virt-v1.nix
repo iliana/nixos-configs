@@ -22,11 +22,6 @@
     options = [ "defaults" ];
   };
 
-  environment.persistence."/nix/persist" = with config.iliana.persist; {
-    inherit directories files;
-    hideMounts = true;
-  };
-
   boot.loader.grub = {
     efiInstallAsRemovable = true;
     efiSupport = true;

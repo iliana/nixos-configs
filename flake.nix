@@ -23,6 +23,7 @@
     }@inputs:
     let
       inherit (flake-utils.lib) system;
+      hardware = import ./hardware;
       lib = nixpkgs.lib;
       eachSystem = lib.genAttrs [ system.x86_64-linux ];
 
@@ -36,26 +37,55 @@
         });
       pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
 
-      hosts = builtins.mapAttrs (hostName: system: lib.nixosSystem {
-        inherit system;
-        modules = [
-          impermanence.nixosModules.impermanence
-          ./lib
-          ./hosts/${hostName}.nix
-        ];
-        specialArgs = {
-          inherit hostName inputs;
-          pkgs-iliana = packages.${system};
-          pkgs-unstable = pkgs-unstable.${system};
-        };
-      });
+      nixosModules = hostName: [
+        ({ ... }: { networking.hostName = hostName; })
+        impermanence.nixosModules.impermanence
+        ./lib
+        ./hosts/${hostName}.nix
+      ];
+      nixosSpecialArgs = system: {
+        inherit inputs;
+        pkgs-iliana = packages.${system};
+        pkgs-unstable = pkgs-unstable.${system};
+      };
     in
     {
       inherit packages;
 
-      nixosConfigurations = hosts {
-        hydrangea = system.x86_64-linux;
-        megaera = system.x86_64-linux;
-      };
+      nixosConfigurations =
+        let
+          host = system: hardware: { inherit system hardware; };
+        in
+        builtins.mapAttrs
+          (hostName: { system, hardware }: lib.nixosSystem {
+            inherit system;
+            modules = nixosModules hostName ++ [ hardware ];
+            specialArgs = nixosSpecialArgs system;
+          })
+          {
+            hydrangea = host system.x86_64-linux hardware.virt-v1;
+            megaera = host system.x86_64-linux hardware.virt-v1;
+          };
+
+      checks =
+        let
+          inherit (import (nixpkgs + "/nixos/lib") { }) runTest;
+        in
+        {
+          ${system.x86_64-linux}.pdns = runTest {
+            name = "pdns";
+            hostPkgs = import nixpkgs { system = system.x86_64-linux; };
+
+            nodes.megaera = { ... }: {
+              imports = nixosModules "megaera" ++ [ hardware.test ];
+            };
+            node.specialArgs = nixosSpecialArgs system.x86_64-linux;
+
+            testScript = ''
+              megaera.start()
+              megaera.wait_for_unit("pdns")
+            '';
+          };
+        };
     };
 }

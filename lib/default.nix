@@ -1,4 +1,4 @@
-{ config, lib, hostName, inputs, pkgs, pkgs-unstable, ... }: {
+{ config, lib, inputs, pkgs, pkgs-unstable, ... }: {
   imports = [
     ./caddy.nix
     ./containers.nix
@@ -13,8 +13,6 @@
   };
 
   config = {
-    networking.hostName = hostName;
-
     users.mutableUsers = false;
     users.users.iliana = {
       isNormalUser = true;
@@ -45,18 +43,27 @@
       pkgs.tree
     ];
 
-    iliana.persist.directories = [
-      "/var/db/dhcpcd"
-      "/var/lib/nixos"
-      "/var/lib/systemd/coredump"
-      "/var/lib/systemd/timers"
-      "/var/log"
+    environment.persistence."/nix/persist" = with config.iliana.persist; {
+      inherit directories files;
+      hideMounts = true;
+    };
+    iliana.persist.directories = lib.mkMerge [
+      [
+        "/var/db/dhcpcd"
+        "/var/lib/systemd/coredump"
+        "/var/lib/systemd/timers"
 
-      {
-        directory = "/var/lib/chrony";
-        user = "chrony";
-        group = "chrony";
-      }
+        {
+          directory = "/var/lib/chrony";
+          user = "chrony";
+          group = "chrony";
+        }
+      ]
+      # Setting these as persistent directories makes booting test VMs fail.
+      (lib.mkIf (!config.system.activationScripts ? testHwMakePersistDir) [
+        "/var/lib/nixos"
+        "/var/log"
+      ])
     ];
     iliana.persist.files = lib.mkMerge [
       [

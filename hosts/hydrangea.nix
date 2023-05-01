@@ -1,8 +1,4 @@
 { config, pkgs-iliana, pkgs-unstable, ... }: {
-  imports = [
-    ../hardware/virt-v1.nix
-  ];
-
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
