@@ -18,6 +18,7 @@
     , nixpkgs-unstable
     , crane
     , flake-utils
+    , impermanence
     , ...
     }@inputs:
     let
@@ -36,29 +37,19 @@
         pkgs-iliana = packages.${system};
         pkgs-unstable = pkgs-unstable.${system};
       };
-      hosts = import ./hosts { inherit system inputs specialArgs; };
+      hosts = import ./hosts {
+        inherit system specialArgs nixpkgs impermanence;
+      };
     in
     {
       inherit packages;
-      nixosConfigurations = builtins.mapAttrs (_: { nixosConfig, ... }: nixosConfig) hosts;
 
-      checks =
-        let
-          inherit (import (nixpkgs + "/nixos/lib") { }) runTest;
-        in
-        {
-          ${system.x86_64-linux}.pdns = runTest {
-            name = "pdns";
-            hostPkgs = import nixpkgs { system = system.x86_64-linux; };
+      nixosConfigurations = builtins.mapAttrs
+        (_: { nixosConfig, ... }: nixosConfig)
+        hosts;
 
-            nodes.megaera = hosts.megaera.testNode;
-            node.specialArgs = specialArgs system.x86_64-linux;
-
-            testScript = ''
-              megaera.start()
-              megaera.wait_for_unit("pdns")
-            '';
-          };
-        };
+      checks = import ./tests {
+        inherit system hosts specialArgs nixpkgs;
+      };
     };
 }

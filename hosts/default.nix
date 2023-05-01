@@ -1,18 +1,17 @@
-{ system, inputs, specialArgs }:
+{ system, specialArgs, nixpkgs, impermanence }:
 let
   hardware = import ../hardware;
-  lib = inputs.nixpkgs.lib;
   mkHost = config: system: hw:
     let
       modules = [
-        inputs.impermanence.nixosModules.impermanence
+        impermanence.nixosModules.impermanence
         ../lib
-        ({ ... }: { networking.hostName = lib.strings.removeSuffix ".nix" (builtins.baseNameOf config); })
+        ({ ... }: { networking.hostName = nixpkgs.lib.strings.removeSuffix ".nix" (builtins.baseNameOf config); })
         config
       ];
     in
     {
-      nixosConfig = lib.nixosSystem {
+      nixosConfig = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = modules ++ [ hw ];
         specialArgs = specialArgs system;
