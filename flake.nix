@@ -27,14 +27,10 @@
       lib = nixpkgs.lib;
       eachSystem = lib.genAttrs [ system.x86_64-linux ];
 
-      packages = eachSystem (system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-          craneLib = crane.lib.${system};
-        in
-        {
-          emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix { inherit craneLib; };
-        });
+      packages = eachSystem (system: import ./packages {
+        pkgs = import nixpkgs { inherit system; };
+        craneLib = crane.lib.${system};
+      });
       pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
 
       nixosModules = hostName: [
