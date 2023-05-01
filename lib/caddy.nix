@@ -30,6 +30,10 @@
     services.caddy = {
       enable = true;
       email = "iliana@buttslol.net";
+      globalConfig = lib.mkIf config.iliana.testMode ''
+        local_certs
+        skip_install_trust
+      '';
       virtualHosts =
         let
           final = builtins.mapAttrs

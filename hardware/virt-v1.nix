@@ -3,6 +3,8 @@
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
+  iliana.testMode = lib.mkForce false;
+
   fileSystems."/" = {
     device = "tmpfs";
     fsType = "tmpfs";

@@ -2,6 +2,7 @@
 let
   tests = {
     ${system.x86_64-linux} = {
+      hydrangea = ./hydrangea.nix;
       pdns = ./pdns.nix;
     };
   };

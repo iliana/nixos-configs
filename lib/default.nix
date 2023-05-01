@@ -10,6 +10,8 @@
   options = with lib; {
     iliana.persist.directories = mkOption { default = [ ]; };
     iliana.persist.files = mkOption { default = [ ]; };
+
+    iliana.testMode = mkOption { };
   };
 
   config = {
@@ -60,7 +62,7 @@
         }
       ]
       # Setting these as persistent directories makes booting test VMs fail.
-      (lib.mkIf (!config.system.activationScripts ? testHwMakePersistDir) [
+      (lib.mkIf (!config.iliana.testMode) [
         "/var/lib/nixos"
         "/var/log"
       ])
