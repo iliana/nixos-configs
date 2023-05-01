@@ -18,13 +18,11 @@
     , nixpkgs-unstable
     , crane
     , flake-utils
-    , impermanence
     , ...
     }@inputs:
     let
-      inherit (flake-utils.lib) system;
-      hardware = import ./hardware;
       lib = nixpkgs.lib;
+      inherit (flake-utils.lib) system;
       eachSystem = lib.genAttrs [ system.x86_64-linux ];
 
       packages = eachSystem (system: import ./packages {
@@ -33,35 +31,16 @@
       });
       pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
 
-      nixosModules = hostName: [
-        ({ ... }: { networking.hostName = hostName; })
-        impermanence.nixosModules.impermanence
-        ./lib
-        ./hosts/${hostName}.nix
-      ];
-      nixosSpecialArgs = system: {
+      specialArgs = system: {
         inherit inputs;
         pkgs-iliana = packages.${system};
         pkgs-unstable = pkgs-unstable.${system};
       };
+      hosts = import ./hosts { inherit system inputs specialArgs; };
     in
     {
       inherit packages;
-
-      nixosConfigurations =
-        let
-          host = system: hardware: { inherit system hardware; };
-        in
-        builtins.mapAttrs
-          (hostName: { system, hardware }: lib.nixosSystem {
-            inherit system;
-            modules = nixosModules hostName ++ [ hardware ];
-            specialArgs = nixosSpecialArgs system;
-          })
-          {
-            hydrangea = host system.x86_64-linux hardware.virt-v1;
-            megaera = host system.x86_64-linux hardware.virt-v1;
-          };
+      nixosConfigurations = builtins.mapAttrs (_: { nixosConfig, ... }: nixosConfig) hosts;
 
       checks =
         let
@@ -72,10 +51,8 @@
             name = "pdns";
             hostPkgs = import nixpkgs { system = system.x86_64-linux; };
 
-            nodes.megaera = { ... }: {
-              imports = nixosModules "megaera" ++ [ hardware.test ];
-            };
-            node.specialArgs = nixosSpecialArgs system.x86_64-linux;
+            nodes.megaera = hosts.megaera.testNode;
+            node.specialArgs = specialArgs system.x86_64-linux;
 
             testScript = ''
               megaera.start()
