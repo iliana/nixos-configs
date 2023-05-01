@@ -6,6 +6,6 @@
   },
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 10am"]
+    "schedule": ["before 7am"]
   }
 }
