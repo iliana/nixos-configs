@@ -26,11 +26,12 @@
       inherit (flake-utils.lib) system;
       eachSystem = lib.genAttrs [ system.x86_64-linux ];
 
+      pkgs = eachSystem (system: import nixpkgs { inherit system; });
+      pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
       packages = eachSystem (system: import ./packages {
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = pkgs.${system};
         craneLib = crane.lib.${system};
       });
-      pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
 
       specialArgs = system: {
         inherit inputs;
@@ -41,6 +42,7 @@
         inherit system specialArgs nixpkgs impermanence;
       };
     in
+    rec
     {
       inherit packages;
 
@@ -51,5 +53,15 @@
       checks = import ./tests {
         inherit system hosts specialArgs nixpkgs;
       };
+
+      ci = eachSystem (system: pkgs.${system}.linkFarm "ci" (lib.lists.flatten [
+        (lib.attrsets.mapAttrsToList (name: drv: { name = "packages/${name}"; path = drv; }) packages.${system})
+        (lib.attrsets.mapAttrsToList
+          (name: drv: { name = "systems/${name}"; path = drv.config.system.build.toplevel; })
+          (lib.attrsets.filterAttrs (name: _: hosts.${name}.system == system) nixosConfigurations))
+        (lib.attrsets.mapAttrsToList (name: drv: { name = "checks/${name}"; path = drv; }) checks.${system})
+      ]));
+
+      formatter = eachSystem (system: pkgs.${system}.nixpkgs-fmt);
     };
 }

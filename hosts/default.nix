@@ -11,6 +11,7 @@ let
       ];
     in
     {
+      inherit system;
       nixosConfig = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = modules ++ [ hw ];
