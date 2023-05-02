@@ -28,14 +28,14 @@
 
       pkgs = eachSystem (system: import nixpkgs { inherit system; });
       pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
-      packages = eachSystem (system: import ./packages {
+      pkgs-iliana = eachSystem (system: import ./packages {
         pkgs = pkgs.${system};
         craneLib = crane.lib.${system};
       });
 
       specialArgs = system: {
         inherit inputs;
-        pkgs-iliana = packages.${system};
+        pkgs-iliana = pkgs-iliana.${system};
         pkgs-unstable = pkgs-unstable.${system};
       };
       hosts = import ./hosts {
@@ -44,7 +44,7 @@
     in
     rec
     {
-      inherit packages;
+      packages = pkgs-iliana;
 
       nixosConfigurations = builtins.mapAttrs
         (_: { nixosConfig, ... }: nixosConfig)
@@ -54,8 +54,8 @@
         inherit system hosts specialArgs nixpkgs;
       };
 
-      ci = eachSystem (system: pkgs.${system}.linkFarm "ci" (lib.lists.flatten [
-        (lib.attrsets.mapAttrsToList (name: drv: { name = "packages/${name}"; path = drv; }) packages.${system})
+      defaultPackage = eachSystem (system: pkgs.${system}.linkFarm "ci" (lib.lists.flatten [
+        (lib.attrsets.mapAttrsToList (name: drv: { name = "packages/${name}"; path = drv; }) pkgs-iliana.${system})
         (lib.attrsets.mapAttrsToList
           (name: drv: { name = "systems/${name}"; path = drv.config.system.build.toplevel; })
           (lib.attrsets.filterAttrs (name: _: hosts.${name}.system == system) nixosConfigurations))
