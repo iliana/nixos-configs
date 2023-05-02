@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 let
   flakeDotNix = pkgs.writeText "flake.nix" ''
     {
@@ -15,9 +15,17 @@ in
 
   iliana.persist.files = [ "/etc/nixos/flake.lock" ];
 
-  nix.registry.iliana.flake = inputs.self;
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
-  nix.registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+  # Ensure e.g. `nix run nixpkgs#hello` uses the same revision as the flake input we already run.
+  nix.registry = lib.attrsets.genAttrs
+    [ "nixpkgs" "nixpkgs-unstable" ]
+    (input: {
+      to = {
+        inherit (inputs."${input}") lastModified narHash rev;
+        owner = "NixOS";
+        repo = "nixpkgs";
+        type = "github";
+      };
+    });
 
   nix.settings.flake-registry = pkgs.writeText "flake-registry.json" (builtins.toJSON { flakes = [ ]; version = 2; });
 
