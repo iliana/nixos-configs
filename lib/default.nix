@@ -49,6 +49,8 @@
       inherit directories files;
       hideMounts = true;
     };
+    system.activationScripts.createNixPersist.text = "[ -d /nix/persist ] || mkdir /nix/persist";
+    system.activationScripts.createPersistentStorageDirs.deps = [ "createNixPersist" ];
     iliana.persist.directories = lib.mkMerge [
       [
         "/var/db/dhcpcd"

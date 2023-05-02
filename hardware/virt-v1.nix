@@ -112,8 +112,6 @@
         mount /dev/vda1 "$root/efi"
         mount /dev/vda2 "$root/nix"
 
-        # work around impermanence permissions weirdness
-        mkdir -p "$root"/nix/persist/{boot/grub,home,var/lib}
         # fix permissions
         nixos-enter --root "$root" -- chown -R root:root /nix/{store,var}
         # install bootloader
