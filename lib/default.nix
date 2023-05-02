@@ -51,23 +51,18 @@
     };
     system.activationScripts.createNixPersist.text = "[ -d /nix/persist ] || mkdir /nix/persist";
     system.activationScripts.createPersistentStorageDirs.deps = [ "createNixPersist" ];
-    iliana.persist.directories = lib.mkMerge [
-      [
-        "/var/db/dhcpcd"
-        "/var/lib/systemd/coredump"
-        "/var/lib/systemd/timers"
+    iliana.persist.directories = [
+      "/var/db/dhcpcd"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/var/lib/systemd/timers"
+      "/var/log"
 
-        {
-          directory = "/var/lib/chrony";
-          user = "chrony";
-          group = "chrony";
-        }
-      ]
-      # Setting these as persistent directories makes booting test VMs fail.
-      (lib.mkIf (!config.iliana.testMode) [
-        "/var/lib/nixos"
-        "/var/log"
-      ])
+      {
+        directory = "/var/lib/chrony";
+        user = "chrony";
+        group = "chrony";
+      }
     ];
     iliana.persist.files = lib.mkMerge [
       [
