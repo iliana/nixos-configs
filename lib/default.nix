@@ -31,7 +31,7 @@
     system.activationScripts.ilianaDotfiles = {
       deps = [ "users" ];
       text = ''
-        ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${./dotfiles.sh} ${inputs.dotfiles.dotfiles}
+        ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${../etc/dotfiles.sh} ${inputs.dotfiles.dotfiles}
       '';
     };
 
