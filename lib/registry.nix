@@ -1,20 +1,4 @@
-{ pkgs, lib, inputs, ... }:
-let
-  flakeDotNix = pkgs.writeText "flake.nix" ''
-    {
-      inputs.iliana.url = "github:iliana/nixos-configs";
-      outputs = { iliana, ... }: iliana;
-    }
-  '';
-in
-{
-  fileSystems."/etc/nixos/flake.nix" = {
-    device = toString flakeDotNix;
-    options = [ "bind" ];
-  };
-
-  iliana.persist.files = [ "/etc/nixos/flake.lock" ];
-
+{ pkgs, lib, inputs, ... }: {
   # Ensure e.g. `nix run nixpkgs#hello` uses the same revision as the flake input we already run.
   nix.registry = lib.attrsets.genAttrs
     [ "nixpkgs" "nixpkgs-unstable" ]

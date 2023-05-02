@@ -113,13 +113,9 @@
         mount /dev/vda2 "$root/nix"
 
         # work around impermanence permissions weirdness
-        mkdir -p "$root"/nix/persist/{boot/grub,etc/nixos,home,var/lib}
+        mkdir -p "$root"/nix/persist/{boot/grub,home,var/lib}
         # fix permissions
         nixos-enter --root "$root" -- chown -R root:root /nix/{store,var}
-        # nix has Problems if flake.lock is a broken symlink. copying in our
-        # repo's flake.lock, even if it's not quite right, is better than the
-        # alternative.
-        cp --no-preserve=mode ${./../flake.lock} "$root/nix/persist/etc/nixos/flake.lock"
         # install bootloader
         NIXOS_INSTALL_BOOTLOADER=1 nixos-enter --root "$root" -- /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 
