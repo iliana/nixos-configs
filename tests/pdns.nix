@@ -1,4 +1,4 @@
-{ pkgs, megaera, ... }:
+{ runTest, pkgs, megaera, ... }:
 let
   zones = pkgs.writeTextDir "example.com.zone" ''
     @ IN SOA ns.example.com. noc.example.com. 1234567890 7200 3600 1209600 3600
@@ -10,7 +10,7 @@ let
     tar cf $out ./*.zone
   '';
 in
-{
+runTest {
   nodes = {
     inherit megaera;
     client = { pkgs, ... }: {

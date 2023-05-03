@@ -3,8 +3,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
-  iliana.testMode = lib.mkForce false;
-
   fileSystems."/" = {
     device = "tmpfs";
     fsType = "tmpfs";
@@ -47,7 +45,7 @@
     copy_bin_and_libs ${pkgs.util-linux}/bin/lsblk
   '';
   boot.initrd.postDeviceCommands = ''
-    rootDevice="${config.fileSystems."/nix".device}"
+    rootDevice=/dev/disk/by-label/nixos
     if waitDevice "$rootDevice"; then
       sgdisk -e -d 2 -N 2 "/dev/$(lsblk -ndo pkname "$rootDevice")"
       udevadm settle

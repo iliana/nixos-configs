@@ -140,10 +140,10 @@
       "inputs": {
         "crane": "crane",
         "dotfiles": "dotfiles",
-        "flake-utils": "flake-utils_2",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "wrench": "wrench"
       }
     },
     "rust-overlay": {
@@ -183,6 +183,27 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "wrench": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1683150319,
+        "narHash": "sha256-yyeUJ25CVPrr7oHhD611CfDELxqZ1/slwxYGcGSsF78=",
+        "owner": "iliana",
+        "repo": "wrench",
+        "rev": "8a3aadf2fff9b74c61a6395938cc6f6dc061427a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iliana",
+        "repo": "wrench",
         "type": "github"
       }
     }

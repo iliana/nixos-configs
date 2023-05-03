@@ -11,7 +11,7 @@
     iliana.persist.directories = mkOption { default = [ ]; };
     iliana.persist.files = mkOption { default = [ ]; };
 
-    iliana.testMode = mkOption { };
+    iliana.test = mkOption { default = false; };
   };
 
   config = {
@@ -77,20 +77,12 @@
     ];
 
     time.timeZone = "Etc/UTC";
-    # maintenance window: 02:30-05:30 Pacific -> 10:30-12:30 UTC (accounting for DST)
     nix.gc = {
       automatic = true;
       dates = "10:30";
       options = "--delete-older-than 2d";
       randomizedDelaySec = "45min";
     };
-    # system.autoUpgrade = {
-    #   enable = true;
-    #   dates = "11:30";
-    #   flags = [ "--update-input" "iliana" ];
-    #   flake = "''";
-    #   randomizedDelaySec = "45min";
-    # };
     nix.settings = {
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];

@@ -30,7 +30,7 @@
     services.caddy = {
       enable = true;
       email = "iliana@buttslol.net";
-      globalConfig = lib.mkIf config.iliana.testMode ''
+      globalConfig = lib.mkIf config.iliana.test ''
         local_certs
         skip_install_trust
       '';

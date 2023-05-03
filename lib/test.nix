@@ -1,7 +1,5 @@
 { lib, ... }: {
-  iliana.testMode = lib.mkForce true;
-  services.tailscale.enable = false;
-  zramSwap.enable = true;
+  iliana.test = lib.mkForce true;
 
   # Work around /var/lib/nixos and /var/log being "required for boot".
   #

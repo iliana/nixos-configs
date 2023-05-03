@@ -1,67 +1,44 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-    crane = {
-      url = "github:ipetkov/crane";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    flake-utils.url = "github:numtide/flake-utils";
-    impermanence.url = "github:nix-community/impermanence";
-
+    crane.url = "github:ipetkov/crane";
+    crane.inputs.nixpkgs.follows = "nixpkgs";
     dotfiles.url = "github:iliana/dotfiles?dir=.config/dotfiles&submodule=1";
+    impermanence.url = "github:nix-community/impermanence";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    wrench.url = "github:iliana/wrench";
+    wrench.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs =
-    { nixpkgs
-    , nixpkgs-unstable
-    , crane
-    , flake-utils
-    , impermanence
-    , ...
-    }@inputs:
-    let
-      lib = nixpkgs.lib;
-      inherit (flake-utils.lib) system;
-      eachSystem = lib.genAttrs [ system.x86_64-linux ];
+  outputs = { crane, impermanence, nixpkgs-unstable, wrench, ... }@inputs: wrench.lib.generate {
+    systems = [ "x86_64-linux" ];
 
-      pkgs = eachSystem (system: import nixpkgs { inherit system; });
-      pkgs-unstable = eachSystem (system: import nixpkgs-unstable { inherit system; });
-      pkgs-iliana = eachSystem (system: import ./packages {
-        pkgs = pkgs.${system};
+    packages = system: callPackage:
+      let
         craneLib = crane.lib.${system};
-      });
-
-      specialArgs = system: {
-        inherit inputs;
-        pkgs-iliana = pkgs-iliana.${system};
-        pkgs-unstable = pkgs-unstable.${system};
+      in
+      {
+        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix { inherit craneLib; };
       };
-      hosts = import ./hosts {
-        inherit system specialArgs nixpkgs impermanence;
-      };
-    in
-    rec
-    {
-      packages = pkgs-iliana;
+    ciPackage = "ci";
 
-      nixosConfigurations = builtins.mapAttrs
-        (_: { nixosConfig, ... }: nixosConfig)
-        hosts;
-
-      checks = import ./tests {
-        inherit system hosts specialArgs nixpkgs;
-      };
-
-      defaultPackage = eachSystem (system: pkgs.${system}.linkFarm "ci" (lib.lists.flatten [
-        (lib.attrsets.mapAttrsToList (name: drv: { name = "packages/${name}"; path = drv; }) pkgs-iliana.${system})
-        (lib.attrsets.mapAttrsToList
-          (name: drv: { name = "systems/${name}"; path = drv.config.system.build.toplevel; })
-          (lib.attrsets.filterAttrs (name: _: hosts.${name}.system == system) nixosConfigurations))
-        (lib.attrsets.mapAttrsToList (name: drv: { name = "checks/${name}"; path = drv; }) checks.${system})
-      ]));
-
-      formatter = eachSystem (system: pkgs.${system}.nixpkgs-fmt);
+    nixosImports = [
+      impermanence.nixosModules.impermanence
+      ./lib
+    ];
+    nixosSpecialArgs = system: {
+      inherit inputs;
+      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
     };
+    nixosConfigurations.x86_64-linux = {
+      hydrangea = ./hosts/hydrangea.nix;
+      megaera = ./hosts/megaera.nix;
+    };
+
+    testModule = import ./lib/test.nix;
+    checks.x86_64-linux = {
+      hydrangea = ./tests/hydrangea.nix;
+      pdns = ./tests/pdns.nix;
+    };
+  };
 }

@@ -1,4 +1,4 @@
-{ hydrangea, ... }: {
+{ runTest, hydrangea, ... }: runTest {
   nodes = { inherit hydrangea; };
   testScript = ''
     from urllib.parse import urlparse

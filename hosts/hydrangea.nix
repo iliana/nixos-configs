@@ -1,4 +1,8 @@
-{ config, pkgs-iliana, pkgs-unstable, ... }: {
+{ config, myPkgs, pkgs-unstable, ... }: {
+  imports = [
+    ./hardware/virt-v1.nix
+  ];
+
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
@@ -15,7 +19,7 @@
           after = [ "network.target" ];
           wantedBy = [ "multi-user.target" ];
           serviceConfig = {
-            ExecStart = "${pkgs-iliana.emojos-dot-in}/bin/emojos-dot-in";
+            ExecStart = "${myPkgs.emojos-dot-in}/bin/emojos-dot-in";
             Environment = [ "ROCKET_ADDRESS=0.0.0.0" ];
 
             CapabilityBoundingSet = "";
