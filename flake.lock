@@ -212,11 +212,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1683150319,
-        "narHash": "sha256-yyeUJ25CVPrr7oHhD611CfDELxqZ1/slwxYGcGSsF78=",
+        "lastModified": 1683173621,
+        "narHash": "sha256-444Tfpc0accKWkQ4YfaX7iwU8LJ2+1npvt4rraZeev8=",
         "owner": "iliana",
         "repo": "wrench",
-        "rev": "8a3aadf2fff9b74c61a6395938cc6f6dc061427a",
+        "rev": "5cfdd3f314df53ac1c6927714c9f083b5eda80c4",
         "type": "github"
       },
       "original": {

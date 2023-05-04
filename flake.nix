@@ -20,7 +20,6 @@
       {
         emojos-dot-in = callPackage ./packages/emojos-dot-in.nix { inherit craneLib; };
       };
-    # ciPackage = "ci";
 
     nixosImports = [
       impermanence.nixosModules.impermanence
