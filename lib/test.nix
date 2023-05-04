@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{lib, ...}: {
   iliana.test = lib.mkForce true;
 
   # Work around /var/lib/nixos and /var/log being "required for boot".

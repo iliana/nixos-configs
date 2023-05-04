@@ -1,10 +1,15 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   options = with lib; {
-    iliana.pdns.enable = mkOption { default = false; };
+    iliana.pdns.enable = mkOption {default = false;};
   };
 
   config = lib.mkIf config.iliana.pdns.enable {
-    users.users.iliana.packages = [ pkgs.pdns ];
+    users.users.iliana.packages = [pkgs.pdns];
 
     users.users.pdns-deploy = {
       isSystemUser = true;
@@ -12,24 +17,26 @@
       packages = [
         (pkgs.writeShellApplication {
           name = "pdns-load";
-          runtimeInputs = [ pkgs.pdns pkgs.sqlite ];
+          runtimeInputs = [pkgs.pdns pkgs.sqlite];
           text = builtins.readFile ../etc/pdns-load.sh;
         })
       ];
       useDefaultShell = true;
     };
-    users.groups.pdns-deploy = { };
+    users.groups.pdns-deploy = {};
     security.sudo.extraConfig = ''
       pdns-deploy ALL=(pdns:pdns) NOPASSWD: ${pkgs.pdns}/bin/pdns_control rediscover
     '';
 
-    iliana.persist.directories = [{
-      directory = "/srv/bind";
-      user = "pdns-deploy";
-      group = "pdns-deploy";
-    }];
+    iliana.persist.directories = [
+      {
+        directory = "/srv/bind";
+        user = "pdns-deploy";
+        group = "pdns-deploy";
+      }
+    ];
     system.activationScripts."named.conf" = {
-      deps = [ "users" "createPersistentStorageDirs" ];
+      deps = ["users" "createPersistentStorageDirs"];
       text = ''
         if [ ! -e /nix/persist/srv/bind/named.conf ]; then
           touch /nix/persist/srv/bind/named.conf
@@ -59,7 +66,7 @@
       version-string=powerdns
     '';
 
-    networking.firewall.allowedTCPPorts = [ 53 ];
-    networking.firewall.allowedUDPPorts = [ 53 ];
+    networking.firewall.allowedTCPPorts = [53];
+    networking.firewall.allowedUDPPorts = [53];
   };
 }

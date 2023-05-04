@@ -1,4 +1,10 @@
-{ config, lib, pkgs, modulesPath, ... }: {
+{
+  config,
+  lib,
+  modulesPath,
+  pkgs,
+  ...
+}: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
@@ -6,20 +12,20 @@
   fileSystems."/" = {
     device = "tmpfs";
     fsType = "tmpfs";
-    options = [ "defaults" "size=50%" "mode=755" ];
+    options = ["defaults" "size=50%" "mode=755"];
     neededForBoot = true;
   };
   fileSystems."/nix" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
-    options = [ "defaults" "discard" ];
+    options = ["defaults" "discard"];
     autoResize = true;
     neededForBoot = true;
   };
   fileSystems."/efi" = {
     device = "/dev/disk/by-label/ESP";
     fsType = "vfat";
-    options = [ "defaults" ];
+    options = ["defaults"];
   };
 
   boot.loader.grub = {
@@ -31,11 +37,13 @@
       terminal_output console serial
     '';
     # We use mirroredBoots with one boot partition so that we can set `path`.
-    mirroredBoots = [{
-      devices = [ "nodev" ];
-      efiSysMountPoint = "/efi";
-      path = "/nix/persist/boot";
-    }];
+    mirroredBoots = [
+      {
+        devices = ["nodev"];
+        efiSysMountPoint = "/efi";
+        path = "/nix/persist/boot";
+      }
+    ];
   };
 
   # Adapted from `boot.growPartition`, which only works if the partition you
@@ -52,24 +60,24 @@
     fi
   '';
 
-  boot.kernelParams = [ "console=ttyS0,115200n8" ];
+  boot.kernelParams = ["console=ttyS0,115200n8"];
   boot.loader.timeout = 0;
   services.fstrim.enable = true;
   zramSwap.enable = true;
 
-  system.build.image =
-    let
-      binPath = lib.makeBinPath ([
+  system.build.image = let
+    binPath = lib.makeBinPath ([
         config.system.build.nixos-install
         pkgs.e2fsprogs
         pkgs.gptfdisk
         pkgs.nix
         pkgs.util-linux
-      ] ++ pkgs.stdenv.initialPath);
-      closureInfo = pkgs.closureInfo {
-        rootPaths = [ config.system.build.toplevel ];
-      };
-    in
+      ]
+      ++ pkgs.stdenv.initialPath);
+    closureInfo = pkgs.closureInfo {
+      rootPaths = [config.system.build.toplevel];
+    };
+  in
     pkgs.vmTools.runInLinuxVM (pkgs.runCommand "raw-efi-image"
       {
         preVM = ''

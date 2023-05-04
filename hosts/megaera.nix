@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     ./hardware/virt-v1.nix
   ];

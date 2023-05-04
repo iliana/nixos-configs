@@ -1,4 +1,11 @@
-{ config, lib, inputs, pkgs, pkgs-unstable, ... }: {
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  ...
+}: {
   imports = [
     ./caddy.nix
     ./containers.nix
@@ -8,18 +15,18 @@
   ];
 
   options = with lib; {
-    iliana.persist.directories = mkOption { default = [ ]; };
-    iliana.persist.files = mkOption { default = [ ]; };
+    iliana.persist.directories = mkOption {default = [];};
+    iliana.persist.files = mkOption {default = [];};
 
-    iliana.test = mkOption { default = false; };
+    iliana.test = mkOption {default = false;};
   };
 
   config = {
     users.mutableUsers = false;
     users.users.iliana = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      openssh.authorizedKeys.keyFiles = [ ../etc/iliana-ssh.pub ];
+      extraGroups = ["wheel"];
+      openssh.authorizedKeys.keyFiles = [../etc/iliana-ssh.pub];
       packages = [
         pkgs.nil
         pkgs.nixpkgs-fmt
@@ -29,7 +36,7 @@
     };
     security.sudo.wheelNeedsPassword = false;
     system.activationScripts.ilianaDotfiles = {
-      deps = [ "users" ];
+      deps = ["users"];
       text = ''
         ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${../etc/dotfiles.sh} ${inputs.dotfiles.dotfiles}
       '';
@@ -50,7 +57,7 @@
       hideMounts = true;
     };
     system.activationScripts.createNixPersist.text = "[ -d /nix/persist ] || mkdir /nix/persist";
-    system.activationScripts.createPersistentStorageDirs.deps = [ "createNixPersist" ];
+    system.activationScripts.createPersistentStorageDirs.deps = ["createNixPersist"];
     iliana.persist.directories = [
       "/var/db/dhcpcd"
       "/var/lib/nixos"
@@ -85,9 +92,9 @@
     };
     nix.settings = {
       auto-optimise-store = true;
-      experimental-features = [ "nix-command" "flakes" ];
-      substituters = [ "https://cache.garnix.io" ];
-      trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
+      experimental-features = ["nix-command" "flakes"];
+      substituters = ["https://cache.garnix.io"];
+      trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
     };
 
     # explicitly set default so we can add timeservers in other profiles
