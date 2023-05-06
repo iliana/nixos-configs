@@ -49,6 +49,7 @@
       pkgs.jq
       pkgs.ncdu
       pkgs.ripgrep
+      pkgs.tmux
       pkgs.tree
     ];
 
