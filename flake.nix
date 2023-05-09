@@ -38,6 +38,7 @@
       nixosConfigurations.x86_64-linux = {
         hydrangea = ./hosts/hydrangea.nix;
         megaera = ./hosts/megaera.nix;
+        vermilion = ./hosts/vermilion.nix;
       };
 
       testModule = import ./lib/test.nix;
