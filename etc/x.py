@@ -6,32 +6,33 @@ import json
 import socket
 import subprocess
 
-
-def main():
-    parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers()
-
-    status = subparsers.add_parser("status")
-    status.set_defaults(func=command_status)
-    status.add_argument("hosts", nargs="*")
-
-    args = parser.parse_args()
-    if "func" in args:
-        args.func(args)
-    else:
-        raise Exception("a subcommand is required")
+subcommands = {}
 
 
-def command_status(args):
+def subcommand(*args, **kwargs):
+    def decorator(func):
+        subcommands[func.__name__] = dict(**kwargs, func=func)
+        return func
+
+    if len(args) == 1 and callable(args[0]):
+        return decorator(args[0])
+    return decorator
+
+
+########################################################################################
+
+
+@subcommand(parser=lambda parser: parser.add_argument("hosts", nargs="*"))
+def status(args):
     local_rev = run("git", "rev-parse", "HEAD")
     hosts = sorted(args.hosts or all_hosts())
     format_string = f"{{:<{max(len(host) for host in hosts) + 2}}}{{}}"
     for host in hosts:
         remote_rev = run_on(host, "cat", "/run/current-system/iliana-rev")
         if not remote_rev:
-            status = color("unknown revision", "red")
+            result = color("unknown", "red")
         elif local_rev != remote_rev:
-            status = color(remote_rev[:7], "red")
+            result = color(remote_rev[:7], "red")
         else:
             booted, current = run_on(
                 host,
@@ -40,19 +41,22 @@ def command_status(args):
                 "/run/current-system/kernel",
             ).splitlines()
             if booted != current:
-                status = color("needs reboot", "yellow")
+                result = color("needs reboot", "yellow")
             else:
-                status = color(remote_rev[:7], "green")
-        print(format_string.format(host, status))
+                result = color(remote_rev[:7], "green")
+        print(format_string.format(host, result))
+
+
+########################################################################################
 
 
 def color(text, color_name):
-    color_id = {
+    value = {
         "red": 31,
         "green": 32,
         "yellow": 33,
     }[color_name]
-    return f"\033[{color_id}m{text}\033[0m"
+    return f"\033[{value}m{text}\033[0m"
 
 
 def run(*args):
@@ -76,6 +80,21 @@ def nix_eval(installable, apply=None):
 
 def all_hosts():
     return nix_eval(".#nixosConfigurations", "builtins.attrNames")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+    for name, kwargs in subcommands.items():
+        subparser = subparsers.add_parser(name)
+        subparser.set_defaults(func=kwargs["func"])
+        if "parser" in kwargs:
+            kwargs["parser"](subparser)
+    args = parser.parse_args()
+    if "func" in args:
+        args.func(args)
+    else:
+        raise Exception("a subcommand is required")
 
 
 if __name__ == "__main__":
