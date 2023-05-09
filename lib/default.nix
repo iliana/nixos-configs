@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
   pkgs-unstable,
@@ -9,6 +8,7 @@
   imports = [
     ./caddy.nix
     ./containers.nix
+    ./dotfiles.nix
     ./pdns.nix
     ./registry.nix
     ./tailscale.nix
@@ -17,7 +17,6 @@
   options = with lib; {
     iliana.persist.directories = mkOption {default = [];};
     iliana.persist.files = mkOption {default = [];};
-    iliana.persist.home = mkOption {default = false;};
 
     iliana.test = mkOption {default = false;};
   };
@@ -35,17 +34,6 @@
       ];
     };
     security.sudo.wheelNeedsPassword = false;
-    system.activationScripts.ilianaDotfiles = {
-      deps = ["users" "createPersistentStorageDirs"];
-      text = let
-        home =
-          if config.iliana.persist.home
-          then "/nix/persist/home/iliana"
-          else "/home/iliana";
-      in ''
-        ${pkgs.sudo}/bin/sudo -H -u iliana ${pkgs.bash}/bin/bash ${../etc/dotfiles.sh} ${inputs.dotfiles.dotfiles} ${home}
-      '';
-    };
 
     environment.systemPackages = [
       pkgs.fd
@@ -64,28 +52,19 @@
     };
     system.activationScripts.createNixPersist.text = "[ -d /nix/persist ] || mkdir /nix/persist";
     system.activationScripts.createPersistentStorageDirs.deps = ["createNixPersist"];
-    iliana.persist.directories =
-      [
-        "/var/db/dhcpcd"
-        "/var/lib/nixos"
-        "/var/lib/systemd/coredump"
-        "/var/lib/systemd/timers"
-        "/var/log"
+    iliana.persist.directories = [
+      "/var/db/dhcpcd"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/var/lib/systemd/timers"
+      "/var/log"
 
-        {
-          directory = "/var/lib/chrony";
-          user = "chrony";
-          group = "chrony";
-        }
-      ]
-      ++ (lib.lists.optionals config.iliana.persist.home [
-        {
-          directory = "/home/iliana";
-          user = "iliana";
-          group = "users";
-          mode = "0700";
-        }
-      ]);
+      {
+        directory = "/var/lib/chrony";
+        user = "chrony";
+        group = "chrony";
+      }
+    ];
     iliana.persist.files = lib.mkMerge [
       [
         "/etc/machine-id"
