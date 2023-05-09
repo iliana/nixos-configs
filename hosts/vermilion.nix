@@ -10,5 +10,7 @@
     pkgs-unstable.python310Packages.python-lsp-server
   ];
 
+  iliana.tailscale.tags = null;
+
   system.stateVersion = "22.11";
 }
