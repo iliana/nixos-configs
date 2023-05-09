@@ -24,11 +24,11 @@ def subcommand(*args, **kwargs):
 
 @subcommand(parser=lambda parser: parser.add_argument("hosts", nargs="*"))
 def status(args):
-    local_rev = run("git", "rev-parse", "HEAD")
+    local_rev = run(["git", "rev-parse", "HEAD"])
     hosts = sorted(args.hosts or all_hosts())
     format_string = f"{{:<{max(len(host) for host in hosts) + 2}}}{{}}"
     for host in hosts:
-        remote_rev = run_on(host, "cat", "/run/current-system/iliana-rev")
+        remote_rev = run_on(host, ["cat", "/run/current-system/iliana-rev"])
         if not remote_rev:
             result = color("unknown", "red")
         elif local_rev != remote_rev:
@@ -36,15 +36,43 @@ def status(args):
         else:
             booted, current = run_on(
                 host,
-                "readlink",
-                "/run/booted-system/kernel",
-                "/run/current-system/kernel",
+                [
+                    "readlink",
+                    "/run/booted-system/kernel",
+                    "/run/current-system/kernel",
+                ],
             ).splitlines()
             if booted != current:
                 result = color("needs reboot", "yellow")
             else:
                 result = color(remote_rev[:7], "green")
         print(format_string.format(host, result))
+
+
+########################################################################################
+
+
+@subcommand(parser=lambda parser: parser.add_argument("host"))
+def update(args):
+    result = run(
+        [
+            "nix",
+            "eval",
+            "--raw",
+            f".#nixosConfigurations.{args.host}.config.system.build.toplevel",
+        ]
+    )
+    run_on(args.host, ["nix-store", "--realise", result], capture=False)
+    run_on(
+        args.host,
+        ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
+        capture=False,
+    )
+    run_on(
+        args.host,
+        ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
+        capture=False,
+    )
 
 
 ########################################################################################
@@ -59,15 +87,19 @@ def color(text, color_name):
     return f"\033[{value}m{text}\033[0m"
 
 
-def run(*args):
-    stdout = subprocess.run(args, stdout=subprocess.PIPE, check=True).stdout
-    return stdout.decode("utf-8").strip()
+def run(args, capture=True):
+    result = subprocess.run(
+        args, stdout=(subprocess.PIPE if capture else None), check=True
+    )
+    if capture:
+        return result.stdout.decode("utf-8").strip()
+    return None
 
 
-def run_on(host, *args):
+def run_on(host, args, capture=True):
     if host == socket.gethostname().split(".")[0]:
-        return run(*args)
-    return run("ssh", host, *args)
+        return run(args)
+    return run(["ssh", host, *args], capture=capture)
 
 
 @functools.cache
@@ -75,7 +107,7 @@ def nix_eval(installable, apply=None):
     args = ["nix", "eval", installable, "--json"]
     if apply:
         args.extend(["--apply", apply])
-    return json.loads(run(*args))
+    return json.loads(run(args))
 
 
 def all_hosts():
