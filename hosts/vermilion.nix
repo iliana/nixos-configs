@@ -1,4 +1,8 @@
-{pkgs-unstable, ...}: {
+{
+  pkgs,
+  pkgs-unstable,
+  ...
+}: {
   imports = [
     ./hardware/virt-v1.nix
   ];
@@ -6,6 +10,7 @@
   iliana.persist.home = true;
 
   users.users.iliana.packages = [
+    pkgs.python3
     pkgs-unstable.actionlint
     pkgs-unstable.nodePackages.bash-language-server
     pkgs-unstable.nodePackages.yaml-language-server
