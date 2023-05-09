@@ -3,6 +3,8 @@
     ./hardware/virt-v1.nix
   ];
 
+  iliana.persist.home = true;
+
   users.users.iliana.packages = [
     pkgs-unstable.actionlint
     pkgs-unstable.nodePackages.bash-language-server
