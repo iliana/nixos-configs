@@ -59,7 +59,7 @@ def update(args):
             "nix",
             "eval",
             "--raw",
-            f".#nixosConfigurations.{args.host}.config.system.build.toplevel.drvPath",
+            f".#nixosConfigurations.{args.host}.config.system.build.toplevel",
         ]
     )
     run_on(args.host, ["nix-store", "--realise", result], capture=False)
