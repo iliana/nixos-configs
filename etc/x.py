@@ -2,7 +2,9 @@
 # pylint: disable=missing-function-docstring,missing-module-docstring
 
 import argparse
+import functools
 import json
+import socket
 import subprocess
 
 
@@ -15,7 +17,10 @@ def main():
     status.add_argument("hosts", nargs="*")
 
     args = parser.parse_args()
-    args.func(args)
+    if "func" in args:
+        args.func(args)
+    else:
+        raise Exception("a subcommand is required")
 
 
 def command_status(args):
@@ -23,14 +28,13 @@ def command_status(args):
     hosts = sorted(args.hosts or all_hosts())
     format_string = f"{{:<{max(len(host) for host in hosts) + 2}}}{{}}"
     for host in hosts:
-        remote_rev = run("ssh", host, "cat", "/run/current-system/iliana-rev")
+        remote_rev = run_on(host, "cat", "/run/current-system/iliana-rev")
         if not remote_rev:
             status = color("unknown revision", "red")
         elif local_rev != remote_rev:
             status = color(remote_rev[:7], "red")
         else:
-            booted, current = run(
-                "ssh",
+            booted, current = run_on(
                 host,
                 "readlink",
                 "/run/booted-system/kernel",
@@ -57,6 +61,13 @@ def run(*args):
     return stdout.decode("utf-8").strip()
 
 
+def run_on(host, *args):
+    if host == socket.gethostname().split(".")[0]:
+        return run(*args)
+    return run("ssh", host, *args)
+
+
+@functools.cache
 def nix_eval(installable, apply=None):
     args = ["nix", "eval", installable, "--json"]
     if apply:
