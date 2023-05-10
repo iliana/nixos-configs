@@ -93,7 +93,7 @@ def status(args):
         parser.add_argument("host"),
     )
 )
-def update(args):
+def deploy(args):
     if args.from_substituter:
         result = run(
             [
