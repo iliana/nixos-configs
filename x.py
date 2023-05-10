@@ -87,27 +87,50 @@ def status(args):
 ########################################################################################
 
 
-@subcommand(parser=lambda parser: parser.add_argument("host"))
+@subcommand(
+    parser=lambda parser: (
+        parser.add_argument("--from-substituter"),
+        parser.add_argument("host"),
+    )
+)
 def update(args):
-    result = run(
-        [
-            "nix",
-            "eval",
-            "--raw",
-            f".#nixosConfigurations.{args.host}.config.system.build.toplevel",
-        ]
-    )
-    run_on(args.host, ["nix-store", "--realise", result], capture=False)
-    run_on(
-        args.host,
-        ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
-        capture=False,
-    )
-    run_on(
-        args.host,
-        ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
-        capture=False,
-    )
+    if args.from_substituter:
+        result = run(
+            [
+                "nix",
+                "eval",
+                "--raw",
+                f".#nixosConfigurations.{args.host}.config.system.build.toplevel",
+            ]
+        )
+        run_on(args.host, ["nix-store", "--realise", result], capture=False)
+        run_on(
+            args.host,
+            ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
+            capture=False,
+        )
+        run_on(
+            args.host,
+            ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
+            capture=False,
+        )
+    elif is_local_host(args.host):
+        run(["sudo", "nixos-rebuild", "switch", "--flake", "."], capture=False)
+    else:
+        run(
+            [
+                "nixos-rebuild",
+                "switch",
+                "--build-host",
+                args.host,
+                "--target-host",
+                args.host,
+                "--use-remote-sudo",
+                "--flake",
+                f".#{args.host}",
+            ],
+            capture=False,
+        )
 
 
 ########################################################################################
@@ -122,6 +145,10 @@ def color(text, color_name):
     return f"\033[{value}m{text}\033[0m"
 
 
+def is_local_host(host):
+    return host == socket.gethostname().split(".")[0]
+
+
 def run(args, capture=True):
     result = subprocess.run(
         args, stdout=(subprocess.PIPE if capture else None), check=True
@@ -132,7 +159,7 @@ def run(args, capture=True):
 
 
 def run_on(host, args, capture=True):
-    if host == socket.gethostname().split(".")[0]:
+    if is_local_host(host):
         return run(args)
     return run(["ssh", host, *args], capture=capture)
 
