@@ -19,25 +19,16 @@
   iliana.containerNameservers = ["8.8.8.8" "8.8.4.4" "2001:4860:4860::8888" "2001:4860:4860::8844"];
   iliana.containers = {
     emojos = {
-      cfg = {config, ...}: {
+      cfg = {...}: {
         systemd.services.emojos-dot-in = {
           after = ["network.target"];
           wantedBy = ["multi-user.target"];
-          serviceConfig = {
-            ExecStart = "${myPkgs.emojos-dot-in}/bin/emojos-dot-in";
-            Environment = ["ROCKET_ADDRESS=0.0.0.0"];
-
-            CapabilityBoundingSet = "";
-            DynamicUser = true;
-            MemoryDenyWriteExecute = true;
-            NoNewPrivileges = true;
-            PrivateDevices = true;
-            ProtectHome = true;
-            RestrictAddressFamilies = "AF_INET AF_INET6 AF_UNIX";
-            RestrictNamespaces = true;
-            SystemCallArchitectures = "native";
-            SystemCallFilter = "@system-service";
-          };
+          serviceConfig =
+            config.iliana.systemd.sandboxConfig
+            // {
+              ExecStart = "${myPkgs.emojos-dot-in}/bin/emojos-dot-in";
+              Environment = ["ROCKET_ADDRESS=0.0.0.0"];
+            };
         };
 
         networking.firewall.allowedTCPPorts = [8000];

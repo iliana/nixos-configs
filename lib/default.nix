@@ -11,6 +11,7 @@
     ./dotfiles.nix
     ./pdns.nix
     ./registry.nix
+    ./systemd.nix
     ./tailscale.nix
   ];
 
