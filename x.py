@@ -8,6 +8,7 @@ import os
 import socket
 import subprocess
 
+GIT_FLAKE = f"git+file:{os.path.dirname(__file__)}"
 subcommands = {}
 
 
@@ -33,12 +34,11 @@ def subcommand(*args, **kwargs):
 )
 def diff(args):
     for host in sorted([args.host] if args.host else all_hosts()):
-        git_flake = f"git+file:{os.path.dirname(__file__)}"
         output = f'nixosConfigurations."{host}".config.system.build.toplevel'
-        old_rev = run(["git", "rev-parse", args.old or "HEAD"])
-        old_flake = f"{git_flake}?rev={old_rev}"
-        new_rev = run(["git", "rev-parse", args.new]) if args.new else None
-        new_flake = f"{git_flake}?rev={new_rev}" if new_rev else "."
+        old_rev = rev_parse(args.old or "HEAD")
+        old_flake = f"{GIT_FLAKE}?rev={old_rev}"
+        new_rev = rev_parse(args.new) if args.new else None
+        new_flake = f"{GIT_FLAKE}?rev={new_rev}" if new_rev else "."
         old, new = (
             run(
                 [
@@ -59,7 +59,7 @@ def diff(args):
 
 @subcommand(parser=lambda parser: parser.add_argument("hosts", nargs="*"))
 def status(args):
-    local_rev = run(["git", "rev-parse", "HEAD"])
+    local_rev = rev_parse("HEAD")
     hosts = sorted(args.hosts or all_hosts())
     format_string = f"{{:<{max(len(host) for host in hosts) + 2}}}{{}}"
     for host in hosts:
@@ -96,8 +96,7 @@ def status(args):
 )
 def deploy(args):
     if args.rev:
-        rev = run(["git", "rev-parse", args.rev])
-        flake = f"git+file:{os.path.dirname(__file__)}?rev={rev}"
+        flake = f"{GIT_FLAKE}?rev={rev_parse(args.rev)}"
     else:
         flake = "."
 
@@ -169,6 +168,10 @@ def run_on(host, args, capture=True):
     if is_local_host(host):
         return run(args)
     return run(["ssh", host, *args], capture=capture)
+
+
+def rev_parse(rev):
+    return run(["git", "rev-parse", rev])
 
 
 @functools.cache
