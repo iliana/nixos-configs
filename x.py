@@ -4,6 +4,7 @@
 import argparse
 import functools
 import json
+import os
 import socket
 import subprocess
 
@@ -18,6 +19,39 @@ def subcommand(*args, **kwargs):
     if len(args) == 1 and callable(args[0]):
         return decorator(args[0])
     return decorator
+
+
+########################################################################################
+
+
+@subcommand(
+    parser=lambda parser: (
+        parser.add_argument("--host"),
+        parser.add_argument("old", nargs="?"),
+        parser.add_argument("new", nargs="?"),
+    )
+)
+def diff(args):
+    for host in sorted([args.host] if args.host else all_hosts()):
+        git_flake = f"git+file:{os.path.dirname(__file__)}"
+        output = f'nixosConfigurations."{host}".config.system.build.toplevel'
+        old_rev = run(["git", "rev-parse", args.old or "HEAD"])
+        old_flake = f"{git_flake}?rev={old_rev}"
+        new_rev = run(["git", "rev-parse", args.new]) if args.new else None
+        new_flake = f"{git_flake}?rev={new_rev}" if new_rev else "."
+        old, new = (
+            run(
+                [
+                    "nix",
+                    "build",
+                    "--no-link",
+                    "--print-out-paths",
+                    f"{flake}#{output}",
+                ]
+            )
+            for flake in (old_flake, new_flake)
+        )
+        run(["nix", "run", "nixpkgs#nvd", "--", "diff", old, new], capture=False)
 
 
 ########################################################################################

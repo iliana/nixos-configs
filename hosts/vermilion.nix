@@ -11,6 +11,7 @@
     pkgs.black
     pkgs.git
     pkgs.isort
+    pkgs.nvd
     pkgs.pylint
     pkgs.python3
     pkgs.python3Packages.python-lsp-server
