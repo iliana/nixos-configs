@@ -36,7 +36,7 @@
     };
 
     nitter = {
-      cfg = {config, ...}: {
+      cfg = {...}: {
         services.nitter = {
           package = pkgs-unstable.nitter;
           enable = true;
