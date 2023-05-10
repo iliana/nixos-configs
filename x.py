@@ -89,7 +89,7 @@ def status(args):
 
 @subcommand(
     parser=lambda parser: (
-        parser.add_argument("--from-substituter"),
+        parser.add_argument("--from-substituter", action="store_true"),
         parser.add_argument("host"),
     )
 )
