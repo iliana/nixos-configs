@@ -36,7 +36,7 @@
         pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
       };
       nixosConfigurations.x86_64-linux = {
-        hydrangea = ./hosts/hydrangea.nix;
+        hydrangea = ./hosts/hydrangea;
         megaera = ./hosts/megaera.nix;
         vermilion = ./hosts/vermilion.nix;
       };
