@@ -18,7 +18,7 @@
         (pkgs.writeShellApplication {
           name = "pdns-load";
           runtimeInputs = [pkgs.pdns pkgs.sqlite];
-          text = builtins.readFile ../etc/pdns-load.sh;
+          text = builtins.readFile ./pdns-load.sh;
         })
       ];
       useDefaultShell = true;

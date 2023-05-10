@@ -9,7 +9,7 @@
     ./caddy.nix
     ./containers.nix
     ./dotfiles.nix
-    ./pdns.nix
+    ./pdns
     ./registry.nix
     ./systemd.nix
     ./tailscale.nix
@@ -27,7 +27,7 @@
     users.users.iliana = {
       isNormalUser = true;
       extraGroups = ["wheel"];
-      openssh.authorizedKeys.keyFiles = [../etc/iliana-ssh.pub];
+      openssh.authorizedKeys.keyFiles = [./iliana-ssh.pub];
       packages = [
         pkgs-unstable.helix
         pkgs-unstable.nil
