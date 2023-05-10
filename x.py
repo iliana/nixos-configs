@@ -91,16 +91,23 @@ def status(args):
     parser=lambda parser: (
         parser.add_argument("--from-substituter", action="store_true"),
         parser.add_argument("host"),
+        parser.add_argument("rev", nargs="?"),
     )
 )
 def deploy(args):
+    if args.rev:
+        rev = run(["git", "rev-parse", args.rev])
+        flake = f"git+file:{os.path.dirname(__file__)}?rev={rev}"
+    else:
+        flake = "."
+
     if args.from_substituter:
         result = run(
             [
                 "nix",
                 "eval",
                 "--raw",
-                f".#nixosConfigurations.{args.host}.config.system.build.toplevel",
+                f"{flake}#nixosConfigurations.{args.host}.config.system.build.toplevel",
             ]
         )
         run_on(args.host, ["nix-store", "--realise", result], capture=False)
@@ -115,7 +122,7 @@ def deploy(args):
             capture=False,
         )
     elif is_local_host(args.host):
-        run(["sudo", "nixos-rebuild", "switch", "--flake", "."], capture=False)
+        run(["sudo", "nixos-rebuild", "switch", "--flake", flake], capture=False)
     else:
         run(
             [
@@ -127,7 +134,7 @@ def deploy(args):
                 args.host,
                 "--use-remote-sudo",
                 "--flake",
-                f".#{args.host}",
+                f"{flake}#{args.host}",
             ],
             capture=False,
         )
