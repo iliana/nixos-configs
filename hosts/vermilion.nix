@@ -8,7 +8,10 @@
   ];
 
   users.users.iliana.packages = [
+    pkgs.black
     pkgs.git
+    pkgs.isort
+    pkgs.pylint
     pkgs.python3
     pkgs.python3Packages.python-lsp-server
     pkgs-unstable.actionlint
