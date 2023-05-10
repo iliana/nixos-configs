@@ -46,8 +46,8 @@
       pkgs.tree
     ];
 
-    environment.persistence."/nix/persist" = with config.iliana.persist; {
-      inherit directories files;
+    environment.persistence."/nix/persist" = {
+      inherit (config.iliana.persist) directories files;
       hideMounts = true;
     };
     system.activationScripts.createNixPersist.text = "[ -d /nix/persist ] || mkdir /nix/persist";
@@ -65,17 +65,16 @@
         group = "chrony";
       }
     ];
-    iliana.persist.files = lib.mkMerge [
+    iliana.persist.files =
       [
         "/etc/machine-id"
       ]
-      (lib.mkIf config.services.openssh.enable [
+      ++ lib.lists.optionals config.services.openssh.enable [
         "/etc/ssh/ssh_host_ed25519_key"
         "/etc/ssh/ssh_host_ed25519_key.pub"
         "/etc/ssh/ssh_host_rsa_key"
         "/etc/ssh/ssh_host_rsa_key.pub"
-      ])
-    ];
+      ];
 
     time.timeZone = "Etc/UTC";
     nix.gc = {
