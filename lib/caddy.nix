@@ -67,6 +67,22 @@
         final;
     };
 
+    # Unset the custom Exec* settings that the Caddy NixOS module sets. Instead,
+    # symlink the generated Caddyfile to /etc/caddy/Caddyfile as the upstream
+    # unit expects, and add `X-Reload-Triggers` with the path to the generated
+    # Caddyfile. This avoids restarting the unit unless it meaningfully changes
+    # (i.e. new version of Caddy).
+    systemd.services.caddy.serviceConfig = {
+      ExecReload = lib.mkForce [];
+      ExecStart = lib.mkForce [];
+      ExecStartPre = lib.mkForce [];
+    };
+    environment.etc."caddy/Caddyfile".source = config.services.caddy.configFile;
+    systemd.services.caddy.reloadTriggers = [config.services.caddy.configFile];
+    # To reduce downtime even further, restart instead of stop-then-start. This
+    # can result in undesired behavior if any ExecStop* settings are set.
+    systemd.services.caddy.stopIfChanged = false;
+
     iliana.persist.directories = [
       {
         directory = "/var/lib/caddy";
