@@ -30,9 +30,9 @@ runTest {
     fetch("https://haha.business")
 
     hydrangea.succeed("nc -l 42069 <${httpRes} >/http.req &")
+    fetch("https://hydrangea.ili.fyi/pkgf", f=hydrangea.fail)
     fetch("https://hydrangea.ili.fyi/pkgf", extra="-X POST --data @${pkgfPayload}")
     hydrangea.succeed("grep -q 'content.*received.*pickup' /http.req")
-    fetch("https://hydrangea.ili.fyi/pkgf", f=hydrangea.fail)
 
     hydrangea.wait_for_unit("container@emojos")
     fetch("https://emojos.in")
