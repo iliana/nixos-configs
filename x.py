@@ -5,8 +5,10 @@ import argparse
 import functools
 import json
 import os
+import shutil
 import socket
 import subprocess
+import tempfile
 
 GIT_FLAKE = f"git+file:{os.path.dirname(__file__)}"
 subcommands = {}
@@ -142,6 +144,45 @@ def deploy(args):
 ########################################################################################
 
 
+@subcommand(
+    parser=lambda parser: (
+        parser.add_argument("hosts", nargs="+"),
+        parser.add_argument("output"),
+    )
+)
+def encrypt(args):
+    editor = os.environ["EDITOR"]
+    age = ["age"] if shutil.which("age") else ["nix", "run", "nixpkgs#age", "--"]
+
+    recipients = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDDC/oZFROia+ElMQ0cp3GD2g3/06YoZhA5EsrlKxT2N",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIECO1ghEFVs0WIFJ5mXvMq0GqIaBb4CTbexL5IYLohZ1",
+    ]
+    for host in args.hosts:
+        recipients.extend(
+            key.split(None, 1)[1]
+            for key in run(["ssh-keyscan", host]).splitlines()
+            if "ssh-ed25519" in key
+        )
+    with tempfile.NamedTemporaryFile() as file:
+        run([editor, file.name], capture=False)
+        run(
+            [
+                *age,
+                "--recipients-file",
+                "-",
+                "--armor",
+                "--output",
+                args.output,
+                file.name,
+            ],
+            input="\n".join(recipients),
+        )
+
+
+########################################################################################
+
+
 def color(text, color_name):
     value = {
         "red": 31,
@@ -155,19 +196,24 @@ def is_local_host(host):
     return host == socket.gethostname().split(".")[0]
 
 
-def run(args, capture=True):
+# pylint: disable-next=redefined-builtin
+def run(args, capture=True, input=None):
     result = subprocess.run(
-        args, stdout=(subprocess.PIPE if capture else None), check=True
+        args,
+        input=input,
+        encoding="utf-8",
+        stdout=subprocess.PIPE if capture else None,
+        check=True,
     )
     if capture:
-        return result.stdout.decode("utf-8").strip()
+        return result.stdout.strip()
     return None
 
 
-def run_on(host, args, capture=True):
+def run_on(host, args, **kwargs):
     if is_local_host(host):
-        return run(args)
-    return run(["ssh", host, *args], capture=capture)
+        return run(args, **kwargs)
+    return run(["ssh", host, *args], **kwargs)
 
 
 def rev_parse(rev):

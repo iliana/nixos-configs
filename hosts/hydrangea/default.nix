@@ -4,6 +4,7 @@
 
     ./emojos-dot-in.nix
     ./nitter.nix
+    ./pkgf.nix
   ];
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {

@@ -3,7 +3,6 @@
   fetchFromGitHub,
   openssl,
   pkg-config,
-  ...
 }:
 craneLib.buildPackage {
   pname = "emojos-dot-in";

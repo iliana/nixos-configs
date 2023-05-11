@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  myPkgs,
   ...
 }: {
   options = with lib; {
@@ -33,6 +34,7 @@
 
     services.caddy = {
       enable = true;
+      package = myPkgs.caddy;
       email = "iliana@buttslol.net";
       globalConfig = lib.mkIf config.iliana.test ''
         local_certs
@@ -48,7 +50,16 @@
                 on_demand
               }
 
-              ${config}
+              ${
+                if (builtins.isList config)
+                then ''
+                  route {
+                    ${builtins.concatStringsSep "\n" config}
+                    error 404
+                  }
+                ''
+                else config
+              }
             '';
           })
           config.iliana.caddy.virtualHosts;

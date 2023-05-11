@@ -1,5 +1,7 @@
 {
   inputs = {
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
     dotfiles.url = "github:iliana/dotfiles?dir=.config/dotfiles&submodule=1";
@@ -11,6 +13,7 @@
   };
 
   outputs = {
+    agenix,
     crane,
     impermanence,
     nixpkgs,
@@ -24,10 +27,12 @@
       packages = system: callPackage: let
         craneLib = crane.lib.${system};
       in {
+        caddy = callPackage ./packages/caddy.nix {};
         emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib;};
       };
 
       nixosImports = [
+        agenix.nixosModules.age
         impermanence.nixosModules.impermanence
         ./lib
       ];

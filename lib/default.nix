@@ -99,6 +99,10 @@
       "3.nixos.pool.ntp.org"
     ];
 
+    # tailscale generates PKCS#8-encoded ed25519 private keys, which are
+    # supported by age since v1.1.0, and not rage.
+    age.ageBin = "${pkgs-unstable.age}/bin/age";
+
     networking.firewall.logRefusedConnections = false;
     programs.command-not-found.enable = false;
     services.chrony.enable = true;
