@@ -6,7 +6,10 @@
 }: {
   options = with lib; {
     iliana.caddy = {
-      virtualHosts = mkOption {default = {};};
+      virtualHosts = mkOption {
+        default = {};
+        type = with lib.types; attrsOf (either str (listOf str));
+      };
 
       helpers = mkOption {
         readOnly = true;

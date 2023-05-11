@@ -27,6 +27,7 @@ runTest {
         f(cmd.strip(), timeout=15)
 
     hydrangea.wait_for_unit("caddy")
+    fetch("https://hydrangea.ili.fyi/yo")
     fetch("https://haha.business")
 
     hydrangea.succeed("nc -l 42069 <${httpRes} >/http.req &")
