@@ -33,5 +33,7 @@
   iliana.dotfiles = false;
   iliana.tailscale.tags = null;
 
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
   system.stateVersion = "22.11";
 }

@@ -22,8 +22,6 @@
     ...
   } @ inputs:
     wrench.lib.generate {
-      systems = ["x86_64-linux"];
-
       packages = system: callPackage: let
         craneLib = crane.lib.${system};
       in {
