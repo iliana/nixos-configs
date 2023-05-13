@@ -40,6 +40,7 @@
       };
       nixosConfigurations.x86_64-linux = {
         hydrangea = ./hosts/hydrangea;
+        kasou = ./hosts/kasou.nix;
         megaera = ./hosts/megaera.nix;
         vermilion = ./hosts/vermilion.nix;
       };
