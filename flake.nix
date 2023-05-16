@@ -4,7 +4,8 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
-    dotfiles.url = "github:iliana/dotfiles?dir=.config/dotfiles&submodule=1";
+    dotfiles.url = "github:iliana/dotfiles?submodule=1";
+    dotfiles.flake = false;
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";

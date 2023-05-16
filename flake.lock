@@ -68,17 +68,16 @@
       }
     },
     "dotfiles": {
+      "flake": false,
       "locked": {
-        "dir": ".config/dotfiles",
-        "lastModified": 1684112626,
-        "narHash": "sha256-9hUpBaV3axmqVYyBcgX5e6XCVsM1cJNN8Jmh2uWNKPg=",
+        "lastModified": 1684270720,
+        "narHash": "sha256-q8MB7pb4Iop1omPzKTgqa8s/+ERWbmie8Ij8W/FOWhc=",
         "owner": "iliana",
         "repo": "dotfiles",
-        "rev": "efb579e00037547d85d296d5dca54103377ff0b8",
+        "rev": "9dff06857972b0e41d50c891f537f20f0fc45042",
         "type": "github"
       },
       "original": {
-        "dir": ".config/dotfiles",
         "owner": "iliana",
         "repo": "dotfiles",
         "type": "github"

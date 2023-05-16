@@ -8,7 +8,7 @@
   script = lib.getExe (pkgs.writeShellApplication {
     name = "sync-dotfiles";
     text = ''
-      ln -sfn ${inputs.dotfiles.dotfiles} ~/.dotfiles
+      ln -sfn ${inputs.dotfiles} ~/.dotfiles
       cp -rsf --no-preserve=mode,ownership ~/.dotfiles/. ~
       # find broken links to ~/.dotfiles and delete them
       find ~ -lname ~/.dotfiles/'*' -xtype l -delete -print
