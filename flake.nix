@@ -8,6 +8,8 @@
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    tailscale.url = "github:tailscale/tailscale/release-branch/1.40";
+    tailscale.inputs.nixpkgs.follows = "nixpkgs";
     wrench.url = "github:iliana/wrench";
     wrench.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -18,6 +20,7 @@
     impermanence,
     nixpkgs,
     nixpkgs-unstable,
+    tailscale,
     wrench,
     ...
   } @ inputs:
@@ -27,6 +30,7 @@
       in {
         caddy = callPackage ./packages/caddy.nix {};
         emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib;};
+        tailscale = tailscale.packages.${system}.tailscale;
       };
 
       nixosImports = [

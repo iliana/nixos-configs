@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  pkgs-unstable,
+  myPkgs,
   ...
 }: {
   options = {
@@ -15,7 +15,7 @@
   in
     lib.mkIf (!config.iliana.test) {
       services.tailscale.enable = true;
-      services.tailscale.package = pkgs-unstable.tailscale;
+      services.tailscale.package = myPkgs.tailscale;
       iliana.persist.directories = [
         {
           directory = "/var/lib/tailscale";
@@ -40,7 +40,7 @@
             then ""
             else "--advertise-tags=${builtins.concatStringsSep "," cfg.tags}";
         in ''
-          ${pkgs-unstable.tailscale}/bin/tailscale up --ssh ${advertiseTags}
+          ${myPkgs.tailscale}/bin/tailscale up --ssh ${advertiseTags}
         '';
 
         serviceConfig = {
