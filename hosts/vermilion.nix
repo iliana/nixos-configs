@@ -1,4 +1,5 @@
 {
+  myPkgs,
   pkgs,
   pkgs-unstable,
   ...
@@ -8,6 +9,7 @@
   ];
 
   users.users.iliana.packages = [
+    myPkgs.oxide
     pkgs.black
     pkgs.git
     pkgs.isort

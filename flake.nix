@@ -4,15 +4,20 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
-    dotfiles.url = "github:iliana/dotfiles?submodule=1";
-    dotfiles.flake = false;
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     tailscale.url = "github:tailscale/tailscale/release-branch/1.40";
     tailscale.inputs.nixpkgs.follows = "nixpkgs";
     wrench.url = "github:iliana/wrench";
     wrench.inputs.nixpkgs.follows = "nixpkgs";
+
+    dotfiles.url = "github:iliana/dotfiles?submodule=1";
+    dotfiles.flake = false;
+    oxide-cli.url = "github:oxidecomputer/oxide.rs";
+    oxide-cli.flake = false;
   };
 
   outputs = {
@@ -21,6 +26,8 @@
     impermanence,
     nixpkgs,
     nixpkgs-unstable,
+    oxide-cli,
+    rust-overlay,
     tailscale,
     wrench,
     ...
@@ -28,9 +35,11 @@
     wrench.lib.generate {
       packages = system: callPackage: let
         craneLib = crane.lib.${system};
+        rust-bin = rust-overlay.packages.${system};
       in {
         caddy = callPackage ./packages/caddy.nix {};
         emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib;};
+        oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli rust-bin;};
         tailscale = tailscale.packages.${system}.tailscale;
       };
 
