@@ -16,9 +16,11 @@
     pkgs.python3
     pkgs.python3Packages.python-lsp-server
     pkgs-unstable.actionlint
+    pkgs-unstable.nil
     pkgs-unstable.nodePackages.bash-language-server
     pkgs-unstable.nodePackages.yaml-language-server
     pkgs-unstable.rustup
+    pkgs-unstable.shellcheck
   ];
 
   iliana.persist.directories = [

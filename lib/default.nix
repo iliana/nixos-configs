@@ -28,11 +28,7 @@
       isNormalUser = true;
       extraGroups = ["wheel"];
       openssh.authorizedKeys.keyFiles = [./iliana-ssh.pub];
-      packages = [
-        pkgs-unstable.helix
-        pkgs-unstable.nil
-        pkgs-unstable.shellcheck
-      ];
+      packages = [pkgs-unstable.helix];
     };
     security.sudo.wheelNeedsPassword = false;
 
