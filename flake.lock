@@ -223,11 +223,11 @@
     },
     "impermanence": {
       "locked": {
-        "lastModified": 1684144492,
-        "narHash": "sha256-5TBG9kZGdKrZGHdyjLA04ODSzhx1Bx/vwMxfRgWF+JU=",
+        "lastModified": 1684264534,
+        "narHash": "sha256-K0zr+ry3FwIo3rN2U/VWAkCJSgBslBisvfRIPwMbuCQ=",
         "owner": "nix-community",
         "repo": "impermanence",
-        "rev": "ec1a8e70d61261f9ada30f4e450ea7230d9efb62",
+        "rev": "89253fb1518063556edd5e54509c30ac3089d5e6",
         "type": "github"
       },
       "original": {
@@ -271,11 +271,11 @@
     "oxide-cli": {
       "flake": false,
       "locked": {
-        "lastModified": 1684190870,
-        "narHash": "sha256-KecZLI8MHV5o4MF63CKYAd4aAkDf5wPr/JdG0vaPTqw=",
+        "lastModified": 1684283944,
+        "narHash": "sha256-tWgaEE/6tpOfABNOvIqKy6gEqjwjGJrAqjeXWkfwINk=",
         "owner": "oxidecomputer",
         "repo": "oxide.rs",
-        "rev": "4d5d22804a092868f1ac5f73c5259db517b9b89e",
+        "rev": "3e201b1794d2414fffec6446b5167486d3ca0412",
         "type": "github"
       },
       "original": {
@@ -332,11 +332,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1684203630,
-        "narHash": "sha256-ZOWNixdHU4qFZUgYNEULFB3ifctMQO9H4Oo+Zrz+4L8=",
+        "lastModified": 1684290028,
+        "narHash": "sha256-IWWfoF5aU8wzxJ6ixuW+3KRlppYvmhUP5v6owWiXJMQ=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "65c3f2655f52a81e1b3e629d4c07df4873d0f2bb",
+        "rev": "ded1f327ff2bdf0eb4bbb945865441ac636c423e",
         "type": "github"
       },
       "original": {
