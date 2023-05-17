@@ -52,8 +52,7 @@
     iliana.persist.directories = [
       "/var/db/dhcpcd"
       "/var/lib/nixos"
-      "/var/lib/systemd/coredump"
-      "/var/lib/systemd/timers"
+      "/var/lib/systemd"
       "/var/log"
 
       {
