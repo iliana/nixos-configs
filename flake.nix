@@ -16,6 +16,8 @@
 
     dotfiles.url = "github:iliana/dotfiles?submodule=1";
     dotfiles.flake = false;
+    emojos-dot-in.url = "github:iliana/emojos.in";
+    emojos-dot-in.flake = false;
     oxide-cli.url = "github:oxidecomputer/oxide.rs";
     oxide-cli.flake = false;
   };
@@ -23,6 +25,7 @@
   outputs = {
     agenix,
     crane,
+    emojos-dot-in,
     impermanence,
     nixpkgs,
     nixpkgs-unstable,
@@ -38,7 +41,7 @@
         rust-bin = rust-overlay.packages.${system};
       in {
         caddy = callPackage ./packages/caddy.nix {};
-        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib;};
+        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
         oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli rust-bin;};
         tailscale = tailscale.packages.${system}.tailscale;
       };

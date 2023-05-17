@@ -83,6 +83,22 @@
         "type": "github"
       }
     },
+    "emojos-dot-in": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1682789687,
+        "narHash": "sha256-l+17dLSQM9lI1tJqjP5j957hY9oIDyeDBIYk2pbikFM=",
+        "owner": "iliana",
+        "repo": "emojos.in",
+        "rev": "e0152d4bb55ea59e9d58cccfcdcf51a7b9ce4f86",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iliana",
+        "repo": "emojos.in",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -273,6 +289,7 @@
         "agenix": "agenix",
         "crane": "crane",
         "dotfiles": "dotfiles",
+        "emojos-dot-in": "emojos-dot-in",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
