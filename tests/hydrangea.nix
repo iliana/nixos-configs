@@ -41,7 +41,7 @@ runTest {
     fetch("https://hydrangea.ili.fyi/pkgf/test", extra="--json @${pkgfPayload}")
     testremote.succeed("[[ -f /var/log/caddy/access-:80.log ]]")
 
-    hydrangea.wait_for_unit("container@emojos")
+    hydrangea.wait_for_unit("emojos-dot-in")
     fetch("https://emojos.in")
 
     hydrangea.wait_for_unit("container@nitter")
