@@ -1,12 +1,13 @@
 {
   config,
+  lib,
   pkgs-unstable,
   ...
 }: let
   sslCert = "/nix/persist/kasou.crt";
   sslKey = "/nix/persist/kasou.key";
   certScript = ''
-    ${config.services.tailscale.package}/bin/tailscale cert \
+    ${lib.getExe config.services.tailscale.package} cert \
       --cert-file ${sslCert} --key-file ${sslKey} kasou.cat-herring.ts.net
     chown xrdp:xrdp ${sslCert} ${sslKey}
   '';
