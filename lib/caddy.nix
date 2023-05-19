@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  myPkgs,
   ...
 }: {
   options = with lib; {
@@ -13,10 +12,14 @@
 
       helpers = mkOption {
         readOnly = true;
-        default = {
+        default = rec {
           container = name: port: ''
             reverse_proxy ${config.containers.${name}.localAddress}:${toString port}
           '';
+          localhostPath = path: port: ''
+            reverse_proxy ${path} localhost:${toString port}
+          '';
+          localhost = port: localhostPath "*" port;
           serve = path: ''
             root * ${path}
             file_server
@@ -37,7 +40,6 @@
 
     services.caddy = {
       enable = true;
-      package = myPkgs.caddy;
       email = "iliana@buttslol.net";
       globalConfig = lib.mkIf config.iliana.test ''
         local_certs
@@ -46,7 +48,7 @@
       virtualHosts = let
         final =
           builtins.mapAttrs
-          (_: config: {
+          (_: cfg: {
             extraConfig = ''
               encode zstd gzip
               tls {
@@ -54,15 +56,18 @@
               }
 
               ${
-                if (builtins.isList config)
+                if (builtins.isList cfg)
                 then ''
                   route {
-                    ${builtins.concatStringsSep "\n" config}
+                    ${builtins.concatStringsSep "\n" cfg}
                     error 404
                   }
                 ''
-                else config
+                else cfg
               }
+            '';
+            logFormat = lib.mkIf config.iliana.test ''
+              output stderr
             '';
           })
           config.iliana.caddy.virtualHosts;

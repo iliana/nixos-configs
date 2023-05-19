@@ -13,7 +13,7 @@ in {
         after = ["network.target"];
         wantedBy = ["multi-user.target"];
         serviceConfig =
-          config.iliana.systemd.sandboxConfig
+          config.iliana.systemd.sandboxConfig {}
           // {
             ExecStart = "${myPkgs.emojos-dot-in}/bin/emojos-dot-in";
             Environment = ["ROCKET_ADDRESS=0.0.0.0"];

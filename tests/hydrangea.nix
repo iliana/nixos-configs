@@ -5,18 +5,20 @@
   ...
 }:
 runTest {
-  nodes = {inherit hydrangea;};
+  nodes = {
+    inherit hydrangea;
+    testremote = {pkgs, ...}: {
+      services.caddy.enable = true;
+      services.caddy.virtualHosts.":80".extraConfig = ''
+        respond /asdf "thx"
+      '';
+      networking.firewall.allowedTCPPorts = [80];
+    };
+  };
   testScript = let
     pkgfPayload = pkgs.writeText "pkgf-payload.json" (builtins.toJSON {
       text = "You received ... pickup now.";
     });
-    httpRes = pkgs.writeText "http-response" ''
-      HTTP/1.1 200 OK
-      content-type: text/plain
-      content-length: 4
-
-      thx
-    '';
   in ''
     from urllib.parse import urlparse
 
@@ -26,14 +28,18 @@ runTest {
         cmd = f"curl -fks --resolve {parsed.hostname}:{port}:127.0.0.1 {url} {extra}"
         f(cmd.strip(), timeout=15)
 
+    start_all()
+
     hydrangea.wait_for_unit("caddy")
     fetch("https://hydrangea.ili.fyi/yo")
     fetch("https://haha.business")
 
-    hydrangea.succeed("nc -l 42069 <${httpRes} >/http.req &")
-    fetch("https://hydrangea.ili.fyi/pkgf", f=hydrangea.fail)
-    fetch("https://hydrangea.ili.fyi/pkgf", extra="-X POST --data @${pkgfPayload}")
-    hydrangea.succeed("grep -q 'content.*received.*pickup' /http.req")
+    hydrangea.wait_for_unit("pkgf")
+    testremote.wait_for_unit("caddy")
+    testremote.fail("[[ -f /var/log/caddy/access-:80.log ]]")
+    fetch("https://hydrangea.ili.fyi/pkgf/test", f=hydrangea.fail)
+    fetch("https://hydrangea.ili.fyi/pkgf/test", extra="--json @${pkgfPayload}")
+    testremote.succeed("[[ -f /var/log/caddy/access-:80.log ]]")
 
     hydrangea.wait_for_unit("container@emojos")
     fetch("https://emojos.in")

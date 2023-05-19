@@ -53,7 +53,5 @@
       };
 
       networking.timeServers = ["hubble.cat-herring.ts.net"];
-
-      age.identityPaths = lib.mkIf (!config.services.openssh.enable) ["/nix/persist/var/lib/tailscale/ssh/ssh_host_ed25519_key"];
     };
 }

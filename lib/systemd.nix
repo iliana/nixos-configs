@@ -2,9 +2,11 @@
   options = {
     iliana.systemd.sandboxConfig = lib.mkOption {
       readOnly = true;
-      default = {
+      default = {denyTailscale ? true}: {
         CapabilityBoundingSet = "";
         DynamicUser = true;
+        IPAddressAllow = lib.mkIf denyTailscale ["100.100.100.100"];
+        IPAddressDeny = ["link-local" "multicast"] ++ lib.lists.optionals denyTailscale ["100.64.0.0/10"];
         LockPersonality = true;
         MemoryDenyWriteExecute = true;
         NoNewPrivileges = true;

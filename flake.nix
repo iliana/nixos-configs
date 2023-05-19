@@ -1,7 +1,5 @@
 {
   inputs = {
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -23,7 +21,6 @@
   };
 
   outputs = {
-    agenix,
     crane,
     emojos-dot-in,
     impermanence,
@@ -40,14 +37,13 @@
         craneLib = crane.lib.${system};
         rust-bin = rust-overlay.packages.${system};
       in {
-        caddy = callPackage ./packages/caddy.nix {};
         emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
         oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli rust-bin;};
+        pkgf = callPackage ./packages/pkgf {inherit craneLib rust-bin;};
         tailscale = tailscale.packages.${system}.tailscale;
       };
 
       nixosImports = [
-        agenix.nixosModules.age
         impermanence.nixosModules.impermanence
         ./lib
       ];

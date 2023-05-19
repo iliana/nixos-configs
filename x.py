@@ -5,10 +5,8 @@ import argparse
 import functools
 import json
 import os
-import shutil
 import socket
 import subprocess
-import tempfile
 
 GIT_FLAKE = f"git+file:{os.path.dirname(__file__)}"
 subcommands = {}
@@ -138,45 +136,6 @@ def deploy(args):
                 f"{flake}#{args.host}",
             ],
             capture=False,
-        )
-
-
-########################################################################################
-
-
-@subcommand(
-    parser=lambda parser: (
-        parser.add_argument("hosts", nargs="+"),
-        parser.add_argument("output"),
-    )
-)
-def encrypt(args):
-    editor = os.environ["EDITOR"]
-    age = ["age"] if shutil.which("age") else ["nix", "run", "nixpkgs#age", "--"]
-
-    recipients = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDDC/oZFROia+ElMQ0cp3GD2g3/06YoZhA5EsrlKxT2N",
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIECO1ghEFVs0WIFJ5mXvMq0GqIaBb4CTbexL5IYLohZ1",
-    ]
-    for host in args.hosts:
-        recipients.extend(
-            key.split(None, 1)[1]
-            for key in run(["ssh-keyscan", host]).splitlines()
-            if "ssh-ed25519" in key
-        )
-    with tempfile.NamedTemporaryFile() as file:
-        run([editor, file.name], capture=False)
-        run(
-            [
-                *age,
-                "--recipients-file",
-                "-",
-                "--armor",
-                "--output",
-                args.output,
-                file.name,
-            ],
-            input="\n".join(recipients),
         )
 
 
