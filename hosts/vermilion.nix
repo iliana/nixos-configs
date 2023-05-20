@@ -38,6 +38,7 @@
   # Since this is a dev host and ~iliana is persisted, let dotfiles be mutable.
   iliana.dotfiles = false;
   iliana.tailscale.tags = null;
+  iliana.tailscale.acceptRoutes = true;
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
