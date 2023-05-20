@@ -7,6 +7,7 @@ import json
 import os
 import socket
 import subprocess
+import tempfile
 
 GIT_FLAKE = f"git+file:{os.path.dirname(__file__)}"
 subcommands = {}
@@ -136,6 +137,52 @@ def deploy(args):
                 f"{flake}#{args.host}",
             ],
             capture=False,
+        )
+
+
+########################################################################################
+
+
+@subcommand(
+    parser=lambda parser: (
+        parser.add_argument("host"),
+        parser.add_argument("file"),
+    )
+)
+def encrypt(args):
+    if not args.file.endswith(".enc"):
+        raise ValueError("file must end in .enc")
+
+    editor = os.environ["EDITOR"]
+
+    try:
+        with open(args.file, encoding="utf-8") as file:
+            current_encrypted = file.read()
+    except FileNotFoundError:
+        current_encrypted = None
+    with tempfile.NamedTemporaryFile(
+        mode="w+",
+        suffix=os.path.splitext(os.path.basename(args.file))[0],
+        encoding="utf-8",
+    ) as file:
+        if current_encrypted:
+            file.write(
+                run_on(
+                    args.host,
+                    ["sudo", "systemd-creds", "decrypt", "-", "-"],
+                    input=current_encrypted,
+                )
+            )
+            file.seek(0)
+        run([editor, file.name], capture=False)
+        cleartext = file.read()
+    with open(args.file, mode="w", encoding="utf-8") as file:
+        file.write(
+            run_on(
+                args.host,
+                ["sudo", "systemd-creds", "encrypt", "-", "-"],
+                input=cleartext,
+            )
         )
 
 
