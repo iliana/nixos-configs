@@ -1,4 +1,5 @@
 {
+  inputs,
   myPkgs,
   pkgs,
   pkgs-unstable,
@@ -18,6 +19,7 @@
     pkgs.python3
     pkgs.python3Packages.python-lsp-server
     pkgs-unstable.actionlint
+    pkgs-unstable.cachix
     pkgs-unstable.nil
     pkgs-unstable.nodePackages.bash-language-server
     pkgs-unstable.nodePackages.yaml-language-server
