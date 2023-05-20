@@ -1,12 +1,11 @@
 {
-  inputs,
   myPkgs,
   pkgs,
   pkgs-unstable,
   ...
 }: {
   imports = [
-    ./hardware/virt-v1.nix
+    ../hardware/virt-v1.nix
   ];
 
   users.users.iliana.packages = [
@@ -41,6 +40,9 @@
   iliana.tailscale.acceptRoutes = true;
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
+  iliana.backup.enable = true;
+  iliana.backup.creds = ./backup;
 
   system.stateVersion = "22.11";
 }

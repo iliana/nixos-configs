@@ -27,6 +27,7 @@
     fsType = "vfat";
     options = ["defaults"];
   };
+  iliana.backup.dirs = ["/" "/nix/persist"];
 
   boot.loader.grub = {
     efiInstallAsRemovable = true;

@@ -6,6 +6,7 @@
   ...
 }: {
   imports = [
+    ./backup.nix
     ./caddy.nix
     ./containers.nix
     ./dotfiles.nix

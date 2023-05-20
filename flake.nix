@@ -55,7 +55,7 @@
         hydrangea = ./hosts/hydrangea;
         kasou = ./hosts/kasou.nix;
         megaera = ./hosts/megaera.nix;
-        vermilion = ./hosts/vermilion.nix;
+        vermilion = ./hosts/vermilion;
       };
 
       testModule = import ./lib/test.nix;
