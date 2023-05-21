@@ -39,7 +39,7 @@
         craneLib = crane.lib.${system};
         rust-bin = rust-overlay.packages.${system};
       in {
-        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
+        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in rust-bin;};
         nix-eval-jobs = nixpkgs.legacyPackages.${system}.nix-eval-jobs;
         oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli rust-bin;};
         pkgf = callPackage ./packages/pkgf {inherit craneLib rust-bin;};
