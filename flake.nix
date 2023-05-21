@@ -75,7 +75,7 @@
     generated
     // {
       hydraJobs = {
-        inherit (generated) packages checks;
+        inherit (generated) packages;
         nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) generated.nixosConfigurations;
       };
     };
