@@ -2,6 +2,7 @@
   inputs = {
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
+    flake-utils.url = "github:numtide/flake-utils";
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -9,8 +10,6 @@
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     tailscale.url = "github:tailscale/tailscale/release-branch/1.40";
     tailscale.inputs.nixpkgs.follows = "nixpkgs";
-    wrench.url = "github:iliana/wrench";
-    wrench.inputs.nixpkgs.follows = "nixpkgs";
 
     dotfiles.url = "github:iliana/dotfiles?submodule=1";
     dotfiles.flake = false;
@@ -23,26 +22,28 @@
   outputs = {
     crane,
     emojos-dot-in,
+    flake-utils,
     impermanence,
     nixpkgs,
     nixpkgs-unstable,
     oxide-cli,
     rust-overlay,
     tailscale,
-    wrench,
     ...
-  } @ inputs: let
-    generated = wrench.lib.generate {
+  } @ inputs:
+    import ./generate.nix {
+      inherit flake-utils nixpkgs;
+
       systems = ["x86_64-linux"];
       overlays = [rust-overlay.overlays.default];
 
-      packages = system: callPackage: let
-        craneLib = crane.lib.${system};
+      packages = system: pkgs: let
+        craneLib = (crane.mkLib pkgs).overrideToolchain pkgs.rust-bin.stable."1.69.0".minimal;
       in {
-        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
+        emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
         nix-eval-jobs = nixpkgs.legacyPackages.${system}.nix-eval-jobs;
-        oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
-        pkgf = callPackage ./packages/pkgf {inherit craneLib;};
+        oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
+        pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};
         tailscale = tailscale.packages.${system}.tailscale;
       };
 
@@ -69,14 +70,6 @@
 
       eachSystem = system: {
         formatter = nixpkgs.legacyPackages.${system}.alejandra;
-      };
-    };
-  in
-    generated
-    // {
-      hydraJobs = {
-        inherit (generated) packages;
-        nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) generated.nixosConfigurations;
       };
     };
 }

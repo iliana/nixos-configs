@@ -124,21 +124,6 @@
       }
     },
     "flake-utils_3": {
-      "locked": {
-        "lastModified": 1667395993,
-        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flake-utils_4": {
       "inputs": {
         "systems": "systems_3"
       },
@@ -148,6 +133,21 @@
         "owner": "numtide",
         "repo": "flake-utils",
         "rev": "cfacdce06f30d2b68473a46042957675eebb3401",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_4": {
+      "locked": {
+        "lastModified": 1667395993,
+        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
         "type": "github"
       },
       "original": {
@@ -224,13 +224,13 @@
         "crane": "crane",
         "dotfiles": "dotfiles",
         "emojos-dot-in": "emojos-dot-in",
+        "flake-utils": "flake-utils_2",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "oxide-cli": "oxide-cli",
         "rust-overlay": "rust-overlay_2",
-        "tailscale": "tailscale",
-        "wrench": "wrench"
+        "tailscale": "tailscale"
       }
     },
     "rust-overlay": {
@@ -260,7 +260,7 @@
     },
     "rust-overlay_2": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils_3",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -327,7 +327,7 @@
     "tailscale": {
       "inputs": {
         "flake-compat": "flake-compat_2",
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_4",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -344,27 +344,6 @@
         "owner": "tailscale",
         "ref": "release-branch/1.40",
         "repo": "tailscale",
-        "type": "github"
-      }
-    },
-    "wrench": {
-      "inputs": {
-        "flake-utils": "flake-utils_4",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1684704278,
-        "narHash": "sha256-TtsF6V9xuYAAcIg44g8U4q4/+cmJU/Z4qt2gaK3hcFQ=",
-        "owner": "iliana",
-        "repo": "wrench",
-        "rev": "c2c86bf178ce4ce04851220f50e198846027808b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "iliana",
-        "repo": "wrench",
         "type": "github"
       }
     }
