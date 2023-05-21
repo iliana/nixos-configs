@@ -4,7 +4,6 @@
   oxide-cli,
   pkg-config,
   rust-bin,
-  stdenv,
 }: let
   commonArgs = {
     pname = "oxide";
