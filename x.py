@@ -193,31 +193,30 @@ def encrypt(args):
 # pylint: disable-next=invalid-name
 def ci(_args):
     with tempfile.TemporaryDirectory() as tempdir:
-        drvs = filter(
-            lambda drv: drv["isCached"] is False,
-            (
-                json.loads(line)
-                for line in run(
-                    [
-                        "nix",
-                        "run",
-                        ".#nix-eval-jobs",
-                        "--",
-                        "--gc-roots-dir",
-                        tempdir,
-                        "--flake",
-                        ".#hydraJobs",
-                        "--force-recurse",
-                        "--check-cache-status",
-                        "--workers",
-                        "2",
-                        "--max-memory-size",
-                        "2048",
-                    ]
-                ).splitlines()
-            ),
+        jobs = run(
+            [
+                "nix",
+                "run",
+                ".#nix-eval-jobs",
+                "--",
+                "--gc-roots-dir",
+                tempdir,
+                "--flake",
+                ".#hydraJobs",
+                "--force-recurse",
+                "--check-cache-status",
+                "--workers",
+                "2",
+                "--max-memory-size",
+                "2048",
+            ]
         )
-    run(["nix", "build", "--no-link", *(drv["drvPath"] for drv in drvs)])
+    drvs = []
+    for job in jobs.splitlines():
+        job = json.loads(job)
+        if not job["isCached"]:
+            drvs.append(job["drvPath"])
+    run(["nix-store", "--realise", *drvs], capture=False)
 
 
 ########################################################################################
