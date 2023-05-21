@@ -23,8 +23,4 @@
     flakes = [];
     version = 2;
   });
-
-  system.systemBuilderCommands = lib.mkIf (!config.iliana.test) ''
-    awk NF <<<"${inputs.self.rev or ""}" >$out/iliana-rev
-  '';
 }
