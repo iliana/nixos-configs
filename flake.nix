@@ -31,13 +31,16 @@
     tailscale,
     wrench,
     ...
-  } @ inputs:
-    wrench.lib.generate {
+  } @ inputs: let
+    generated = wrench.lib.generate {
+      systems = ["x86_64-linux"];
+
       packages = system: callPackage: let
         craneLib = crane.lib.${system};
         rust-bin = rust-overlay.packages.${system};
       in {
         emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
+        nix-eval-jobs = nixpkgs.legacyPackages.${system}.nix-eval-jobs;
         oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli rust-bin;};
         pkgf = callPackage ./packages/pkgf {inherit craneLib rust-bin;};
         tailscale = tailscale.packages.${system}.tailscale;
@@ -66,6 +69,14 @@
 
       eachSystem = system: {
         formatter = nixpkgs.legacyPackages.${system}.alejandra;
+      };
+    };
+  in
+    generated
+    // {
+      hydraJobs = {
+        inherit (generated) packages checks;
+        nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) generated.nixosConfigurations;
       };
     };
 }

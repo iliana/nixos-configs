@@ -189,6 +189,40 @@ def encrypt(args):
 ########################################################################################
 
 
+@subcommand
+# pylint: disable-next=invalid-name
+def ci(_args):
+    with tempfile.TemporaryDirectory() as tempdir:
+        drvs = filter(
+            lambda drv: drv["isCached"] is False,
+            (
+                json.loads(line)
+                for line in run(
+                    [
+                        "nix",
+                        "run",
+                        ".#nix-eval-jobs",
+                        "--",
+                        "--gc-roots-dir",
+                        tempdir,
+                        "--flake",
+                        ".#hydraJobs",
+                        "--force-recurse",
+                        "--check-cache-status",
+                        "--workers",
+                        "2",
+                        "--max-memory-size",
+                        "2048",
+                    ]
+                ).splitlines()
+            ),
+        )
+    run(["nix", "build", "--no-link", *(drv["drvPath"] for drv in drvs)])
+
+
+########################################################################################
+
+
 def color(text, color_name):
     value = {
         "red": 31,
