@@ -13,7 +13,7 @@
     doCheck = false;
 
     buildInputs = [pkg-config openssl];
-    nativeBuildInputs = [rust-bin.rust_1_69_0];
+    nativeBuildInputs = [rust-bin.stable."1.69.0".minimal];
   };
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in

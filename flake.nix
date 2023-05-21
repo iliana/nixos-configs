@@ -34,15 +34,15 @@
   } @ inputs: let
     generated = wrench.lib.generate {
       systems = ["x86_64-linux"];
+      overlays = [rust-overlay.overlays.default];
 
       packages = system: callPackage: let
         craneLib = crane.lib.${system};
-        rust-bin = rust-overlay.packages.${system};
       in {
-        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in rust-bin;};
+        emojos-dot-in = callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
         nix-eval-jobs = nixpkgs.legacyPackages.${system}.nix-eval-jobs;
-        oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli rust-bin;};
-        pkgf = callPackage ./packages/pkgf {inherit craneLib rust-bin;};
+        oxide = callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
+        pkgf = callPackage ./packages/pkgf {inherit craneLib;};
         tailscale = tailscale.packages.${system}.tailscale;
       };
 

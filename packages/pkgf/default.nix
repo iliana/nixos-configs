@@ -9,5 +9,5 @@ craneLib.buildPackage {
   version = "0.1.0";
   src = ./.;
   buildInputs = [pkg-config openssl];
-  nativeBuildInputs = [rust-bin.rust_1_69_0];
+  nativeBuildInputs = [rust-bin.stable."1.69.0".minimal];
 }

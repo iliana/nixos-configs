@@ -11,5 +11,5 @@ craneLib.buildPackage {
   src = emojos-dot-in;
 
   buildInputs = [pkg-config openssl];
-  nativeBuildInputs = [rust-bin.rust_1_69_0];
+  nativeBuildInputs = [rust-bin.stable."1.69.0".minimal];
 }
