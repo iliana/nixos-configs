@@ -41,9 +41,11 @@
         craneLib = (crane.mkLib pkgs).overrideToolchain pkgs.rust-bin.stable."1.69.0".minimal;
       in {
         emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
-        nix-eval-jobs = nixpkgs.legacyPackages.${system}.nix-eval-jobs;
+        nix-eval-jobs = pkgs.nix-eval-jobs;
+        nvd = pkgs.nvd;
         oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
         pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};
+        restic = pkgs.restic;
         tailscale = tailscale.packages.${system}.tailscale;
       };
 

@@ -5,7 +5,9 @@ import argparse
 import functools
 import json
 import os
+import secrets
 import socket
+import string
 import subprocess
 import tempfile
 
@@ -39,7 +41,7 @@ def diff(args):
         flake_attr = f"nixosConfigurations.{host}"
         old = realise(flake_attr, args.old or "HEAD")
         new = realise(flake_attr, args.new)
-        run(["nix", "run", "nixpkgs#nvd", "--", "diff", old, new], capture=False)
+        run(["nix", "run", ".#nvd", "--", "diff", old, new], capture=False)
 
 
 ########################################################################################
@@ -193,6 +195,66 @@ def ci(_args):
 ########################################################################################
 
 
+@subcommand(
+    parser=lambda parser: (
+        parser.add_argument("host"),
+        parser.add_argument("creds_dir"),
+    )
+)
+def backup_setup(args):
+    data = {
+        "password": "".join(
+            secrets.choice(string.ascii_letters + string.digits + string.punctuation)
+            for i in range(69)
+        ),
+        "repo": input("repository: "),
+        "s3": (
+            "[default]\n"
+            f"aws_access_key_id = {input('S3 access key: ')}\n"
+            f"aws_secret_access_key = {input('S3 secret: ')}\n"
+        ),
+    }
+    for name, value in data.items():
+        path = os.path.join(args.creds_dir, f"{name}.enc")
+        with open(path, mode="w", encoding="utf-8") as file:
+            file.write(
+                run_on(
+                    args.host,
+                    ["sudo", "systemd-creds", "encrypt", "-", "-"],
+                    input=value,
+                )
+            )
+
+    with tempfile.TemporaryDirectory(dir="/dev/shm") as tempdir:
+        restic = ["nix", "run", ".#restic", "--", "-r", data["repo"]]
+        env = os.environ | {
+            "AWS_SHARED_CREDENTIALS_FILE": os.path.join(tempdir, "s3"),
+        }
+        new_password_file = os.path.join(tempdir, "password")
+        with open(env["AWS_SHARED_CREDENTIALS_FILE"], "w", encoding="utf-8") as file:
+            file.write(data["s3"])
+        with open(new_password_file, "w", encoding="utf-8") as file:
+            file.write(data["password"])
+
+        run([*restic, "init"], capture=False, env=env)
+        run(
+            [
+                *restic,
+                "key",
+                "add",
+                "--new-password-file",
+                new_password_file,
+                "--host",
+                args.host,
+            ],
+            capture=False,
+            env=env,
+        )
+
+
+########################################################################################
+
+
 def color(text, color_name):
     value = {
         "red": 31,
@@ -207,13 +269,14 @@ def is_local_host(host):
 
 
 # pylint: disable-next=redefined-builtin
-def run(args, capture=True, check=True, input=None):
+def run(args, capture=True, check=True, env=None, input=None):
     result = subprocess.run(
         args,
-        input=input,
-        encoding="utf-8",
-        stdout=subprocess.PIPE if capture else None,
         check=check,
+        encoding="utf-8",
+        env=env,
+        input=input,
+        stdout=subprocess.PIPE if capture else None,
     )
     if capture:
         return result.stdout.strip()
@@ -231,7 +294,7 @@ def rev_parse(rev):
 
 
 def is_tree_clean():
-    return run(["git", "diff", "--shortstat"]) == ""
+    return run(["git", "status", "--porcelain=v1"]) == ""
 
 
 def fetch_notes():
@@ -362,7 +425,7 @@ def main():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
     for name, kwargs in subcommands.items():
-        subparser = subparsers.add_parser(name)
+        subparser = subparsers.add_parser(name.replace("_", "-"))
         subparser.set_defaults(func=kwargs["func"])
         if "parser" in kwargs:
             kwargs["parser"](subparser)

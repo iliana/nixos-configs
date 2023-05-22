@@ -19,5 +19,8 @@
   iliana.containerNameservers = ["8.8.8.8" "8.8.4.4" "2001:4860:4860::8888" "2001:4860:4860::8844"];
   networking.firewall.allowedTCPPorts = [80 443];
 
+  iliana.backup.enable = true;
+  iliana.backup.creds = ./backup;
+
   system.stateVersion = "22.11";
 }
