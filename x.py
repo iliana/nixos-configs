@@ -192,6 +192,8 @@ def encrypt(args):
 @subcommand
 # pylint: disable-next=invalid-name
 def ci(_args):
+    fetch_notes()
+
     with tempfile.TemporaryDirectory() as tempdir:
         jobs = run(
             [
@@ -211,12 +213,23 @@ def ci(_args):
                 "2048",
             ]
         )
+
+    built_outputs = {}
+    cached_outputs = {}
     drvs = []
+
     for job in jobs.splitlines():
         job = json.loads(job)
-        if not job["isCached"]:
+        if job["isCached"]:
+            if output := job["outputs"].get("out"):
+                cached_outputs[job["attr"]] = output
+        else:
+            if output := job["outputs"].get("out"):
+                built_outputs[job["attr"]] = output
             drvs.append(job["drvPath"])
+    note_outputs(cached_outputs)
     run(["nix-store", "--realise", *drvs], capture=False)
+    note_outputs(built_outputs)
 
 
 ########################################################################################
@@ -236,13 +249,13 @@ def is_local_host(host):
 
 
 # pylint: disable-next=redefined-builtin
-def run(args, capture=True, input=None):
+def run(args, capture=True, check=True, input=None):
     result = subprocess.run(
         args,
         input=input,
         encoding="utf-8",
         stdout=subprocess.PIPE if capture else None,
-        check=True,
+        check=check,
     )
     if capture:
         return result.stdout.strip()
@@ -257,6 +270,46 @@ def run_on(host, args, **kwargs):
 
 def rev_parse(rev):
     return run(["git", "rev-parse", rev])
+
+
+def fetch_notes():
+    run(["git", "fetch", "origin", "refs/notes/nix-store"], capture=False)
+    run(
+        [
+            "git",
+            "notes",
+            "--ref",
+            "nix-store",
+            "merge",
+            "-s",
+            "cat_sort_uniq",
+            "FETCH_HEAD",
+        ],
+        capture=False,
+    )
+
+
+def note_outputs(outputs):
+    notes = dict(
+        line.strip().rsplit(None, 1)
+        for line in run(
+            ["git", "notes", "--ref", "nix-store", "show"], check=False
+        ).splitlines()
+        if line
+    )
+    original = dict(notes)
+    notes.update(outputs)
+    if notes != original:
+        run(
+            ["git", "notes", "--ref", "nix-store", "add", "-f", "-F", "-"],
+            capture=False,
+            input=(
+                "\n".join(
+                    f"{attr} {output}" for (attr, output) in sorted(notes.items())
+                )
+                + "\n"
+            ),
+        )
 
 
 @functools.cache
