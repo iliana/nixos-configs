@@ -97,48 +97,51 @@ def status(args):
     )
 )
 def deploy(args):
-    if args.rev:
-        flake = f"{GIT_FLAKE}?rev={rev_parse(args.rev)}"
-    else:
-        flake = "."
+    fetch_notes()
+    flake_attr = f"nixosConfigurations.{args.host}"
 
-    if args.from_substituter:
-        result = run(
+    # First, see if we have a note for our current commit.
+    notes = read_notes(rev_parse(args.rev))
+    result = notes.get(flake_attr)
+    # If we do, try to fetch it from a substituter.
+    if result:
+        try:
+            run_on(args.host, ["nix-store", "--realise", result], capture=False)
+        except subprocess.CalledProcessError:
+            result = None
+
+    # If we didn't find a note, or if we couldn't realise the noted path, we
+    # need to evaluate the configuration and build it on the host.
+    if not result:
+        if args.rev:
+            flake = f"{GIT_FLAKE}?rev={rev_parse(args.rev)}"
+        else:
+            flake = "."
+        drv = run(
             [
                 "nix",
                 "eval",
                 "--raw",
-                f"{flake}#nixosConfigurations.{args.host}.config.system.build.toplevel",
+                f"{flake}#{flake_attr}.config.system.build.toplevel.drvPath",
             ]
         )
-        run_on(args.host, ["nix-store", "--realise", result], capture=False)
-        run_on(
-            args.host,
-            ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
-            capture=False,
-        )
-        run_on(
-            args.host,
-            ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
-            capture=False,
-        )
-    elif is_local_host(args.host):
-        run(["sudo", "nixos-rebuild", "switch", "--flake", flake], capture=False)
-    else:
         run(
-            [
-                "nixos-rebuild",
-                "switch",
-                "--build-host",
-                args.host,
-                "--target-host",
-                args.host,
-                "--use-remote-sudo",
-                "--flake",
-                f"{flake}#{args.host}",
-            ],
+            ["nix", "copy", "--derivation", "--to", f"ssh://{args.host}", drv],
             capture=False,
         )
+        result = run_on(args.host, ["nix-store", "--realise", drv])
+
+    # Switch!
+    run_on(
+        args.host,
+        ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
+        capture=False,
+    )
+    run_on(
+        args.host,
+        ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
+        capture=False,
+    )
 
 
 ########################################################################################
@@ -273,6 +276,10 @@ def rev_parse(rev):
     return run(["git", "rev-parse", rev])
 
 
+def is_tree_clean():
+    return run(["git", "diff", "--shortstat"]) == ""
+
+
 def fetch_notes():
     run(["git", "fetch", "origin", "refs/notes/nix-store"], capture=False)
     run(
@@ -290,14 +297,26 @@ def fetch_notes():
     )
 
 
-def note_outputs(outputs):
-    notes = dict(
+def read_notes(rev=None):
+    if not rev:
+        if is_tree_clean():
+            rev = rev_parse("HEAD")
+        else:
+            return {}
+    return dict(
         line.strip().rsplit(None, 1)
         for line in run(
-            ["git", "notes", "--ref", "nix-store", "show"], check=False
+            ["git", "notes", "--ref", "nix-store", "show", rev], check=False
         ).splitlines()
         if line
     )
+
+
+def note_outputs(outputs):
+    if not is_tree_clean():
+        return
+
+    notes = read_notes()
     original = dict(notes)
     notes.update(outputs)
     if notes != original:
