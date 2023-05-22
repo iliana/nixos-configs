@@ -93,11 +93,14 @@ def deploy(args):
         ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
         capture=False,
     )
-    run_on(
-        args.host,
-        ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
-        capture=False,
-    )
+    if is_local_host(args.host):
+        run(["sudo", f"{result}/bin/switch-to-configuration", "switch"], capture=False)
+    else:
+        run_on(
+            args.host,
+            ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
+            capture=False,
+        )
 
 
 ########################################################################################
@@ -401,7 +404,7 @@ def realise(flake_attr, rev, host=None):
             f"{flake}#{flake_attr}.config.system.build.toplevel.drvPath",
         ]
     )
-    if host:
+    if host and not is_local_host(host):
         run(
             ["nix", "copy", "--derivation", "--to", f"ssh://{host}", drv],
             capture=False,
