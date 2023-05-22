@@ -297,7 +297,7 @@ def rev_parse(rev):
 
 
 def is_tree_clean():
-    return run(["git", "status", "--porcelain=v1"]) == ""
+    return run(["git", "status", "--porcelain=v1", "--untracked-files=no"]) == ""
 
 
 def fetch_notes():
