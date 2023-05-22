@@ -1,3 +1,7 @@
+nixosConfigurations.hydrangea /nix/store/h5w0mg8x6ys79qi6ccw918czhvacpy2c-nixos-system-hydrangea-22.11.20230520.7dc71ae
+nixosConfigurations.kasou /nix/store/32r54045f0l535xp7kd8533y1jqxvci7-nixos-system-kasou-22.11.20230520.7dc71ae
+nixosConfigurations.megaera /nix/store/77ii5cpc2ryz5pylhjhrxz7xhgpdaici-nixos-system-megaera-22.11.20230520.7dc71ae
+nixosConfigurations.vermilion /nix/store/8lv37pipnv7493bj2fsyhyi282hprmg9-nixos-system-vermilion-22.11.20230520.7dc71ae
 packages.x86_64-linux.emojos-dot-in /nix/store/ff5a23kk6l781rjw3x34hyj9qn4lxwpz-emojos-dot-in-2.0.0
 packages.x86_64-linux.nix-eval-jobs /nix/store/6m6mn2i8hvnb7f7cvpib2kl0sbz42nai-nix-eval-jobs-2.11.0
 packages.x86_64-linux.nvd /nix/store/pinyv2i9aw7fzks1svgx5midck70852k-nvd-0.2.0
