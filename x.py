@@ -60,16 +60,19 @@ def diff(args):
 
 @subcommand(parser=lambda parser: parser.add_argument("hosts", nargs="*"))
 def status(args):
+    fetch_notes()
     local_rev = rev_parse("HEAD")
     hosts = sorted(args.hosts or all_hosts())
     format_string = f"{{:<{max(len(host) for host in hosts) + 2}}}{{}}"
     for host in hosts:
-        remote_rev = run_on(host, ["cat", "/run/current-system/iliana-rev"])
+        remote_system = run_on(host, ["readlink", "/run/current-system"])
+        remote_rev = commit_for_output(remote_system)
         if not remote_rev:
             result = color("unknown", "red")
         elif local_rev != remote_rev:
             result = color(remote_rev[:7], "red")
         else:
+            result = color(remote_rev[:7], "green")
             booted, current = run_on(
                 host,
                 [
@@ -79,9 +82,7 @@ def status(args):
                 ],
             ).splitlines()
             if booted != current:
-                result = color("needs reboot", "yellow")
-            else:
-                result = color(remote_rev[:7], "green")
+                result += " " + color("(needs reboot)", "yellow")
         print(format_string.format(host, result))
 
 
@@ -310,6 +311,23 @@ def note_outputs(outputs):
                 + "\n"
             ),
         )
+
+
+def commit_for_output(output):
+    commit = run(
+        [
+            "git",
+            "log",
+            "--notes=nix-store",
+            f"--grep={output}",
+            "--fixed-strings",
+            "--max-count=1",
+            "--format=%H",
+        ]
+    )
+    if commit:
+        return commit
+    return None
 
 
 @functools.cache
