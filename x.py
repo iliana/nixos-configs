@@ -34,24 +34,11 @@ def subcommand(*args, **kwargs):
     )
 )
 def diff(args):
+    fetch_notes()
     for host in sorted([args.host] if args.host else all_hosts()):
-        output = f'nixosConfigurations."{host}".config.system.build.toplevel'
-        old_rev = rev_parse(args.old or "HEAD")
-        old_flake = f"{GIT_FLAKE}?rev={old_rev}"
-        new_rev = rev_parse(args.new) if args.new else None
-        new_flake = f"{GIT_FLAKE}?rev={new_rev}" if new_rev else "."
-        old, new = (
-            run(
-                [
-                    "nix",
-                    "build",
-                    "--no-link",
-                    "--print-out-paths",
-                    f"{flake}#{output}",
-                ]
-            )
-            for flake in (old_flake, new_flake)
-        )
+        flake_attr = f"nixosConfigurations.{host}"
+        old = realise(flake_attr, args.old or "HEAD")
+        new = realise(flake_attr, args.new)
         run(["nix", "run", "nixpkgs#nvd", "--", "diff", old, new], capture=False)
 
 
@@ -98,40 +85,7 @@ def status(args):
 )
 def deploy(args):
     fetch_notes()
-    flake_attr = f"nixosConfigurations.{args.host}"
-
-    # First, see if we have a note for our current commit.
-    notes = read_notes(rev_parse(args.rev))
-    result = notes.get(flake_attr)
-    # If we do, try to fetch it from a substituter.
-    if result:
-        try:
-            run_on(args.host, ["nix-store", "--realise", result], capture=False)
-        except subprocess.CalledProcessError:
-            result = None
-
-    # If we didn't find a note, or if we couldn't realise the noted path, we
-    # need to evaluate the configuration and build it on the host.
-    if not result:
-        if args.rev:
-            flake = f"{GIT_FLAKE}?rev={rev_parse(args.rev)}"
-        else:
-            flake = "."
-        drv = run(
-            [
-                "nix",
-                "eval",
-                "--raw",
-                f"{flake}#{flake_attr}.config.system.build.toplevel.drvPath",
-            ]
-        )
-        run(
-            ["nix", "copy", "--derivation", "--to", f"ssh://{args.host}", drv],
-            capture=False,
-        )
-        result = run_on(args.host, ["nix-store", "--realise", drv])
-
-    # Switch!
+    result = realise(f"nixosConfigurations.{args.host}", args.rev, host=args.host)
     run_on(
         args.host,
         ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
@@ -281,7 +235,7 @@ def is_tree_clean():
 
 
 def fetch_notes():
-    run(["git", "fetch", "origin", "refs/notes/nix-store"], capture=False)
+    run(["git", "fetch", "-q", "origin", "refs/notes/nix-store"], capture=False)
     run(
         [
             "git",
@@ -289,6 +243,7 @@ def fetch_notes():
             "--ref",
             "nix-store",
             "merge",
+            "-q",
             "-s",
             "cat_sort_uniq",
             "FETCH_HEAD",
@@ -347,6 +302,48 @@ def commit_for_output(output):
     if commit:
         return commit
     return None
+
+
+def realise(flake_attr, rev, host=None):
+    def do_realise(drv):
+        args = ["nix-store", "--realise", drv]
+        if host:
+            return run_on(host, args)
+        return run(args)
+
+    if rev:
+        rev = rev_parse(rev)
+
+    # First, see if we have a note for our current commit.
+    notes = read_notes(rev)
+    result = notes.get(flake_attr)
+    # If we do, try to fetch it from a substituter.
+    if result:
+        try:
+            return do_realise(result)
+        except subprocess.CalledProcessError:
+            pass
+
+    # If we didn't find a note, or if we couldn't realise the noted path, we
+    # need to evaluate the configuration and build it on the host.
+    if rev:
+        flake = f"{GIT_FLAKE}?rev={rev}"
+    else:
+        flake = "."
+    drv = run(
+        [
+            "nix",
+            "eval",
+            "--raw",
+            f"{flake}#{flake_attr}.config.system.build.toplevel.drvPath",
+        ]
+    )
+    if host:
+        run(
+            ["nix", "copy", "--derivation", "--to", f"ssh://{host}", drv],
+            capture=False,
+        )
+    return do_realise(drv)
 
 
 @functools.cache
