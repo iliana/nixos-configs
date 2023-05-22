@@ -1,3 +1,4 @@
+nixosConfigurations.hydrangea /nix/store/wmz0wrqdiy32b9saz9hx3p706i7a19x4-nixos-system-hydrangea-22.11.20230520.7dc71ae
 nixosConfigurations.kasou /nix/store/7s8nq58g43k7q4fg15y2jr8wja6h243w-nixos-system-kasou-22.11.20230520.7dc71ae
 nixosConfigurations.megaera /nix/store/yk714x2nqgnpmd8d1in2v7j46qr6dwzw-nixos-system-megaera-22.11.20230520.7dc71ae
 nixosConfigurations.vermilion /nix/store/a9lbv6y647w404hi3wlcm3mnk6imph9r-nixos-system-vermilion-22.11.20230520.7dc71ae
