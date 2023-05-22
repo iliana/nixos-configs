@@ -7,19 +7,23 @@
     iliana.caddy = {
       virtualHosts = mkOption {
         default = {};
-        type = with lib.types; attrsOf (either str (listOf str));
+        type = with lib.types; attrsOf lines;
       };
 
       helpers = mkOption {
         readOnly = true;
-        default = rec {
+        default = {
           container = name: port: ''
             reverse_proxy ${config.containers.${name}.localAddress}:${toString port}
           '';
-          localhostPath = path: port: ''
-            reverse_proxy ${path} localhost:${toString port}
+          handle = path: config: ''
+            handle ${path} {
+              ${config}
+            }
           '';
-          localhost = port: localhostPath "*" port;
+          localhost = port: ''
+            reverse_proxy localhost:${toString port}
+          '';
           serve = path: ''
             root * ${path}
             file_server
@@ -37,6 +41,7 @@
 
   config = lib.mkIf (config.iliana.caddy.virtualHosts != {}) {
     networking.firewall.allowedTCPPorts = [80 443];
+    networking.firewall.allowedUDPPorts = [443];
 
     services.caddy = {
       enable = true;
@@ -55,15 +60,12 @@
                 on_demand
               }
 
+              ${cfg}
+
               ${
-                if (builtins.isList cfg)
-                then ''
-                  route {
-                    ${builtins.concatStringsSep "\n" cfg}
-                    error 404
-                  }
-                ''
-                else cfg
+                lib.optionalString
+                (builtins.match "(^|.*[[:space:]])handle .* \\{.*" cfg != null)
+                "handle { respond 404 }"
               }
             '';
             logFormat = lib.mkIf config.iliana.test ''
