@@ -1,0 +1,6 @@
+packages.x86_64-linux.emojos-dot-in /nix/store/ff5a23kk6l781rjw3x34hyj9qn4lxwpz-emojos-dot-in-2.0.0
+packages.x86_64-linux.nix-eval-jobs /nix/store/6m6mn2i8hvnb7f7cvpib2kl0sbz42nai-nix-eval-jobs-2.11.0
+packages.x86_64-linux.nvd /nix/store/pinyv2i9aw7fzks1svgx5midck70852k-nvd-0.2.0
+packages.x86_64-linux.pkgf /nix/store/yx4hf0kjpp8yxvm76z0y97sis9cdsmxy-pkgf-0.1.0
+packages.x86_64-linux.restic /nix/store/xj8ca8kb27vf4rlxidly2xanxlxsb1gq-restic-0.14.0
+packages.x86_64-linux.tailscale /nix/store/02ccl7fxaybikqvw8pmxc2p19c5i0dja-tailscale
