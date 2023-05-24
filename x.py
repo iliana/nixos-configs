@@ -62,16 +62,16 @@ def status(args):
             result = color(remote_rev[:7], "red")
         else:
             result = color(remote_rev[:7], "green")
-            booted, current = run_on(
-                host,
-                [
-                    "readlink",
-                    "/run/booted-system/kernel",
-                    "/run/current-system/kernel",
-                ],
-            ).splitlines()
-            if booted != current:
-                result += " " + color("(needs reboot)", "yellow")
+        booted, current = run_on(
+            host,
+            [
+                "readlink",
+                "/run/booted-system/kernel",
+                "/run/current-system/kernel",
+            ],
+        ).splitlines()
+        if booted != current:
+            result += " " + color("(needs reboot)", "yellow")
         print(format_string.format(host, result))
 
 
