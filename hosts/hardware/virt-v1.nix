@@ -110,7 +110,7 @@
           pkgs.util-linux
         ];
         postVM = ''
-          ${pkgs.zstd}/bin/zstd -T$NIX_BUILD_CORES --rm $out/nixos.img
+          ${pkgs.zstd}/bin/zstd -T$NIX_BUILD_CORES --rm $out/nixos.img -o $out/"${config.networking.hostName}".img.zst
         '';
       }
       ''
