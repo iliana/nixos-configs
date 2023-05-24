@@ -96,6 +96,6 @@ in
     hydraJobs = {
       packages = myPkgs;
       nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) myNixosConfigs;
-      # checks = myChecks;
+      checks = myChecks;
     };
   }
