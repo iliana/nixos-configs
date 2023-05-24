@@ -1,5 +1,6 @@
 nixosConfigurations.hydrangea /nix/store/zic9vhsw5yxr7i2hrzmcn64qbxc76sr6-nixos-system-hydrangea-22.11.20230521.b0671cb
 nixosConfigurations.kasou /nix/store/mq8d5kbgi6jzf48z32f2zih7w491ahjd-nixos-system-kasou-22.11.20230521.b0671cb
+nixosConfigurations.lernie /nix/store/vyz3r4r0lqlsv7x96ddr0dh86wrmdynm-nixos-system-lernie-22.11.20230521.b0671cb
 nixosConfigurations.megaera /nix/store/5k89wp70kbnx3f5vdrx6si8s5xqkmkvn-nixos-system-megaera-22.11.20230521.b0671cb
 nixosConfigurations.vermilion /nix/store/9dbghnwc49sijvf29lrxisw8bk6z8608-nixos-system-vermilion-22.11.20230521.b0671cb
 packages.x86_64-linux.emojos-dot-in /nix/store/ff5a23kk6l781rjw3x34hyj9qn4lxwpz-emojos-dot-in-2.0.0
