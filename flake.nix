@@ -60,6 +60,7 @@
       nixosConfigurations.x86_64-linux = {
         hydrangea = ./hosts/hydrangea;
         kasou = ./hosts/kasou.nix;
+        lernie = ./hosts/lernie.nix;
         megaera = ./hosts/megaera.nix;
         vermilion = ./hosts/vermilion;
       };
