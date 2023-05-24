@@ -8,7 +8,7 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    tailscale.url = "github:tailscale/tailscale/release-branch/1.40";
+    tailscale.url = "github:tailscale/tailscale/release-branch/1.42";
     tailscale.inputs.nixpkgs.follows = "nixpkgs";
 
     dotfiles.url = "github:iliana/dotfiles?submodule=1";
