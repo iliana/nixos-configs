@@ -9,6 +9,13 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: tailscale/github-action@8b804aa882ac3429b804a2a22f9803a2101a0db9
+        env:
+          TS_EXPERIMENT_OAUTH_AUTHKEY: true
+        with:
+          authkey: '${{ secrets.TS_OAUTH_CLIENT_SECRET }}'
+          version: 1.40.1
+          args: --advertise-tags tag:nix-build-ci
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v20
         with:
