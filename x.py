@@ -80,7 +80,7 @@ def status(args):
 
 @subcommand(
     parser=lambda parser: (
-        parser.add_argument("--from-substituter", action="store_true"),
+        parser.add_argument("--boot", action="store_true"),
         parser.add_argument("host"),
         parser.add_argument("rev", nargs="?"),
     )
@@ -93,14 +93,11 @@ def deploy(args):
         ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
         capture=False,
     )
+    cmd = [f"{result}/bin/switch-to-configuration", "boot" if args.boot else "switch"]
     if is_local_host(args.host):
-        run(["sudo", f"{result}/bin/switch-to-configuration", "switch"], capture=False)
+        run(["sudo", *cmd], capture=False)
     else:
-        run_on(
-            args.host,
-            ["nohup", "sudo", f"{result}/bin/switch-to-configuration", "switch"],
-            capture=False,
-        )
+        run_on(args.host, ["nohup", "sudo", *cmd], capture=False)
 
 
 ########################################################################################
