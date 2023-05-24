@@ -206,11 +206,11 @@
     "oxide-cli": {
       "flake": false,
       "locked": {
-        "lastModified": 1684861726,
-        "narHash": "sha256-vt3EH0NSFQgvn8HVFombF4plhD/oMMFb8KVWJeAvxZA=",
+        "lastModified": 1684884472,
+        "narHash": "sha256-3M+I2mmmMDXR9dKpFbtQWVeuPBkku0pmqACKSkQ/mjU=",
         "owner": "oxidecomputer",
         "repo": "oxide.rs",
-        "rev": "abfd9bb92a6f4d455ba7d85965ea25dbfc514a8c",
+        "rev": "b2c39a3d7aa56d50bb5096c5199cf2daa687fbae",
         "type": "github"
       },
       "original": {
