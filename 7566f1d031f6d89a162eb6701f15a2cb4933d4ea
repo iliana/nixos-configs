@@ -1,6 +1,14 @@
+checks.x86_64-linux.hydrangea /nix/store/4qhk9g7z0cj6hsshli8wihlwv71jaksg-vm-test-run-hydrangea
 checks.x86_64-linux.pdns /nix/store/ljskrcsnkz23i44bhq6ziiz4lwgnc0kz-vm-test-run-pdns
+nixosConfigurations.hydrangea /nix/store/pgsnhv5kbs2fnck2q33dd412n1ha24wy-nixos-system-hydrangea-22.11.20230523.a17f99d
+nixosConfigurations.kasou /nix/store/wswpqkbr9vz1nwjsda8gx88isarhi5ry-nixos-system-kasou-22.11.20230523.a17f99d
+nixosConfigurations.lernie /nix/store/5fzbd1yi75jx1zw4x11dv5rfrjhwg7r6-nixos-system-lernie-22.11.20230523.a17f99d
+nixosConfigurations.megaera /nix/store/9xsr3qp8jslc833j71k6sgbc2w3rzrvs-nixos-system-megaera-22.11.20230523.a17f99d
+nixosConfigurations.vermilion /nix/store/12s1hxwjsy738lx70lkkjbkzpilndpja-nixos-system-vermilion-22.11.20230523.a17f99d
+packages.x86_64-linux.emojos-dot-in /nix/store/hs8j50jy670s33awcsk86sqywl6dncsy-emojos-dot-in-2.0.0
 packages.x86_64-linux.nix-eval-jobs /nix/store/q7j1ma88mdn1z5mhd2qzxcfqrrsdhcji-nix-eval-jobs-2.11.0
 packages.x86_64-linux.nvd /nix/store/pinyv2i9aw7fzks1svgx5midck70852k-nvd-0.2.0
 packages.x86_64-linux.oxide /nix/store/ryybdi5pchyp4dlzi8yah8hlz1ydi585-oxide-0.1.0
 packages.x86_64-linux.pkgf /nix/store/1vmly7j4ccypbdnzkl7dkl4mvjq463xn-pkgf-0.1.0
 packages.x86_64-linux.restic /nix/store/xj8ca8kb27vf4rlxidly2xanxlxsb1gq-restic-0.14.0
+packages.x86_64-linux.tailscale /nix/store/jwz3kh81rsxy58702b73lk73lra5x2fv-tailscale
