@@ -1,0 +1,3 @@
+packages.x86_64-linux.nix-eval-jobs /nix/store/q7j1ma88mdn1z5mhd2qzxcfqrrsdhcji-nix-eval-jobs-2.11.0
+packages.x86_64-linux.nvd /nix/store/pinyv2i9aw7fzks1svgx5midck70852k-nvd-0.2.0
+packages.x86_64-linux.restic /nix/store/xj8ca8kb27vf4rlxidly2xanxlxsb1gq-restic-0.14.0
