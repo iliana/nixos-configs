@@ -109,6 +109,9 @@
           pkgs.e2fsprogs
           pkgs.util-linux
         ];
+        postVM = ''
+          ${pkgs.zstd}/bin/zstd -T$NIX_BUILD_CORES --rm $out/nixos.img
+        '';
       }
       ''
         root="$TMPDIR/root"
