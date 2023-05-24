@@ -1,0 +1,6 @@
+checks.x86_64-linux.pdns /nix/store/ljskrcsnkz23i44bhq6ziiz4lwgnc0kz-vm-test-run-pdns
+packages.x86_64-linux.nix-eval-jobs /nix/store/q7j1ma88mdn1z5mhd2qzxcfqrrsdhcji-nix-eval-jobs-2.11.0
+packages.x86_64-linux.nvd /nix/store/pinyv2i9aw7fzks1svgx5midck70852k-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/ryybdi5pchyp4dlzi8yah8hlz1ydi585-oxide-0.1.0
+packages.x86_64-linux.pkgf /nix/store/1vmly7j4ccypbdnzkl7dkl4mvjq463xn-pkgf-0.1.0
+packages.x86_64-linux.restic /nix/store/xj8ca8kb27vf4rlxidly2xanxlxsb1gq-restic-0.14.0
