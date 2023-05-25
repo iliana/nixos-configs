@@ -1,3 +1,10 @@
+checks.x86_64-linux.hydrangea /nix/store/43ayg900psm0fq0xzxwnng2sqhzjqzpd-vm-test-run-hydrangea
+checks.x86_64-linux.pdns /nix/store/l3hr8zsgba8mcp0g1jl7ydn7sdr8jk5d-vm-test-run-pdns
+nixosConfigurations.hydrangea /nix/store/kcrbybv1kpcznm5ixmq60h2ip0644v07-nixos-system-hydrangea-22.11.20230524.99fe1b8
+nixosConfigurations.kasou /nix/store/lzhjm9yw6f24wbdl8q2hv427pppndiv7-nixos-system-kasou-22.11.20230524.99fe1b8
+nixosConfigurations.lernie /nix/store/1nymjfggyhz8gag4vgrkwfcmkllvr4qk-nixos-system-lernie-22.11.20230524.99fe1b8
+nixosConfigurations.megaera /nix/store/3pdwb3nckmq9bp4m30hfnyzirvd9j141-nixos-system-megaera-22.11.20230524.99fe1b8
+nixosConfigurations.vermilion /nix/store/hdydldybw4l4wvzph7qvyvwj5k1af52j-nixos-system-vermilion-22.11.20230524.99fe1b8
 packages.x86_64-linux.emojos-dot-in /nix/store/hs8j50jy670s33awcsk86sqywl6dncsy-emojos-dot-in-2.0.0
 packages.x86_64-linux.nix-eval-jobs /nix/store/q7j1ma88mdn1z5mhd2qzxcfqrrsdhcji-nix-eval-jobs-2.11.0
 packages.x86_64-linux.nvd /nix/store/pinyv2i9aw7fzks1svgx5midck70852k-nvd-0.2.0
