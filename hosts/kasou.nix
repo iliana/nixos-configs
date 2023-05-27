@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  pkgs-unstable,
+  pkgs,
   ...
 }: let
   sslCert = "/nix/persist/kasou.crt";
@@ -52,10 +52,7 @@ in {
   services.xserver.enable = true;
   users.users.iliana.hashedPassword = "$y$j9T$FjAoXxDC8Pxs/69Sl543G1$9L5uiaQnAbcMNQSeyoDjVYbpwgjkYV5QsGCHaQns5KB";
 
-  users.users.iliana.packages = [
-    # XXX picking up 5.x from unstable, switch this to 23.05 once branched
-    pkgs-unstable.gnucash
-  ];
+  users.users.iliana.packages = [pkgs.gnucash];
   fileSystems."/accounting" = {
     fsType = "9p";
     device = "accounting";

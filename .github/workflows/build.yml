@@ -20,7 +20,7 @@ jobs:
       - uses: cachix/install-nix-action@v20
         with:
           # we want to use whatever is in the `nixpkgs` input
-          install_url: https://releases.nixos.org/nix/nix-2.11.1/install
+          install_url: https://releases.nixos.org/nix/nix-2.13.3/install
           extra_nix_config: "builders = ssh://build@lernie x86_64-linux - 2 1 kvm,nixos-test kvm c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUgraW1WRG5MWWxCTUFFQytIUFF5Z1ZTSHNWWFZoOEVobE5pajgwUE56ZVA="
       - uses: cachix/cachix-action@v12
         with:
