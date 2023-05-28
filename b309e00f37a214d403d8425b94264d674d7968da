@@ -1,0 +1,14 @@
+checks.x86_64-linux.hydrangea /nix/store/8cpxparzg0g9782q8qb79ca16pi2n7i3-vm-test-run-hydrangea
+checks.x86_64-linux.pdns /nix/store/cz9z7ys8xj87mbi8vpnljjfny19nr1nq-vm-test-run-pdns
+nixosConfigurations.hydrangea /nix/store/ah96rjl1ba3q1ampl6wzq06qg0fnhbbb-nixos-system-hydrangea-23.05.20230526.551a52b
+nixosConfigurations.kasou /nix/store/sjk769fbvi2666y6yffxnrdc8h1k5b6l-nixos-system-kasou-23.05.20230526.551a52b
+nixosConfigurations.lernie /nix/store/dgl54r141q9bm0gfr1f4324zzkv3a58w-nixos-system-lernie-23.05.20230526.551a52b
+nixosConfigurations.megaera /nix/store/v12fn8b6bn6jl7r8gfnmwcnd08dkc96v-nixos-system-megaera-23.05.20230526.551a52b
+nixosConfigurations.vermilion /nix/store/yv4s7bp29qxgp9yxd12ryifj9b6qghm4-nixos-system-vermilion-23.05.20230526.551a52b
+packages.x86_64-linux.emojos-dot-in /nix/store/jx1mf6j1gqw7y2403f3w617kyywqgwlx-emojos-dot-in-2.0.0
+packages.x86_64-linux.nix-eval-jobs /nix/store/cxrl3vc5kvhp9x7f76bff8dikwrlgj8j-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/mwik3zf36v22cbmsfag4kps20szlipkq-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/j9f31bbkmxca6vagfwn34fr3qrkgkxnw-oxide-0.1.0
+packages.x86_64-linux.pkgf /nix/store/d2avry6i7914yx9zyfz901mhkn465x24-pkgf-0.1.0
+packages.x86_64-linux.restic /nix/store/6wh5sd9700nrvpwjyzfj1gylr5c836r3-restic-0.15.2
+packages.x86_64-linux.tailscale /nix/store/mghlfmkjnz0kkzfybxby1wqfcf7q739m-tailscale
