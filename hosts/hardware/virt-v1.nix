@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   modulesPath,
   pkgs,
   ...
@@ -66,68 +65,14 @@
   services.fstrim.enable = true;
   zramSwap.enable = true;
 
-  system.build.image = let
-    binPath = lib.makeBinPath ([
-        config.system.build.nixos-install
-        pkgs.e2fsprogs
-        pkgs.gptfdisk
-        pkgs.nix
-        pkgs.util-linux
-      ]
-      ++ pkgs.stdenv.initialPath);
-    closureInfo = pkgs.closureInfo {
-      rootPaths = [config.system.build.toplevel];
-    };
-  in
-    pkgs.vmTools.runInLinuxVM (pkgs.runCommand "raw-efi-image"
-      {
-        preVM = ''
-          export PATH=${binPath}
-          chmod 0755 "$TMPDIR"
-
-          root="$TMPDIR/root"
-          mkdir -p "$root" "$out"
-          diskImage="$out/nixos.img"
-          truncate -s 2G "$diskImage"
-
-          export NIX_STATE_DIR=$TMPDIR/state
-          nix-store --load-db <"${closureInfo}/registration"
-          nixos-install --root "$root" --system "${config.system.build.toplevel}" \
-            --no-bootloader --no-root-passwd --no-channel-copy --substituters ""
-          rm -rf "$root/nix/persist"
-
-          sgdisk -n 1:0:+1M -t 1:ef00 -N 2 -p "$diskImage"
-          offsetBytes=$(( $(partx "$diskImage" -n 2 -g -o START) * 512 ))
-          sizeKB=$(( ( $(partx "$diskImage" -n 2 -g -o SECTORS) * 512 ) / 1024))K
-          mkfs.ext4 -d "$root/nix" -L nixos -T default -i 8192 \
-            "$diskImage" -E offset="$offsetBytes" "$sizeKB"
-        '';
-        memSize = 1024;
-        nativeBuildInputs = [
-          config.system.build.nixos-enter
-          pkgs.dosfstools
-          pkgs.e2fsprogs
-          pkgs.util-linux
-        ];
-        postVM = ''
-          ${pkgs.zstd}/bin/zstd -T$NIX_BUILD_CORES --rm $out/nixos.img -o $out/"${config.networking.hostName}".img.zst
-        '';
-      }
-      ''
-        root="$TMPDIR/root"
-
-        mkdir -p "$root"/{etc,efi,nix,var}
-        touch "$root/etc/NIXOS"
-        mkfs.vfat -F 12 -n ESP /dev/vda1
-        mount /dev/vda1 "$root/efi"
-        mount /dev/vda2 "$root/nix"
-
-        # fix permissions
-        nixos-enter --root "$root" -- chown -R root:root /nix/{store,var}
-        # install bootloader
-        NIXOS_INSTALL_BOOTLOADER=1 nixos-enter --root "$root" -- /nix/var/nix/profiles/system/bin/switch-to-configuration boot
-
-        umount /dev/vda{1,2}
-        tune2fs -T now -c 0 -i 0 /dev/vda2
-      '');
+  system.build.image = pkgs.callPackage ./image-builder.nix {
+    inherit config;
+    diskPartitionScript = ''
+      ${pkgs.gptfdisk}/bin/sgdisk -n 1:0:+1M -t 1:ef00 -N 2 -p "$diskImage"
+    '';
+    firmwareMountPoint = "/efi";
+    preMountHook = ''
+      ${pkgs.dosfstools}/bin/mkfs.vfat -F 12 -n ESP /dev/vda1
+    '';
+  };
 }
