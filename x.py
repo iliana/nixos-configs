@@ -17,7 +17,7 @@ subcommands = {}
 
 def subcommand(*args, **kwargs):
     def decorator(func):
-        subcommands[func.__name__] = dict(**kwargs, func=func)
+        subcommands[func.__name__] = {"func": func, **kwargs}
         return func
 
     if len(args) == 1 and callable(args[0]):
@@ -437,7 +437,7 @@ def main():
     if "func" in args:
         args.func(args)
     else:
-        raise Exception("a subcommand is required")
+        raise ValueError("a subcommand is required")
 
 
 if __name__ == "__main__":
