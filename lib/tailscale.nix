@@ -52,6 +52,6 @@
         };
       };
 
-      networking.timeServers = ["hubble.cat-herring.ts.net"];
+      # networking.timeServers = ["hubble.cat-herring.ts.net"];
     };
 }
