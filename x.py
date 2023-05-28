@@ -71,7 +71,11 @@ def status(args):
             ],
         ).splitlines()
         if booted != current:
-            result += " " + color("(needs reboot)", "yellow")
+            vercmp = " => ".join(
+                os.path.basename(os.path.dirname(x)).split("-", maxsplit=1)[1]
+                for x in (booted, current)
+            )
+            result += " " + color(f"(needs reboot, {vercmp})", "yellow")
         print(format_string.format(host, result))
 
 
