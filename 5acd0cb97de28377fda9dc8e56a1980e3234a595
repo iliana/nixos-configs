@@ -1,0 +1,12 @@
+checks.x86_64-linux.pdns /nix/store/b1566ch59vrqbxmp5lpwvqp9iyz3i6gv-vm-test-run-pdns
+nixosConfigurations.kasou /nix/store/ka8mkxyb4w8bi2m9wls6ssq1f82ib8sn-nixos-system-kasou-23.05.20230528.a7adead
+nixosConfigurations.lernie /nix/store/7zpf2fff0br401g0m7a7wn7fwbxx6cmf-nixos-system-lernie-23.05.20230528.a7adead
+nixosConfigurations.megaera /nix/store/rpd0yqaqi13k98j9lpnd3v1x1ig2ci5c-nixos-system-megaera-23.05.20230528.a7adead
+nixosConfigurations.vermilion /nix/store/klxcdx08n8d5c6523zbcrn8xwxdy4jx7-nixos-system-vermilion-23.05.20230528.a7adead
+packages.x86_64-linux.emojos-dot-in /nix/store/jx1mf6j1gqw7y2403f3w617kyywqgwlx-emojos-dot-in-2.0.0
+packages.x86_64-linux.nix-eval-jobs /nix/store/cxrl3vc5kvhp9x7f76bff8dikwrlgj8j-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/mwik3zf36v22cbmsfag4kps20szlipkq-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/j9f31bbkmxca6vagfwn34fr3qrkgkxnw-oxide-0.1.0
+packages.x86_64-linux.pkgf /nix/store/d2avry6i7914yx9zyfz901mhkn465x24-pkgf-0.1.0
+packages.x86_64-linux.restic /nix/store/6wh5sd9700nrvpwjyzfj1gylr5c836r3-restic-0.15.2
+packages.x86_64-linux.tailscale /nix/store/mghlfmkjnz0kkzfybxby1wqfcf7q739m-tailscale
