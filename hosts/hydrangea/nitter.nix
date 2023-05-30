@@ -4,8 +4,8 @@
     # Various instances within North America.
     instances = [
       "https://nitter.1d4.us"
-      "https://nitter.moomoo.me"
       "https://nitter.cutelab.space"
+      "https://nitter.moomoo.me"
       "https://nitter.us.projectsegfau.lt"
     ];
 
