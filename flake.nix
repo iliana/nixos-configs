@@ -58,6 +58,7 @@
         pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
       };
       nixosConfigurations.x86_64-linux = {
+        alecto = ./hosts/alecto.nix;
         hydrangea = ./hosts/hydrangea;
         kasou = ./hosts/kasou.nix;
         lernie = ./hosts/lernie.nix;
