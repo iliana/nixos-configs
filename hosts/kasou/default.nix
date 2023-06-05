@@ -13,7 +13,7 @@
   '';
 in {
   imports = [
-    ./hardware/virt-v1.nix
+    ../hardware/virt-v1.nix
   ];
 
   system.activationScripts.xrdpTsCert = {
@@ -57,6 +57,12 @@ in {
     fsType = "9p";
     device = "accounting";
     options = ["trans=virtio" "version=9p2000.L"];
+  };
+
+  iliana.backup = {
+    enable = true;
+    creds = ./backup;
+    dirs = ["/accounting"];
   };
 
   system.stateVersion = "22.11";
