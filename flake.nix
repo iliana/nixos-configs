@@ -4,7 +4,8 @@
     crane.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     impermanence.url = "github:nix-community/impermanence";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:iliana/nixpkgs/grub-dont-die-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
@@ -34,7 +35,7 @@
     import ./generate.nix {
       inherit flake-utils nixpkgs;
 
-      systems = ["x86_64-linux"];
+      systems = ["aarch64-linux" "x86_64-linux"];
       overlays = [rust-overlay.overlays.default];
 
       packages = system: pkgs: let
@@ -56,6 +57,9 @@
       nixosSpecialArgs = system: {
         inherit inputs;
         pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+      };
+      nixosConfigurations.aarch64-linux = {
+        tisiphone = ./hosts/tisiphone.nix;
       };
       nixosConfigurations.x86_64-linux = {
         alecto = ./hosts/alecto.nix;

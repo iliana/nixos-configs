@@ -7,6 +7,7 @@
 }: {
   imports = [
     ./backup.nix
+    ./builder.nix
     ./caddy.nix
     ./containers.nix
     ./dotfiles.nix

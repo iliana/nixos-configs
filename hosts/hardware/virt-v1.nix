@@ -83,7 +83,10 @@ in {
       fi
     '';
 
-    boot.kernelParams = lib.mkIf cfg.useSerialConsole ["console=ttyS0,115200n8"];
+    boot.kernelParams =
+      if cfg.useSerialConsole
+      then ["console=ttyS0,115200n8"]
+      else ["console=tty1"];
     boot.loader.timeout = 0;
     services.fstrim.enable = true;
     zramSwap.enable = true;

@@ -39,8 +39,6 @@
   iliana.tailscale.tags = null;
   iliana.tailscale.acceptRoutes = true;
 
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
-
   iliana.backup.enable = true;
   iliana.backup.creds = ./backup;
 
