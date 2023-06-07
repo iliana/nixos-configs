@@ -12,6 +12,7 @@
     myPkgs.oxide
     pkgs.black
     pkgs.git
+    pkgs.grab-site
     pkgs.isort
     pkgs.nvd
     pkgs.pylint
