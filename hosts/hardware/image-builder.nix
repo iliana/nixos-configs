@@ -3,6 +3,7 @@
   diskPartitionScript,
   firmwareMountPoint,
   preMountHook ? "",
+  postMountHook ? "",
   closureInfo,
   e2fsprogs,
   lib,
@@ -67,9 +68,9 @@ in
       ${preMountHook}
       mount /dev/vda1 "$root/${firmwareMountPoint}"
       mount /dev/vda2 "$root/nix"
-
       # fix permissions
       nixos-enter --root "$root" -- chown -R root:root /nix/{store,var}
+      ${postMountHook}
       # install bootloader
       NIXOS_INSTALL_BOOTLOADER=1 nixos-enter --root "$root" -- /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 

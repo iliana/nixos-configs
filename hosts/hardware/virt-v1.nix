@@ -45,6 +45,7 @@ in {
     };
     iliana.backup.dirs = ["/" "/nix/persist"];
 
+    boot.loader.efi.efiSysMountPoint = "/efi";
     boot.loader.grub = {
       efiInstallAsRemovable = true;
       efiSupport = true;
@@ -53,19 +54,12 @@ in {
         terminal_input console serial
         terminal_output console serial
       '';
-      # We use mirroredBoots with one boot partition so that we can set `path`.
-      mirroredBoots = [
-        {
-          devices = [
-            (
-              if enableBiosBoot
-              then cfg.biosBootDevice
-              else "nodev"
-            )
-          ];
-          efiSysMountPoint = "/efi";
-          path = "/nix/persist/boot";
-        }
+      devices = [
+        (
+          if enableBiosBoot
+          then cfg.biosBootDevice
+          else "nodev"
+        )
       ];
     };
     iliana.persist.directories = [
@@ -109,6 +103,9 @@ in {
       firmwareMountPoint = "/efi";
       preMountHook = ''
         ${pkgs.dosfstools}/bin/mkfs.vfat -F 12 -n ESP /dev/vda1
+      '';
+      postMountHook = ''
+        mount -o bind "$root"{/nix/persist/boot,/boot}
       '';
     };
   };
