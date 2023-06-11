@@ -44,6 +44,8 @@
           nix-eval-jobs = pkgs.nix-eval-jobs;
           nvd = pkgs.nvd;
           restic = pkgs.restic;
+
+          helix = nixpkgs-unstable.legacyPackages.${system}.helix;
           tailscale = tailscale.packages.${system}.tailscale;
         }
         // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
@@ -58,7 +60,6 @@
       ];
       nixosSpecialArgs = system: {
         inherit inputs;
-        pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
       };
       nixosConfigurations.aarch64-linux = {
         tisiphone = ./hosts/tisiphone.nix;

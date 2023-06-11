@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  pkgs-unstable,
+  myPkgs,
   ...
 }: {
   imports = [
@@ -30,7 +30,7 @@
       isNormalUser = true;
       extraGroups = ["wheel"];
       openssh.authorizedKeys.keyFiles = [./iliana-ssh.pub];
-      packages = [pkgs-unstable.helix];
+      packages = [myPkgs.helix];
     };
     security.sudo.wheelNeedsPassword = false;
 

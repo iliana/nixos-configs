@@ -1,7 +1,6 @@
 {
   myPkgs,
   pkgs,
-  pkgs-unstable,
   ...
 }: {
   imports = [
@@ -10,21 +9,21 @@
 
   users.users.iliana.packages = [
     myPkgs.oxide
+    pkgs.actionlint
     pkgs.black
+    pkgs.cachix
     pkgs.git
     pkgs.grab-site
     pkgs.isort
+    pkgs.nil
+    pkgs.nodePackages.bash-language-server
+    pkgs.nodePackages.yaml-language-server
     pkgs.nvd
     pkgs.pylint
     pkgs.python3
     pkgs.python3Packages.python-lsp-server
-    pkgs-unstable.actionlint
-    pkgs-unstable.cachix
-    pkgs-unstable.nil
-    pkgs-unstable.nodePackages.bash-language-server
-    pkgs-unstable.nodePackages.yaml-language-server
-    pkgs-unstable.rustup
-    pkgs-unstable.shellcheck
+    pkgs.rustup
+    pkgs.shellcheck
   ];
 
   iliana.persist.directories = [
