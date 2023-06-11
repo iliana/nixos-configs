@@ -1,5 +1,7 @@
 # shellcheck shell=bash
 
+set -euxo pipefail
+
 mkdir ~/.ssh
 cp .github/workflows/known_hosts ~/.ssh/known_hosts
 
