@@ -1,0 +1,10 @@
+packages.aarch64-linux.helix /nix/store/dyc16dga5g5yr3hlcrskvkkd9qn9ddj6-helix-23.05
+packages.aarch64-linux.nix-eval-jobs /nix/store/rsqvs4x6xqjbl1bgh707pcgx0j6pagqv-nix-eval-jobs-2.14.0
+packages.aarch64-linux.nvd /nix/store/jz0ki21w7s90x4ibnn25cbgi1k64dhkf-nvd-0.2.0
+packages.aarch64-linux.restic /nix/store/10mqx77q2kyslh2sbif6q54kxs1z2nmq-restic-0.15.2
+packages.aarch64-linux.tailscale /nix/store/pk5y11nbifwr6q19j86y6vd65k9w494v-tailscale
+packages.x86_64-linux.helix /nix/store/j5v41147jqaha4d7lzh0n0h3b4q7gac3-helix-23.05
+packages.x86_64-linux.nix-eval-jobs /nix/store/cxrl3vc5kvhp9x7f76bff8dikwrlgj8j-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/mwik3zf36v22cbmsfag4kps20szlipkq-nvd-0.2.0
+packages.x86_64-linux.restic /nix/store/6wh5sd9700nrvpwjyzfj1gylr5c836r3-restic-0.15.2
+packages.x86_64-linux.tailscale /nix/store/mghlfmkjnz0kkzfybxby1wqfcf7q739m-tailscale
