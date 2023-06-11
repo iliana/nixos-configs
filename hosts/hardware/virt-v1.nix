@@ -68,6 +68,12 @@ in {
         }
       ];
     };
+    iliana.persist.directories = [
+      {
+        directory = "/boot";
+        mode = "0700";
+      }
+    ];
 
     # Adapted from `boot.growPartition`, which only works if the partition you
     # want to grow is `/`.
