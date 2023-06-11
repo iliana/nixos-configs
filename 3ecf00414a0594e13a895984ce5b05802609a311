@@ -1,3 +1,11 @@
+checks.x86_64-linux.hydrangea /nix/store/pfhcdwa5r2rbqfjfjjymxhhaf7k454bn-vm-test-run-hydrangea
+nixosConfigurations.alecto /nix/store/4lymv6li94wmaa32pad9gx1iaav1igin-nixos-system-alecto-23.05.20230611.37f42d0
+nixosConfigurations.hydrangea /nix/store/jkgfsg5gyh7cqfsncn9d1s7iy8isx71n-nixos-system-hydrangea-23.05.20230611.37f42d0
+nixosConfigurations.kasou /nix/store/cv5pj8nd0is2585c5cmy0a86clfjj9hq-nixos-system-kasou-23.05.20230611.37f42d0
+nixosConfigurations.lernie /nix/store/9q3pjwhab9marl5yxxhfrgapi8jf22as-nixos-system-lernie-23.05.20230611.37f42d0
+nixosConfigurations.megaera /nix/store/6lfw3p8mv02hbh144nz3f72062ays4wv-nixos-system-megaera-23.05.20230611.37f42d0
+nixosConfigurations.tisiphone /nix/store/4pbmj543jsdjff3s5mh7z04ylzwhm9sf-nixos-system-tisiphone-23.05.20230611.37f42d0
+nixosConfigurations.vermilion /nix/store/h3fldz1d3i5shxnqbnf2y5vcwgb3d9gm-nixos-system-vermilion-23.05.20230611.37f42d0
 packages.aarch64-linux.helix /nix/store/dyc16dga5g5yr3hlcrskvkkd9qn9ddj6-helix-23.05
 packages.aarch64-linux.nix-eval-jobs /nix/store/rsqvs4x6xqjbl1bgh707pcgx0j6pagqv-nix-eval-jobs-2.14.0
 packages.aarch64-linux.nvd /nix/store/jz0ki21w7s90x4ibnn25cbgi1k64dhkf-nvd-0.2.0
