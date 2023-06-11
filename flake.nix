@@ -5,7 +5,7 @@
     flake-utils.url = "github:numtide/flake-utils";
     impermanence.url = "github:nix-community/impermanence";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-    nixpkgs.url = "github:iliana/nixpkgs/grub-dont-die-23.05";
+    nixpkgs.url = "github:iliana/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";

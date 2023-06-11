@@ -10,11 +10,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1685896619,
-        "narHash": "sha256-6rgKAm8/GaFYOrshu+heVjUCgWTJJpzsm9YyENsYDRo=",
+        "lastModified": 1686186025,
+        "narHash": "sha256-SuQjKsO1G87qM5j8VNtq6kIw4ILYE03Y8yL/FoKwR+4=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "4bdf5595ae15481b4021358dc17d6c0df8eecd7f",
+        "rev": "057d95721ee67d421391dda7031977d247ddec28",
         "type": "github"
       },
       "original": {
@@ -173,27 +173,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1685945696,
-        "narHash": "sha256-2LzIO+CqLs6KIlPp/QyaOafZvulYTMNSh7kuwqQSQWc=",
+        "lastModified": 1686459737,
+        "narHash": "sha256-qfyHFM4kp/Vybvg+IR1VLlae4DV+GteGOVmq8WhdebI=",
         "owner": "iliana",
         "repo": "nixpkgs",
-        "rev": "d7341566844ebf9148e3fb8503e29c4ec6daaed9",
+        "rev": "37f42d028a64669d0843f3f9b61ec63d56bcc6ad",
         "type": "github"
       },
       "original": {
         "owner": "iliana",
-        "ref": "grub-dont-die-23.05",
+        "ref": "nixos-23.05",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1685836261,
-        "narHash": "sha256-rpxEPGeW4JZJcH58SQApJUtJ7w78VPtkF6Cut/Pq6Kg=",
+        "lastModified": 1686412476,
+        "narHash": "sha256-inl9SVk6o5h75XKC79qrDCAobTD1Jxh6kVYTZKHzewA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "dd4982554e18b936790da07c4ea2db7c7600f283",
+        "rev": "21951114383770f96ae528d0ae68824557768e81",
         "type": "github"
       },
       "original": {
@@ -206,11 +206,11 @@
     "oxide-cli": {
       "flake": false,
       "locked": {
-        "lastModified": 1685669424,
-        "narHash": "sha256-4+JAitPJyDcFLWh9hqm0e69pKEJd84r3IHjuIZR4MOk=",
+        "lastModified": 1686158443,
+        "narHash": "sha256-V1xv2EPpJyiwhf8AeMiNYN4+ZiK4/0wklqtVHjWtQWg=",
         "owner": "oxidecomputer",
         "repo": "oxide.rs",
-        "rev": "f72feac2157d7d8feff63911f04fb0d55c7c3c17",
+        "rev": "daee34c6ad731e13efbac9ecdbb62d832dfbdc46",
         "type": "github"
       },
       "original": {
@@ -266,11 +266,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1685846256,
-        "narHash": "sha256-G4aYK4VqlMHImvZ0lUnLHw1A+Cx28T0sBMvAKZBcGpk=",
+        "lastModified": 1686450923,
+        "narHash": "sha256-a7B9VT2NHJWRCerHmZagAXu3z2QHJKhxUhzjh5vAnXU=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "1ef3c6de6127a1cba94cc5492cdde52e33d06ea4",
+        "rev": "4b3cb15179af3b8d640a29fa85cc9f332b4123e6",
         "type": "github"
       },
       "original": {
