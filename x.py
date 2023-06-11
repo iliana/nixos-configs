@@ -156,8 +156,6 @@ def encrypt(args):
 @subcommand
 # pylint: disable-next=invalid-name
 def ci(_args):
-    fetch_notes()
-
     with tempfile.TemporaryDirectory() as tempdir:
         jobs = run(
             [
@@ -177,23 +175,67 @@ def ci(_args):
                 "2048",
             ]
         )
+    jobs = [json.loads(job) for job in jobs.splitlines()]
 
-    built_outputs = {}
-    cached_outputs = {}
-    drvs = []
+    # 1. Note cached jobs
+    note_outputs(
+        {
+            job["attr"]: job["outputs"]["out"]
+            for job in jobs
+            if job["isCached"] and "out" in job["outputs"]
+        }
+    )
 
-    for job in jobs.splitlines():
-        job = json.loads(job)
-        if job["isCached"]:
-            if output := job["outputs"].get("out"):
-                cached_outputs[job["attr"]] = output
-        else:
-            if output := job["outputs"].get("out"):
-                built_outputs[job["attr"]] = output
-            drvs.append(job["drvPath"])
-    note_outputs(cached_outputs)
-    run(["nix-store", "--realise", *drvs], capture=False)
-    note_outputs(built_outputs)
+    def filter_jobs(system):
+        drvs = [
+            job["drvPath"]
+            for job in jobs
+            if job["system"] == system and not job["isCached"]
+        ]
+        outputs = {
+            job["attr"]: job["outputs"]["out"]
+            for job in jobs
+            if job["drvPath"] in drvs and "out" in job["outputs"]
+        }
+        return drvs, outputs
+
+    # 2. Perform x86_64-linux jobs locally
+    drvs, outputs = filter_jobs("x86_64-linux")
+    if drvs:
+        run(["nix-store", "--realise", *drvs], capture=False)
+        note_outputs(outputs)
+
+    # 3. Perform aarch64-linux jobs remotely
+    drvs, outputs = filter_jobs("aarch64-linux")
+    if drvs:
+        run(
+            ["nix", "copy", "--derivation", "--to", "ssh-ng://build@tisiphone", *drvs],
+            capture=False,
+        )
+        run_on("build@tisiphone", ["nix-store", "--realise", *drvs], capture=False)
+
+        # Before running nix3-copy(1), try to substitute as much as possible.
+        # It would be nice if `--substitute-on-destination` worked if the
+        # destination was the local store, but alas.
+        closure = run_on(
+            "build@tisiphone",
+            ["nix-store", "--query", "--requisites", *outputs.values()],
+        ).splitlines()
+        run(["nix-store", "--realise", "--ignore-unknown", *closure], capture=False)
+
+        run(
+            [
+                "nix",
+                "copy",
+                "--no-check-sigs",
+                "--substitute-on-destination",
+                "--from",
+                "ssh-ng://build@tisiphone",
+                *outputs.values(),
+            ],
+            capture=False,
+        )
+        note_outputs(outputs)
 
 
 ########################################################################################
@@ -301,7 +343,8 @@ def is_tree_clean():
     return run(["git", "status", "--porcelain=v1", "--untracked-files=no"]) == ""
 
 
-def fetch_notes():
+@subcommand
+def fetch_notes(_args=None):
     run(["git", "fetch", "-q", "origin", "refs/notes/nix-store"], capture=False)
     run(
         [
