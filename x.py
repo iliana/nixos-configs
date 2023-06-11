@@ -407,7 +407,7 @@ def realise(flake_attr, rev, host=None):
     )
     if host and not is_local_host(host):
         run(
-            ["nix", "copy", "--derivation", "--to", f"ssh://{host}", drv],
+            ["nix", "copy", "--derivation", "--to", f"ssh-ng://{host}", drv],
             capture=False,
         )
     return do_realise(drv)

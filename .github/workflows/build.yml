@@ -21,7 +21,7 @@ jobs:
         with:
           # we want to use whatever is in the `nixpkgs` input
           install_url: https://releases.nixos.org/nix/nix-2.13.3/install
-          extra_nix_config: "builders = ssh://build@lernie x86_64-linux - 2 1 kvm,nixos-test kvm c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUgraW1WRG5MWWxCTUFFQytIUFF5Z1ZTSHNWWFZoOEVobE5pajgwUE56ZVA= ; ssh://build@tisiphone aarch64-linux - 1 1 - - c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUg3QVlVUFA1SkpBb1FiOVRMbjlZbEVMd2FaYTkxbmVaMExmMU9NVnlJRzU="
+          extra_nix_config: "builders = ssh-ng://build@lernie x86_64-linux - 2 1 kvm,nixos-test kvm c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUgraW1WRG5MWWxCTUFFQytIUFF5Z1ZTSHNWWFZoOEVobE5pajgwUE56ZVA= ; ssh-ng://build@tisiphone aarch64-linux - 1 1 - - c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUg3QVlVUFA1SkpBb1FiOVRMbjlZbEVMd2FaYTkxbmVaMExmMU9NVnlJRzU="
       - uses: cachix/cachix-action@v12
         with:
           name: iliana
