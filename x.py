@@ -200,13 +200,13 @@ def ci(_args):
         return drvs, outputs
 
     # 2. Perform x86_64-linux jobs locally
-    drvs, outputs = filter_jobs("x86_64-linux")
+    drvs, x86_outputs = filter_jobs("x86_64-linux")
     if drvs:
         run(["nix-store", "--realise", *drvs], capture=False)
-        note_outputs(outputs)
+        note_outputs(x86_outputs)
 
     # 3. Perform aarch64-linux jobs remotely
-    drvs, outputs = filter_jobs("aarch64-linux")
+    drvs, arm_outputs = filter_jobs("aarch64-linux")
     if drvs:
         run(
             ["nix", "copy", "--derivation", "--to", "ssh-ng://build@tisiphone", *drvs],
@@ -219,7 +219,7 @@ def ci(_args):
         # destination was the local store, but alas.
         closure = run_on(
             "build@tisiphone",
-            ["nix-store", "--query", "--requisites", *outputs.values()],
+            ["nix-store", "--query", "--requisites", *arm_outputs.values()],
         ).splitlines()
         run(["nix-store", "--realise", "--ignore-unknown", *closure], capture=False)
 
@@ -231,11 +231,15 @@ def ci(_args):
                 "--substitute-on-destination",
                 "--from",
                 "ssh-ng://build@tisiphone",
-                *outputs.values(),
+                *arm_outputs.values(),
             ],
             capture=False,
         )
-        note_outputs(outputs)
+        note_outputs(arm_outputs)
+
+    outputs = sorted((*x86_outputs.values(), *arm_outputs.values()))
+    with open(os.environ["GITHUB_OUTPUT"], "w", encoding="utf-8") as file:
+        file.write(f"built={' '.join(outputs)}\n")
 
 
 ########################################################################################

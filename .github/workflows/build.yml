@@ -3,11 +3,15 @@ on:
   merge_group:
   pull_request:
   push:
+env:
+  NIX_VERSION: "2.13.3"
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      built: ${{ steps.build.outputs.built }}
     steps:
       - uses: tailscale/github-action@8b804aa882ac3429b804a2a22f9803a2101a0db9
         env:
@@ -17,14 +21,46 @@ jobs:
           version: 1.40.1
           args: --advertise-tags tag:nix-build-ci
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v20
+      - uses: cachix/install-nix-action@v21
         with:
-          # we want to use whatever is in the `nixpkgs` input
-          install_url: https://releases.nixos.org/nix/nix-2.13.3/install
+          install_url: https://releases.nixos.org/nix/nix-${{ env.NIX_VERSION }}/install
           extra_nix_config: "builders = ssh-ng://build@lernie x86_64-linux - 2 1 kvm,nixos-test kvm c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUgraW1WRG5MWWxCTUFFQytIUFF5Z1ZTSHNWWFZoOEVobE5pajgwUE56ZVA="
       - uses: cachix/cachix-action@v12
         with:
           name: iliana
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Run build
-        run: bash .github/workflows/build.sh
+      - id: build
+        name: Run build
+        run: |
+          mkdir ~/.ssh; cp .github/workflows/known_hosts ~/.ssh/known_hosts
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git fetch origin refs/notes/nix-store:refs/notes/nix-store
+          ./x.py ci
+          # Successful builds that were part of failing jobs will not be listed
+          # in the notes and will not be backed up.
+          ./x.py fetch-notes # to merge in any potential remote changes
+          git push origin refs/notes/nix-store
+
+  # This runs as a separate job so that it occurs after the cachix-action post
+  # run script, which uploads all the newly-built paths to a store, causing
+  # signatures to be generated. This feels somewhat sloppy but, eh.
+  backup:
+    needs: build
+    if: success() && needs.build.outputs.built && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cachix/install-nix-action@v21
+        with:
+          install_url: https://releases.nixos.org/nix/nix-${{ env.NIX_VERSION }}/install
+      - uses: cachix/cachix-action@v12
+        with:
+          name: iliana
+          skipPush: true
+      - name: Run backup
+        run: |
+          nix-store --realise ${{ needs.build.outputs.built }}
+          nix copy --to ${{ secrets.B2_STORE_URL }} ${{ needs.build.outputs.built }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_APP_KEY }}
