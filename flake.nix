@@ -6,8 +6,6 @@
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     tailscale.url = "github:tailscale/tailscale/release-branch/1.42";
     tailscale.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -27,7 +25,6 @@
     nixpkgs,
     nixpkgs-unstable,
     oxide-cli,
-    rust-overlay,
     tailscale,
     ...
   } @ inputs:
@@ -35,10 +32,9 @@
       inherit flake-utils nixpkgs;
 
       systems = ["aarch64-linux" "x86_64-linux"];
-      overlays = [rust-overlay.overlays.default];
 
       packages = system: pkgs: let
-        craneLib = (crane.mkLib pkgs).overrideToolchain pkgs.rust-bin.stable."1.69.0".minimal;
+        craneLib = crane.mkLib pkgs;
       in ({
           nix-eval-jobs = pkgs.nix-eval-jobs;
           nvd = pkgs.nvd;
