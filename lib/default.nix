@@ -46,6 +46,8 @@
     ];
     documentation.doc.enable = false;
     documentation.info.enable = false;
+    documentation.nixos.enable = false;
+    system.disableInstallerTools = true;
 
     environment.persistence."/nix/persist" = {
       inherit (config.iliana.persist) directories files;

@@ -8,6 +8,7 @@
   e2fsprogs,
   lib,
   nix,
+  nixos-install-tools,
   runCommand,
   stdenv,
   util-linux,
@@ -17,9 +18,9 @@
   binPath = lib.makeBinPath (
     stdenv.initialPath
     ++ [
-      config.system.build.nixos-install
       e2fsprogs
       nix
+      nixos-install-tools
       util-linux
     ]
   );
@@ -52,8 +53,8 @@ in
       '';
       memSize = 1024;
       nativeBuildInputs = [
-        config.system.build.nixos-enter
         e2fsprogs
+        nixos-install-tools
         util-linux
       ];
       postVM = ''
