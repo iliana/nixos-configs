@@ -44,6 +44,7 @@
           tailscale = tailscale.packages.${system}.tailscale;
         }
         // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          caddy = pkgs.callPackage ./packages/caddy.nix {};
           emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
           oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
           pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};

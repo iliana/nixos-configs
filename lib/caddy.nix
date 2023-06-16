@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  myPkgs,
   ...
 }: {
   options = with lib; {
@@ -45,6 +46,7 @@
 
     services.caddy = {
       enable = true;
+      package = myPkgs.caddy;
       email = "iliana@buttslol.net";
       globalConfig = lib.mkIf config.iliana.test ''
         local_certs
