@@ -44,6 +44,8 @@
       pkgs.tmux
       pkgs.tree
     ];
+    documentation.doc.enable = false;
+    documentation.info.enable = false;
 
     environment.persistence."/nix/persist" = {
       inherit (config.iliana.persist) directories files;
