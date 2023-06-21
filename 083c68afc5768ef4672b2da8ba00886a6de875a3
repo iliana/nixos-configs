@@ -1,0 +1,9 @@
+packages.aarch64-linux.helix /nix/store/dyc16dga5g5yr3hlcrskvkkd9qn9ddj6-helix-23.05
+packages.aarch64-linux.nix-eval-jobs /nix/store/7nz1v6mgar7sd8kgmr32z6akn06jlikd-nix-eval-jobs-2.14.0
+packages.aarch64-linux.nvd /nix/store/d5x15vmf3p20b91s9k6d5myd1s2nf30h-nvd-0.2.0
+packages.aarch64-linux.restic /nix/store/fhijm0c764aihzg15gcnid99308imd2i-restic-0.15.2
+packages.x86_64-linux.caddy /nix/store/jh0grva3byz21hvswymif12zsx38isid-caddy-2.7.0-beta.1
+packages.x86_64-linux.helix /nix/store/j5v41147jqaha4d7lzh0n0h3b4q7gac3-helix-23.05
+packages.x86_64-linux.nix-eval-jobs /nix/store/3cm73k31cgrhkanmqjj53wf0x46n5y5d-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/bwwgpqv4malb8k70h0qwdfgagdij8p41-nvd-0.2.0
+packages.x86_64-linux.restic /nix/store/sljfy5sa70c1pvw5p9rgm1vlc6x2dp45-restic-0.15.2
