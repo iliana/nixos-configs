@@ -43,5 +43,8 @@ runTest {
 
     hydrangea.wait_for_unit("emojos-dot-in")
     fetch("https://emojos.in")
+
+    hydrangea.wait_for_unit("writefreely")
+    fetch("https://daily.iliana.fyi/login")
   '';
 }
