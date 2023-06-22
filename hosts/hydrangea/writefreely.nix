@@ -92,5 +92,7 @@ in {
       [[ -f ${database} ]] || ${command} db init
       ${command} db migrate
     '';
+    # why why why
+    path = [pkgs.openssl];
   };
 }
