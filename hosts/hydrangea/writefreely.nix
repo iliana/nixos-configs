@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  myPkgs,
   pkgs,
   ...
 }: let
@@ -45,6 +44,7 @@
     app.site_description = "without warranty of any kind, express or implied";
     app.host = "https://${host}";
     app.single_user = true;
+    app.federation = true; # documented as true by default. but it isn't.
     app.public_stats = false;
     app.monetization = false;
   };
