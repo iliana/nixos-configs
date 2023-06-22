@@ -1,3 +1,4 @@
+checks.x86_64-linux.hydrangea /nix/store/hsyyp7xh2zb8j3w6nag9zx8d84sngc9m-vm-test-run-hydrangea
 checks.x86_64-linux.pdns /nix/store/fg4kjgpyrpbaajiv1r7g0ncrpk3ilw31-vm-test-run-pdns
 nixosConfigurations.alecto /nix/store/4pzws8ks61bcac9hidmvacw8k3j15ymc-nixos-system-alecto-23.05.20230620.b6c73c5
 nixosConfigurations.hydrangea /nix/store/y5yni5jl8h100llzcrsfm5wfwl94ksvh-nixos-system-hydrangea-23.05.20230620.b6c73c5
