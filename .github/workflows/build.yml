@@ -12,6 +12,7 @@ jobs:
       contents: write
     outputs:
       built: ${{ steps.build.outputs.built }}
+    concurrency: please form an orderly queue
     steps:
       - uses: tailscale/github-action@8b804aa882ac3429b804a2a22f9803a2101a0db9
         env:
@@ -49,6 +50,7 @@ jobs:
     needs: build
     if: success() && needs.build.outputs.built && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    concurrency: your call will be answered in the order it was received
     steps:
       - uses: cachix/install-nix-action@v21
         with:
