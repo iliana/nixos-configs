@@ -1,5 +1,7 @@
+checks.x86_64-linux.hydrangea /nix/store/wzd0lmzxca9h77wddknpdj1p67i2fwmn-vm-test-run-hydrangea
 checks.x86_64-linux.pdns /nix/store/fg4kjgpyrpbaajiv1r7g0ncrpk3ilw31-vm-test-run-pdns
 nixosConfigurations.alecto /nix/store/4pzws8ks61bcac9hidmvacw8k3j15ymc-nixos-system-alecto-23.05.20230620.b6c73c5
+nixosConfigurations.hydrangea /nix/store/qlrskgplgs56p6pnrkm8c9dpn2ij8dr8-nixos-system-hydrangea-23.05.20230620.b6c73c5
 nixosConfigurations.kasou /nix/store/q5wl1x083i734481mnwlgzxif432a2ya-nixos-system-kasou-23.05.20230620.b6c73c5
 nixosConfigurations.lernie /nix/store/vpqzhx9fp8c2fnizqi7lk760rv3gvww2-nixos-system-lernie-23.05.20230620.b6c73c5
 nixosConfigurations.megaera /nix/store/bnfyvzddrhchyrwl033jrbvni0w8x0z3-nixos-system-megaera-23.05.20230620.b6c73c5
