@@ -10,6 +10,7 @@
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
     "209.251.245.209:80" = serve "/var/www/209.251.245.209";
+    "beefymiracle.org" = "redir https://web.archive.org/web/20230101000000/https://beefymiracle.org{uri}";
     "haha.business" = serve ./haha.business;
     "hydrangea.ili.fyi" = handle "/yo" "respond yo";
     "space.pizza" = serve ./space.pizza;
