@@ -1,4 +1,10 @@
+checks.x86_64-linux.hydrangea /nix/store/g029mhr65bsmdxy3ksnlvrkl91q5hhnb-vm-test-run-hydrangea
+checks.x86_64-linux.pdns /nix/store/c8hf6vzpkin4x7y2m1k4lhcfcx7bks3r-vm-test-run-pdns
+nixosConfigurations.alecto /nix/store/j4l15qfzckg9a35c0xhm7ma0w1mip996-nixos-system-alecto-23.05.20230622.ecb441f
+nixosConfigurations.hydrangea /nix/store/y02s1yh5408xlvhwb2cm5kc5b4k7lir3-nixos-system-hydrangea-23.05.20230622.ecb441f
 nixosConfigurations.kasou /nix/store/b8n7rqbg12rgy6a281lnjqnw3giz6zxh-nixos-system-kasou-23.05.20230622.ecb441f
+nixosConfigurations.lernie /nix/store/dv8nvy152f3ddj33z8lrqvhzxr9v2q68-nixos-system-lernie-23.05.20230622.ecb441f
+nixosConfigurations.megaera /nix/store/lj6z1mfj4aj29h2ypd42rnia5wg4ajfz-nixos-system-megaera-23.05.20230622.ecb441f
 nixosConfigurations.vermilion /nix/store/33csg6f5dxz6iw4mcf4zcga5zdn1ax8k-nixos-system-vermilion-23.05.20230622.ecb441f
 packages.aarch64-linux.helix /nix/store/m92fv3gzn98wakdp7cccsxcm1mkr0m59-helix-23.05
 packages.aarch64-linux.nix-eval-jobs /nix/store/7nz1v6mgar7sd8kgmr32z6akn06jlikd-nix-eval-jobs-2.14.0
