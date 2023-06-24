@@ -12,6 +12,7 @@
     "209.251.245.209:80" = serve "/var/www/209.251.245.209";
     "haha.business" = serve ./haha.business;
     "hydrangea.ili.fyi" = handle "/yo" "respond yo";
+    "space.pizza" = serve ./space.pizza;
   };
 
   iliana.persist.directories =
