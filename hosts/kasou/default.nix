@@ -1,35 +1,11 @@
 {
   config,
-  lib,
   pkgs,
   ...
-}: let
-  sslCert = "/nix/persist/kasou.crt";
-  sslKey = "/nix/persist/kasou.key";
-  certScript = ''
-    ${lib.getExe config.services.tailscale.package} cert \
-      --cert-file ${sslCert} --key-file ${sslKey} kasou.cat-herring.ts.net
-    chown xrdp:xrdp ${sslCert} ${sslKey}
-  '';
-in {
+}: {
   imports = [
     ../hardware/virt-v1.nix
   ];
-
-  system.activationScripts.xrdpTsCert = {
-    deps = ["createNixPersist" "users"];
-    text = certScript;
-  };
-  systemd.timers."xrdp-ts-cert" = {
-    timerConfig.FixedRandomDelay = true;
-    timerConfig.OnCalendar = "daily";
-    timerConfig.RandomizedDelaySec = "6h";
-    wantedBy = ["timers.target"];
-  };
-  systemd.services."xrdp-ts-cert" = {
-    script = certScript;
-    serviceConfig.Type = "oneshot";
-  };
 
   iliana.persist.directories = [
     {
@@ -41,10 +17,15 @@ in {
   ];
   iliana.dotfiles = false;
   services.xrdp = {
-    inherit sslCert sslKey;
     enable = true;
     defaultWindowManager = "xfce4-session";
+    sslCert = config.iliana.tailscale.cert.certPath;
+    sslKey = config.iliana.tailscale.cert.keyPath;
   };
+  iliana.tailscale.cert.enable = true;
+  iliana.tailscale.cert.users = ["xrdp"];
+  systemd.services.xrdp.after = ["ts-cert.service"];
+  systemd.services.xrdp.requires = ["ts-cert.service"];
   services.xserver.desktopManager.xfce = {
     enable = true;
     enableScreensaver = false;

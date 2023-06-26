@@ -2,6 +2,7 @@
   config,
   lib,
   myPkgs,
+  pkgs,
   ...
 }: {
   options = {
@@ -10,6 +11,21 @@
     };
     iliana.tailscale.tags = lib.mkOption {
       default = ["tag:server"];
+    };
+    iliana.tailscale.cert = {
+      enable = lib.mkOption {default = false;};
+      users = lib.mkOption {
+        default = [];
+        type = with lib.types; listOf string;
+      };
+      certPath = lib.mkOption {
+        default = "/run/ts-cert/cert.pem";
+        readOnly = true;
+      };
+      keyPath = lib.mkOption {
+        default = "/run/ts-cert/key.pem";
+        readOnly = true;
+      };
     };
   };
 
@@ -49,6 +65,37 @@
           RemainAfterExit = true;
           StandardOutput = "journal+console";
           StandardError = "inherit";
+        };
+      };
+
+      systemd.services.ts-cert = lib.mkIf (cfg.cert.enable) {
+        after = ["tailscale.service" "network-online.target" "tailscale-up.service"];
+        wants = ["tailscale.service" "network-online.target" "tailscale-up.service"];
+        wantedBy = ["multi-user.target"];
+
+        path = [config.services.tailscale.package pkgs.acl pkgs.jq];
+        script = ''
+          set -euo pipefail
+          domain=$(tailscale status --json | jq -r .CertDomains[])
+          tailscale cert --cert-file ${cfg.cert.certPath} --key-file ${cfg.cert.keyPath} "$domain"
+          setfacl --remove-all --modify ${
+            lib.escapeShellArg (builtins.concatStringsSep "," (builtins.map (user: "u:${user}:r") cfg.cert.users))
+          } ${cfg.cert.keyPath}
+        '';
+
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          RuntimeDirectoryPreserve = true;
+          RuntimeDirectory = "ts-cert";
+        };
+      };
+      systemd.timers.ts-cert = lib.mkIf (cfg.cert.enable) {
+        wantedBy = ["timers.target"];
+        timerConfig = {
+          FixedRandomDelay = true;
+          OnCalendar = "daily";
+          RandomizedDelaySec = "6h";
         };
       };
 
