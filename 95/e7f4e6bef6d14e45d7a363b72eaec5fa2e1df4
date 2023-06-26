@@ -5,6 +5,7 @@ nixosConfigurations.hydrangea /nix/store/2cn676ddlyc2dp7gc09lzny9grlhl1bs-nixos-
 nixosConfigurations.kasou /nix/store/fcd6v1a1r4nxmg3xpak6qj8qzw9mc7ca-nixos-system-kasou-23.05.20230625.35130d4
 nixosConfigurations.lernie /nix/store/ikdawhk8xy7k7949hk754lm9fkby6cj6-nixos-system-lernie-23.05.20230625.35130d4
 nixosConfigurations.megaera /nix/store/2b8j068pz1nq9c95n2rwhfg7pz839dfk-nixos-system-megaera-23.05.20230625.35130d4
+nixosConfigurations.tisiphone /nix/store/kycwzpfiqw6lz93i9qy7j9j8qjmb321h-nixos-system-tisiphone-23.05.20230625.35130d4
 nixosConfigurations.vermilion /nix/store/236488m4n82zgvz5nna0k7gms2mm17jc-nixos-system-vermilion-23.05.20230625.35130d4
 packages.aarch64-linux.helix /nix/store/m92fv3gzn98wakdp7cccsxcm1mkr0m59-helix-23.05
 packages.aarch64-linux.nix-eval-jobs /nix/store/7nz1v6mgar7sd8kgmr32z6akn06jlikd-nix-eval-jobs-2.14.0
