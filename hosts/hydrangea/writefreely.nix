@@ -71,18 +71,16 @@ in {
     after = ["network.target"];
     wantedBy = ["multi-user.target"];
     serviceConfig =
-      config.iliana.systemd.sandboxConfig {}
+      config.iliana.systemd.sandboxConfig {
+        user = "writefreely";
+      }
       // {
         ExecStart = "${command} serve";
+        ReadWritePaths = stateDir;
 
         # TODO: Keeping the default from `iliana.systemd.sandboxConfig` results
         # in an early segfault. Need to determine which system call it needs.
         SystemCallFilter = [];
-
-        DynamicUser = false;
-        User = "writefreely";
-        Group = "writefreely";
-        ReadWritePaths = stateDir;
       };
     # `keys generate` is idempotent; it looks like `db init` is currently
     # idempotent, and will not blow away any data, but this is probably not good
