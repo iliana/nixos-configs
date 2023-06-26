@@ -48,6 +48,7 @@
           emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
           oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
           pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};
+          pounce = pkgs.callPackage ./packages/pounce.nix {};
         });
 
       nixosImports = [
@@ -61,7 +62,7 @@
         tisiphone = ./hosts/tisiphone.nix;
       };
       nixosConfigurations.x86_64-linux = {
-        alecto = ./hosts/alecto.nix;
+        alecto = ./hosts/alecto;
         hydrangea = ./hosts/hydrangea;
         kasou = ./hosts/kasou;
         lernie = ./hosts/lernie.nix;

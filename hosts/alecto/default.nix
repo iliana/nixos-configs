@@ -1,6 +1,7 @@
 {...}: {
   imports = [
-    ./hardware/virt-v1.nix
+    ../hardware/virt-v1.nix
+    ./irc.nix
   ];
 
   iliana.pdns.enable = true;

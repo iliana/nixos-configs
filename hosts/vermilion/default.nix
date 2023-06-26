@@ -19,6 +19,7 @@
     pkgs.nodePackages.bash-language-server
     pkgs.nodePackages.yaml-language-server
     pkgs.nvd
+    pkgs.openssl
     pkgs.pylint
     pkgs.python3
     pkgs.python3Packages.python-lsp-server
