@@ -10,9 +10,16 @@
 
   networks = {
     wobscale = {
+      # wobscale IRC does not yet support SASL EXTERNAL, but authenticates with client certs fine
       client-cert = ./wobscale.pem.enc;
       host = "irc.wobscale.website";
       local-port = 6697;
+    };
+    libera = {
+      client-cert = ./libera.pem.enc;
+      host = "irc.libera.chat";
+      local-port = 6698;
+      sasl-external = true;
     };
   };
   pounceServices =
