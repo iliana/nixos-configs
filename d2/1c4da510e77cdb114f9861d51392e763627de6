@@ -1,5 +1,6 @@
 checks.x86_64-linux.hydrangea /nix/store/hkcypnzpy413iba6p83y05g7dzci3g5r-vm-test-run-hydrangea
 checks.x86_64-linux.pdns /nix/store/av5jz5ns9z8fm6zl9j51abviycwrf718-vm-test-run-pdns
+nixosConfigurations.alecto /nix/store/fiz9agpj1vlqf2xipp8xhv54i9il1dbp-nixos-system-alecto-23.05.20230625.35130d4
 nixosConfigurations.hydrangea /nix/store/69mvnla8jxfazbbkfrx5w4v2529q2yyb-nixos-system-hydrangea-23.05.20230625.35130d4
 nixosConfigurations.kasou /nix/store/hyj732kl0wyb04b36k3n2k8n9q33b2dx-nixos-system-kasou-23.05.20230625.35130d4
 nixosConfigurations.lernie /nix/store/d5sdz2nj4zw1ik1daqn2pbc4rwbi9lvc-nixos-system-lernie-23.05.20230625.35130d4
@@ -14,6 +15,7 @@ packages.aarch64-linux.tailscale /nix/store/wmy1pgi83s0dgnvxfx0d21wkp7yzb6rs-tai
 packages.x86_64-linux.caddy /nix/store/n1dprw33knhx7c8wn1a176s61sydsrfk-caddy-2.7.0-beta.2
 packages.x86_64-linux.emojos-dot-in /nix/store/425ki72p0lsfba3lm968m1hgkzgjaa10-emojos-dot-in-2.0.0
 packages.x86_64-linux.helix /nix/store/mbpsb33mysi4ahn7gxkpfcvknfqyr4pv-helix-23.05
+packages.x86_64-linux.litterbox /nix/store/7q5j1v231b9j7b9wpcp13x41qym76jnz-litterbox-1.9
 packages.x86_64-linux.nix-eval-jobs /nix/store/3cm73k31cgrhkanmqjj53wf0x46n5y5d-nix-eval-jobs-2.14.0
 packages.x86_64-linux.nvd /nix/store/bwwgpqv4malb8k70h0qwdfgagdij8p41-nvd-0.2.0
 packages.x86_64-linux.oxide /nix/store/ahabvyrgzy10x9n2pfx4bh3zramcbcgi-oxide-0.1.0
