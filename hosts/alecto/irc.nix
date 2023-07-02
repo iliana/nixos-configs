@@ -37,6 +37,7 @@ in {
           else "${k} = ${v}")
         attrs))
       + "\n";
+
     pounceServices = lib.mapAttrs' (network: attrs: let
       home = homes.pounce;
       encryptedAttrs = builtins.filter (attr: builtins.hasAttr attr attrs) ["client-cert"];
@@ -73,6 +74,7 @@ in {
           };
       })
     networks;
+
     litterboxServices = lib.mapAttrs' (network: attrs: let
       home = homes.litterbox;
       cfg = {
@@ -86,7 +88,8 @@ in {
     in
       lib.nameValuePair "litterbox-${network}" {
         after = ["pounce-${network}.service" "litterbox-init.service"];
-        requires = ["pounce-${network}.service" "litterbox-init.service"];
+        requires = ["pounce-${network}.service"];
+        wants = ["litterbox-init.service"];
         wantedBy = ["multi-user.target"];
         serviceConfig =
           config.iliana.systemd.sandboxConfig {
@@ -98,14 +101,13 @@ in {
             ReadWritePaths = home;
             Restart = "on-failure";
 
-            # pounce doesn't start listening on the local socket until the
-            # remote IRC server connects, I think. in general we always want
-            # litterbox to be up, so if systemd thinks pounce is up, try
-            # connecting every second.
-            RestartSec = 1;
+            # pounce is unlikely to fill its buffer for this client in 15 seconds.
+            RestartSec = 15;
           };
         unitConfig = {
-          # See `RestartSec` above.
+          # pounce doesn't start listening on the local socket until the remote
+          # IRC server connects, I think. in general we always want litterbox to
+          # be up, so if systemd thinks pounce is up, always try reconnecting.
           StartLimitInterval = 0;
         };
       })
@@ -115,15 +117,15 @@ in {
     // litterboxServices
     // {
       litterbox-init = {
-        script = ''
-          [[ -f ${litterbox} ]] || ${myPkgs.litterbox}/bin/litterbox -i -d ${litterbox}
-        '';
         serviceConfig = {
           Type = "oneshot";
-          RemainAfterExit = true;
+          ExecStart = "${myPkgs.litterbox}/bin/litterbox -i -d ${litterbox}";
           ExecStartPost = "+${pkgs.acl}/bin/setfacl --remove-all --modify u:iliana:r ${litterbox}";
           User = "litterbox";
           Group = "litterbox";
+        };
+        unitConfig = {
+          ConditionPathExists = "!${litterbox}";
         };
       };
     };
