@@ -1,8 +1,11 @@
+checks.x86_64-linux.pdns /nix/store/sxx2ls6b22fp7qsxi2vswcikxlqbgvqf-vm-test-run-pdns
+checks.x86_64-linux.web /nix/store/fj54zk29cc8hxh5dg8vvrkvzkaqiw0qy-vm-test-run-web
 nixosConfigurations.alecto /nix/store/ar33p7x3jqijq2lflili1x4j0bv7hgbj-nixos-system-alecto-23.05.20230630.b72aa95
 nixosConfigurations.hydrangea /nix/store/79mazmd62gy1rqbpbz1bx2bf0446zccf-nixos-system-hydrangea-23.05.20230630.b72aa95
 nixosConfigurations.kasou /nix/store/a5ds4dlrxlgh2yrdaq2kcdw6j7m354xz-nixos-system-kasou-23.05.20230630.b72aa95
 nixosConfigurations.lernie /nix/store/hlvcyzkn1855zcqlr5nrbrksfq1xj9zc-nixos-system-lernie-23.05.20230630.b72aa95
 nixosConfigurations.megaera /nix/store/gg1y6f3k4qhg0hk4hcjmaf9c1zkr0mw1-nixos-system-megaera-23.05.20230630.b72aa95
+nixosConfigurations.skyrabbit /nix/store/bfhp7gra2xcgpzfnwzlpx0c58k8qajbk-nixos-system-skyrabbit-23.05.20230630.b72aa95
 nixosConfigurations.tisiphone /nix/store/0adb48l872xxgh244xmx76jyz10qi2pj-nixos-system-tisiphone-23.05.20230630.b72aa95
 nixosConfigurations.vermilion /nix/store/p4apj675lpn6xhcfjxq3fcmq83y35iir-nixos-system-vermilion-23.05.20230630.b72aa95
 packages.aarch64-linux.helix /nix/store/i24z608ian3v0k8slnpjp45jbsm71vai-helix-23.05
