@@ -68,13 +68,14 @@
         kasou = ./hosts/kasou;
         lernie = ./hosts/lernie.nix;
         megaera = ./hosts/megaera.nix;
+        skyrabbit = ./hosts/skyrabbit;
         vermilion = ./hosts/vermilion;
       };
 
       testModule = import ./lib/test.nix;
       checks.x86_64-linux = {
-        hydrangea = ./tests/hydrangea.nix;
         pdns = ./tests/pdns.nix;
+        web = ./tests/web.nix;
       };
 
       eachSystem = system: {

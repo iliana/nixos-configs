@@ -1,12 +1,13 @@
 {
   hydrangea,
+  skyrabbit,
   pkgs,
   runTest,
   ...
 }:
 runTest {
   nodes = {
-    inherit hydrangea;
+    inherit hydrangea skyrabbit;
     testremote = {pkgs, ...}: {
       services.caddy.enable = true;
       services.caddy.virtualHosts.":80".extraConfig = ''
@@ -46,5 +47,9 @@ runTest {
 
     hydrangea.wait_for_unit("writefreely")
     fetch("https://daily.iliana.fyi/login")
+
+    skyrabbit.wait_for_unit("caddy")
+    skyrabbit.wait_for_unit("phpfpm-mediawiki")
+    fetch("https://skyrabbit.7x6.net/index.php?title=Main_Page", f=skyrabbit.wait_until_succeeds)
   '';
 }
