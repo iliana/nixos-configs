@@ -16,7 +16,7 @@
     };
     libera = {
       client-cert = ./libera.pem.enc;
-      host = "irc.libera.chat";
+      host = "irc.us.libera.chat";
       join = ./join-libera.conf.enc;
       local-port = 6698;
       sasl-external = true;
