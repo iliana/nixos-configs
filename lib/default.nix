@@ -10,6 +10,7 @@
     ./builder.nix
     ./caddy.nix
     ./containers.nix
+    ./creds.nix
     ./dotfiles.nix
     ./pdns
     ./registry.nix

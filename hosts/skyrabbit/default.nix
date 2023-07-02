@@ -20,6 +20,9 @@ in {
     # `$wgSitename` in `extraConfig`.
     name = "seana";
 
+    # It would be nice if mediawiki.nix supported passwordFile being not a path.
+    passwordFile = "/run/credentials/mediawiki-init.service/password";
+
     passwordSender = "nobody@example.org"; # email is disabled
     extraConfig = ''
       $wgDefaultSkin = 'DarkVector';
@@ -40,12 +43,9 @@ in {
     };
   };
 
-  # It would be nice if mediawiki.nix supported passwordFile being not a path.
-  # Alas. A less-fragile workaround would be `BindPaths=`.
-  services.mediawiki.passwordFile = "/run/credentials/mediawiki-init.service/password";
-  systemd.services.mediawiki-init.serviceConfig = {
-    SetCredential = lib.mkIf config.iliana.test "password:correct horse battery staple";
-    LoadCredentialEncrypted = lib.mkIf (!config.iliana.test) "password:${./mw-default-password.txt.enc}";
+  iliana.creds.mediawiki-init.password = {
+    encrypted = ./mw-default-password.txt.enc;
+    testValue = "correct horse battery staple";
   };
 
   services.mysql.settings.mysqld = {
