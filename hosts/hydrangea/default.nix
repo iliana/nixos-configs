@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ../hardware/virt-v1.nix
 
@@ -27,12 +31,12 @@
 
   iliana.containerNameservers = ["8.8.8.8" "8.8.4.4" "2001:4860:4860::8888" "2001:4860:4860::8844"];
   networking.dhcpcd.IPv6rs = true;
-  networking.interfaces.ens2.ipv6.addresses = [
-    {
+  networking.interfaces.ens2 = lib.mkIf (!config.iliana.test) {
+    ipv6.addresses = {
       address = "2620:fc:c000::209";
       prefixLength = 64;
-    }
-  ];
+    };
+  };
 
   iliana.backup.enable = true;
   iliana.backup.creds = ./backup;
