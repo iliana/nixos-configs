@@ -24,6 +24,7 @@
   };
   users = ["pounce" "litterbox"];
   homes = lib.genAttrs users (name: "/var/lib/${name}");
+  litterbox = "${homes.litterbox}/litterbox.sqlite";
 in {
   systemd.services = let
     toINI = attrs:
@@ -75,8 +76,7 @@ in {
     litterboxServices = lib.mapAttrs' (network: attrs: let
       home = homes.litterbox;
       cfg = {
-        inherit network;
-        database = "${home}/${network}.db";
+        database = litterbox;
         host = localHost;
         port = attrs.local-port;
         private-query = true;
@@ -85,12 +85,9 @@ in {
       cfgFile = pkgs.writeText "litterbox-${network}.conf" (toINI cfg);
     in
       lib.nameValuePair "litterbox-${network}" {
-        after = ["pounce-${network}.service"];
-        requires = ["pounce-${network}.service"];
+        after = ["pounce-${network}.service" "litterbox-init.service"];
+        requires = ["pounce-${network}.service" "litterbox-init.service"];
         wantedBy = ["multi-user.target"];
-        preStart = ''
-          [[ -f ${cfg.database} ]] || ${myPkgs.litterbox}/bin/litterbox -i -d ${cfg.database}
-        '';
         serviceConfig =
           config.iliana.systemd.sandboxConfig {
             denyTailscale = false;
@@ -98,14 +95,38 @@ in {
           }
           // {
             ExecStart = "${myPkgs.litterbox}/bin/litterbox ${cfgFile}";
-            ExecStartPost = "+${pkgs.acl}/bin/setfacl --remove-all --modify u:iliana:r ${cfg.database}";
             ReadWritePaths = home;
             Restart = "on-failure";
+
+            # pounce doesn't start listening on the local socket until the
+            # remote IRC server connects, I think. in general we always want
+            # litterbox to be up, so if systemd thinks pounce is up, try
+            # connecting every second.
+            RestartSec = 1;
           };
+        unitConfig = {
+          # See `RestartSec` above.
+          StartLimitInterval = 0;
+        };
       })
     networks;
   in
-    pounceServices // litterboxServices;
+    pounceServices
+    // litterboxServices
+    // {
+      litterbox-init = {
+        script = ''
+          [[ -f ${litterbox} ]] || ${myPkgs.litterbox}/bin/litterbox -i -d ${litterbox}
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStartPost = "+${pkgs.acl}/bin/setfacl --remove-all --modify u:iliana:r ${litterbox}";
+          User = "litterbox";
+          Group = "litterbox";
+        };
+      };
+    };
 
   # There's no need to bounce pounce whenever we update `join`, because we can also manually join
   # the new channels on any client. We symlink networks.${network}.join into /etc and use that path
