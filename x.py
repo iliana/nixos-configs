@@ -85,6 +85,7 @@ def status(args):
 @subcommand(
     parser=lambda parser: (
         parser.add_argument("--boot", action="store_true"),
+        parser.add_argument("-n", "--dry-run", action="store_true"),
         parser.add_argument("host"),
         parser.add_argument("rev", nargs="?"),
     )
@@ -92,12 +93,16 @@ def status(args):
 def deploy(args):
     fetch_notes()
     result = realise(f"nixosConfigurations.{args.host}", args.rev, host=args.host)
-    run_on(
-        args.host,
-        ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
-        capture=False,
-    )
-    cmd = [f"{result}/bin/switch-to-configuration", "boot" if args.boot else "switch"]
+    if args.dry_run:
+        action = "dry-activate"
+    else:
+        run_on(
+            args.host,
+            ["sudo", "nix-env", "-p", "/nix/var/nix/profiles/system", "--set", result],
+            capture=False,
+        )
+        action = "boot" if args.boot else "switch"
+    cmd = [f"{result}/bin/switch-to-configuration", action]
     if is_local_host(args.host):
         run(["sudo", *cmd], capture=False)
     else:
