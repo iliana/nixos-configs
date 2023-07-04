@@ -28,6 +28,16 @@
           serve = path: ''
             root * ${path}
             file_server
+            ${
+              # If we're serving from the Nix store, unset Last-Modified.
+              # https://github.com/caddyserver/caddy/pull/5550#issuecomment-1558047346
+              #
+              # Also keep an eye on caddyserver/caddy#5556, and maybe a future
+              # NixOS Caddy module that will bring Etags back?
+              lib.optionalString (lib.hasPrefix builtins.storeDir path) ''
+                header -Last-Modified
+              ''
+            }
           '';
           tsOnly = config: ''
             @external not remote_ip 100.64.0.0/10 127.0.0.0/24
@@ -58,11 +68,6 @@
           (_: cfg: {
             extraConfig = ''
               encode zstd gzip
-              header {
-                ?cache-control "private, max-age=0, must-revalidate"
-                permissions-policy "interest-cohort=()"
-                ?referrer-policy "no-referrer-when-downgrade"
-              }
               tls {
                 on_demand
               }
