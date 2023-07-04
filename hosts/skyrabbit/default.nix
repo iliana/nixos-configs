@@ -62,6 +62,10 @@ in {
       root * ${config.services.mediawiki.finalPackage}/share/mediawiki
       php_fastcgi unix/${config.services.phpfpm.pools.mediawiki.socket}
       file_server
+
+      # See note about caddy#5556 in /lib/caddy.nix.
+      # This isn't ideal because it will strip the header from MediaWiki responses, but eh.
+      header -Last-Modified
     }
   '';
   users.groups.mediawiki.members = [config.services.caddy.user];

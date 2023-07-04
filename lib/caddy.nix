@@ -68,6 +68,11 @@
           (_: cfg: {
             extraConfig = ''
               encode zstd gzip
+              header {
+                ?cache-control "private, max-age=0, must-revalidate"
+                permissions-policy "interest-cohort=()"
+                ?referrer-policy "no-referrer-when-downgrade"
+              }
               tls {
                 on_demand
               }
