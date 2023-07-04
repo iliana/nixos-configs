@@ -1,3 +1,12 @@
+checks.x86_64-linux.pdns /nix/store/nvcfiwk7hh65kxfqy8bg0fx1acb3aj3q-vm-test-run-pdns
+checks.x86_64-linux.web /nix/store/80rzcyha20k819dl5ry2r9k4pq7vg19y-vm-test-run-web
+nixosConfigurations.alecto /nix/store/bpb6wzv3l0qccrzyn8i01ck6sbsyrvml-nixos-system-alecto-23.05.20230703.aed4b19
+nixosConfigurations.hydrangea /nix/store/6p6d91xqfj2qyr5q9gybwkfrp84j4jfd-nixos-system-hydrangea-23.05.20230703.aed4b19
+nixosConfigurations.kasou /nix/store/laqgwihd6m4sfqadd5860fv2iaiqx63g-nixos-system-kasou-23.05.20230703.aed4b19
+nixosConfigurations.lernie /nix/store/5k91i30nhrxzn1hhz2qxf2z4dsm35kkw-nixos-system-lernie-23.05.20230703.aed4b19
+nixosConfigurations.megaera /nix/store/6ji9zypgbl291wlx02zs01vkcd51xnml-nixos-system-megaera-23.05.20230703.aed4b19
+nixosConfigurations.skyrabbit /nix/store/748qr373y98ghz0xw1rciwagdam5l7xz-nixos-system-skyrabbit-23.05.20230703.aed4b19
+nixosConfigurations.vermilion /nix/store/a2mydpmv059rqr440g3zbanyh74sr3j3-nixos-system-vermilion-23.05.20230703.aed4b19
 packages.aarch64-linux.helix /nix/store/i24z608ian3v0k8slnpjp45jbsm71vai-helix-23.05
 packages.aarch64-linux.nix-eval-jobs /nix/store/7nz1v6mgar7sd8kgmr32z6akn06jlikd-nix-eval-jobs-2.14.0
 packages.aarch64-linux.nvd /nix/store/d5x15vmf3p20b91s9k6d5myd1s2nf30h-nvd-0.2.0
@@ -9,6 +18,7 @@ packages.x86_64-linux.helix /nix/store/mbpsb33mysi4ahn7gxkpfcvknfqyr4pv-helix-23
 packages.x86_64-linux.litterbox /nix/store/dh10s3j7ssmyqpllfk0zg1pf83l01lw3-litterbox-1.9
 packages.x86_64-linux.nix-eval-jobs /nix/store/3cm73k31cgrhkanmqjj53wf0x46n5y5d-nix-eval-jobs-2.14.0
 packages.x86_64-linux.nvd /nix/store/bwwgpqv4malb8k70h0qwdfgagdij8p41-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/n446xv0gv72bgwyilg517crry4gxaqsn-oxide-0.1.0
 packages.x86_64-linux.pkgf /nix/store/nzz8n51yg8dbphn22bh1ji2m79rm6fnv-pkgf-0.1.0
 packages.x86_64-linux.pounce /nix/store/v8k76zax5islwwg4m2jw19h1rc434n64-pounce-3.1
 packages.x86_64-linux.restic /nix/store/sljfy5sa70c1pvw5p9rgm1vlc6x2dp45-restic-0.15.2
