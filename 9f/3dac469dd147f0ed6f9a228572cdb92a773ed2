@@ -1,0 +1,16 @@
+packages.aarch64-linux.helix /nix/store/i24z608ian3v0k8slnpjp45jbsm71vai-helix-23.05
+packages.aarch64-linux.nix-eval-jobs /nix/store/7nz1v6mgar7sd8kgmr32z6akn06jlikd-nix-eval-jobs-2.14.0
+packages.aarch64-linux.nvd /nix/store/d5x15vmf3p20b91s9k6d5myd1s2nf30h-nvd-0.2.0
+packages.aarch64-linux.restic /nix/store/fhijm0c764aihzg15gcnid99308imd2i-restic-0.15.2
+packages.aarch64-linux.tailscale /nix/store/wmy1pgi83s0dgnvxfx0d21wkp7yzb6rs-tailscale
+packages.x86_64-linux.caddy /nix/store/n1dprw33knhx7c8wn1a176s61sydsrfk-caddy-2.7.0-beta.2
+packages.x86_64-linux.emojos-dot-in /nix/store/425ki72p0lsfba3lm968m1hgkzgjaa10-emojos-dot-in-2.0.0
+packages.x86_64-linux.helix /nix/store/mbpsb33mysi4ahn7gxkpfcvknfqyr4pv-helix-23.05
+packages.x86_64-linux.litterbox /nix/store/dh10s3j7ssmyqpllfk0zg1pf83l01lw3-litterbox-1.9
+packages.x86_64-linux.nix-eval-jobs /nix/store/3cm73k31cgrhkanmqjj53wf0x46n5y5d-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/bwwgpqv4malb8k70h0qwdfgagdij8p41-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/n446xv0gv72bgwyilg517crry4gxaqsn-oxide-0.1.0
+packages.x86_64-linux.pkgf /nix/store/nzz8n51yg8dbphn22bh1ji2m79rm6fnv-pkgf-0.1.0
+packages.x86_64-linux.pounce /nix/store/v8k76zax5islwwg4m2jw19h1rc434n64-pounce-3.1
+packages.x86_64-linux.restic /nix/store/sljfy5sa70c1pvw5p9rgm1vlc6x2dp45-restic-0.15.2
+packages.x86_64-linux.tailscale /nix/store/wjcpgfhj5c3czd1l5i4z21bqdnl3gd64-tailscale
