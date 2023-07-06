@@ -47,13 +47,21 @@ def diff(args):
 ########################################################################################
 
 
+@subcommand
+def hosts(_args):
+    print("\n".join(all_hosts()))
+
+
+########################################################################################
+
+
 @subcommand(parser=lambda parser: parser.add_argument("hosts", nargs="*"))
 def status(args):
     fetch_notes()
     local_rev = rev_parse("HEAD")
-    hosts = sorted(args.hosts or all_hosts())
-    format_string = f"{{:<{max(len(host) for host in hosts) + 2}}}{{}}"
-    for host in hosts:
+    the_hosts = sorted(args.hosts or all_hosts())
+    format_string = f"{{:<{max(len(host) for host in the_hosts) + 2}}}{{}}"
+    for host in the_hosts:
         remote_system = run_on(host, ["readlink", "/run/current-system"])
         remote_rev = commit_for_output(remote_system)
         if not remote_rev:
