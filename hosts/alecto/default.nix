@@ -20,5 +20,10 @@
     interface = "eth0";
   };
 
+  iliana.backup = {
+    enable = true;
+    creds = ./backup;
+  };
+
   system.stateVersion = "23.05";
 }
