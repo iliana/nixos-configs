@@ -42,11 +42,11 @@
     "emojos-dot-in": {
       "flake": false,
       "locked": {
-        "lastModified": 1684702618,
-        "narHash": "sha256-YCdvY9y607MdxwiJlz/SjtAB+zVeCkPcY8F0iietbb8=",
+        "lastModified": 1688712316,
+        "narHash": "sha256-HU0vIM4NfEqS1rNWi3ZbmOpFTj2tTk5o52A3ZYk2yJ4=",
         "owner": "iliana",
         "repo": "emojos.in",
-        "rev": "db35bd004823a09fedfe269cea8c1a42aa5440db",
+        "rev": "5986f2b1a5392c85e7b1de2f3e4ce72d359aeeca",
         "type": "github"
       },
       "original": {
