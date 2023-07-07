@@ -6,11 +6,13 @@ nixosConfigurations.kasou /nix/store/lqn6qcf53zp7d08klbps8wkqwafdhva8-nixos-syst
 nixosConfigurations.lernie /nix/store/sxp1ip13z29s8q0kkfj1a3z21fahq92v-nixos-system-lernie-23.05.20230705.e111420
 nixosConfigurations.megaera /nix/store/460m9x1fwrh7j7vifd9p59p022k1z8g3-nixos-system-megaera-23.05.20230705.e111420
 nixosConfigurations.skyrabbit /nix/store/gqlzm3yp5kxrsla0dhiyxw8jb4mjk1yq-nixos-system-skyrabbit-23.05.20230705.e111420
+nixosConfigurations.tisiphone /nix/store/pz80ilwcynxxspqcwqhzx6xkqnpscq2n-nixos-system-tisiphone-23.05.20230705.e111420
 nixosConfigurations.vermilion /nix/store/2vihfnrip044ij50x89zdg0nxxml5qfq-nixos-system-vermilion-23.05.20230705.e111420
 packages.aarch64-linux.helix /nix/store/i24z608ian3v0k8slnpjp45jbsm71vai-helix-23.05
 packages.aarch64-linux.nix-eval-jobs /nix/store/2amkxbr1qq4v6spkf46mcf608dhvq4z7-nix-eval-jobs-2.14.0
 packages.aarch64-linux.nvd /nix/store/asjaidvarhnmzl4bqqwbhi5sgf18b7js-nvd-0.2.0
 packages.aarch64-linux.restic /nix/store/vcjhd4s3yr7qraa8852zdkd8z656rnlm-restic-0.15.2
+packages.aarch64-linux.tailscale /nix/store/6b5mbwlwqay0800g549lzl5ra94dyn78-tailscale
 packages.x86_64-linux.caddy /nix/store/kvy241kziz34db1zhfwi4r9njm7ypwir-caddy-2.7.0-beta.2
 packages.x86_64-linux.emojos-dot-in /nix/store/dvhicdg6rmxrn0d2m51ywx9nd7lwk9zs-emojos-dot-in-2.0.0
 packages.x86_64-linux.helix /nix/store/mbpsb33mysi4ahn7gxkpfcvknfqyr4pv-helix-23.05
