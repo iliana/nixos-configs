@@ -25,6 +25,7 @@
     pkgs.python3Packages.python-lsp-server
     pkgs.rustup
     pkgs.shellcheck
+    pkgs.tokei
   ];
 
   iliana.persist.directories = [
