@@ -1,0 +1,13 @@
+packages.aarch64-linux.helix /nix/store/i24z608ian3v0k8slnpjp45jbsm71vai-helix-23.05
+packages.aarch64-linux.nix-eval-jobs /nix/store/2amkxbr1qq4v6spkf46mcf608dhvq4z7-nix-eval-jobs-2.14.0
+packages.aarch64-linux.nvd /nix/store/asjaidvarhnmzl4bqqwbhi5sgf18b7js-nvd-0.2.0
+packages.aarch64-linux.restic /nix/store/vcjhd4s3yr7qraa8852zdkd8z656rnlm-restic-0.15.2
+packages.aarch64-linux.tailscale /nix/store/6b5mbwlwqay0800g549lzl5ra94dyn78-tailscale
+packages.x86_64-linux.caddy /nix/store/kvy241kziz34db1zhfwi4r9njm7ypwir-caddy-2.7.0-beta.2
+packages.x86_64-linux.helix /nix/store/mbpsb33mysi4ahn7gxkpfcvknfqyr4pv-helix-23.05
+packages.x86_64-linux.litterbox /nix/store/6iki1rn3a9d872bfscf14fpjyn04jj9k-litterbox-1.9
+packages.x86_64-linux.nix-eval-jobs /nix/store/9b88fa93s4p840ckcrk9wjb6iw5yvla9-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/z6qsn3v5qw5w25dfggn9v2xmn2f36svr-nvd-0.2.0
+packages.x86_64-linux.pounce /nix/store/wpjwmv09xqyd3b3avh3r39hv8aflyks4-pounce-3.1
+packages.x86_64-linux.restic /nix/store/ixy8sy4synksxrkswa5gzcnv7qnc9gp8-restic-0.15.2
+packages.x86_64-linux.tailscale /nix/store/5afslxv022qvsciqpxamx2j37ws9skwf-tailscale
