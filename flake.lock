@@ -10,11 +10,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1688690832,
-        "narHash": "sha256-RJIYuOn9FaQWVzj6ytaKsHyur0KsYO9tOgaMz1XHtpQ=",
+        "lastModified": 1688772518,
+        "narHash": "sha256-ol7gZxwvgLnxNSZwFTDJJ49xVY5teaSvF7lzlo3YQfM=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "bfc1c3dca576e2f9e02eb0176e4058305192afe3",
+        "rev": "8b08e96c9af8c6e3a2b69af5a7fa168750fcf88e",
         "type": "github"
       },
       "original": {
@@ -26,11 +26,11 @@
     "dotfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1688672771,
-        "narHash": "sha256-r2U7cgXrVGi5KAIhV+e6Gx91MdEbsX4fRtVBm4VGggc=",
+        "lastModified": 1688848631,
+        "narHash": "sha256-0J5Or+Mko17hvHf3wSvj77FpRK+Qr6TJG7qdUKpH36Y=",
         "owner": "iliana",
         "repo": "dotfiles",
-        "rev": "63c7fde09167462f11e2817b8a1689c24fef7988",
+        "rev": "ecefcfa8e1ff7bf28248e871a41ef27d316dc4d3",
         "type": "github"
       },
       "original": {
@@ -155,11 +155,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1688594934,
-        "narHash": "sha256-3dUo20PsmUd57jVZRx5vgKyIN1tv+v/JQweZsve5q/A=",
+        "lastModified": 1688868408,
+        "narHash": "sha256-RR9N5XTAxSBhK8MCvLq9uxfdkd7etC//seVXldy0k48=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e11142026e2cef35ea52c9205703823df225c947",
+        "rev": "510d721ce097150ae3b80f84b04b13b039186571",
         "type": "github"
       },
       "original": {
@@ -171,11 +171,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1688590700,
-        "narHash": "sha256-ZF055rIUP89cVwiLpG5xkJzx00gEuuGFF60Bs/LM3wc=",
+        "lastModified": 1688918189,
+        "narHash": "sha256-f8ZlJ67LgEUDnN7ZsAyd1/Fyby1VdOXWg4XY/irSGrQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f292b4964cb71f9dfbbd30dc9f511d6165cd109b",
+        "rev": "408c0e8c15a1c9cf5c3226931b6f283c9867c484",
         "type": "github"
       },
       "original": {
@@ -188,11 +188,11 @@
     "oxide-cli": {
       "flake": false,
       "locked": {
-        "lastModified": 1688666843,
-        "narHash": "sha256-6BZ295C2FBSDVRDgO1hQw664akBEwYz9RG3qfl9qRmI=",
+        "lastModified": 1688867973,
+        "narHash": "sha256-mVCGWYlbwxKd9uZ0Ah2rFq6rehZc6TUkIxmb4Gj8gXk=",
         "owner": "oxidecomputer",
         "repo": "oxide.rs",
-        "rev": "4cf2405e913af94d673fdeb38b7791a4b2efb140",
+        "rev": "ac2e4eee76d32f173470b464bb57684d833ec260",
         "type": "github"
       },
       "original": {
