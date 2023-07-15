@@ -22,7 +22,7 @@
       sasl-external = true;
     };
   };
-  users = ["pounce" "litterbox"];
+  users = ["pounce" "pounce-palaver" "litterbox"];
   homes = lib.genAttrs users (name: "/var/lib/${name}");
   litterbox = "${homes.litterbox}/litterbox.sqlite";
 in {
@@ -75,6 +75,35 @@ in {
       })
     networks;
 
+    palaverServices = lib.mapAttrs' (network: attrs: let
+      home = homes.pounce-palaver;
+    in
+      lib.nameValuePair "pounce-palaver-${network}" {
+        after = ["pounce-${network}.service"];
+        requires = ["pounce-${network}.service"];
+        wantedBy = ["multi-user.target"];
+        serviceConfig =
+          config.iliana.systemd.sandboxConfig {
+            denyTailscale = false;
+            user = "pounce-palaver";
+          }
+          // {
+            ExecStart = "${myPkgs.pounce}/bin/pounce-palaver -d ${home}/${network}.sqlite -p ${toString attrs.local-port} ${localHost}";
+            ReadWritePaths = home;
+            Restart = "on-failure";
+
+            # pounce is unlikely to fill its buffer for this client in 15 seconds.
+            RestartSec = 15;
+          };
+        unitConfig = {
+          # pounce doesn't start listening on the local socket until the remote
+          # IRC server connects, I think. in general we always want litterbox to
+          # be up, so if systemd thinks pounce is up, always try reconnecting.
+          StartLimitInterval = 0;
+        };
+      })
+    networks;
+
     litterboxServices = lib.mapAttrs' (network: attrs: let
       home = homes.litterbox;
       cfg = {
@@ -114,6 +143,7 @@ in {
     networks;
   in
     pounceServices
+    // palaverServices
     // litterboxServices
     // {
       litterbox-init = {
