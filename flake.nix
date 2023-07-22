@@ -6,7 +6,7 @@
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    tailscale.url = "github:tailscale/tailscale/v1.46.0";
+    tailscale.url = "github:tailscale/tailscale/v1.44.0";
     tailscale.inputs.nixpkgs.follows = "nixpkgs";
 
     dotfiles.url = "github:iliana/dotfiles?submodule=1";
