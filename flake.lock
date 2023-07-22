@@ -155,11 +155,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1689431009,
-        "narHash": "sha256-hPgQCRWP5q/Xc4qOIP3c2krR9nQua78+t9EDiuey5nc=",
+        "lastModified": 1689956312,
+        "narHash": "sha256-NV9yamMhE5jgz+ZSM2IgXeYqOvmGIbIIJ+AFIhfD7Ek=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "af8279f65fe71ce5a448408034a8c06e2b4b2c66",
+        "rev": "6da4bc6cb07cba1b8e53d139cbf1d2fb8061d967",
         "type": "github"
       },
       "original": {
@@ -171,11 +171,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1689444953,
-        "narHash": "sha256-0o56bfb2LC38wrinPdCGLDScd77LVcr7CrH1zK7qvDg=",
+        "lastModified": 1689940971,
+        "narHash": "sha256-397xShPnFqPC59Bmpo3lS+/Aw0yoDRMACGo1+h2VJMo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8acef304efe70152463a6399f73e636bcc363813",
+        "rev": "9ca785644d067445a4aa749902b29ccef61f7476",
         "type": "github"
       },
       "original": {
@@ -188,15 +188,16 @@
     "oxide-cli": {
       "flake": false,
       "locked": {
-        "lastModified": 1689465635,
-        "narHash": "sha256-HMqD6zroKNTKfKvbm/Dyj/AwqGYQRVEXxiObUgkofdI=",
+        "lastModified": 1689884325,
+        "narHash": "sha256-/HunH3ZVuPyKRHQfzY0g2xok5VfosG7Mg5skgU0oDfg=",
         "owner": "oxidecomputer",
         "repo": "oxide.rs",
-        "rev": "a5d9131e7438479560aac4ac84933baa1164f7c8",
+        "rev": "f0ba6a2f9e2fd4365eae21e03f3458c8f653f969",
         "type": "github"
       },
       "original": {
         "owner": "oxidecomputer",
+        "ref": "v0.1.0-beta.3",
         "repo": "oxide.rs",
         "type": "github"
       }
@@ -278,16 +279,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1687369856,
-        "narHash": "sha256-/SiQFkhVseLkjK7ePNzNyBs0r3XE3kHJ6CDTFjdCXec=",
+        "lastModified": 1689795764,
+        "narHash": "sha256-JA4mTxVlDpD1U360mvLYQv2inZg6VnljAYtVc21Qmfc=",
         "owner": "tailscale",
         "repo": "tailscale",
-        "rev": "b3138a71ad0b2fb7d99f0dcecc5e4bc85483bb4f",
+        "rev": "49cb73432a2d909f0c842f9e8fd38253baa062a5",
         "type": "github"
       },
       "original": {
         "owner": "tailscale",
-        "ref": "v1.44.0",
+        "ref": "v1.46.0",
         "repo": "tailscale",
         "type": "github"
       }

@@ -6,14 +6,14 @@
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    tailscale.url = "github:tailscale/tailscale/v1.44.0";
+    tailscale.url = "github:tailscale/tailscale/v1.46.0";
     tailscale.inputs.nixpkgs.follows = "nixpkgs";
 
     dotfiles.url = "github:iliana/dotfiles?submodule=1";
     dotfiles.flake = false;
     emojos-dot-in.url = "github:iliana/emojos.in";
     emojos-dot-in.flake = false;
-    oxide-cli.url = "github:oxidecomputer/oxide.rs";
+    oxide-cli.url = "github:oxidecomputer/oxide.rs/v0.1.0-beta.3";
     oxide-cli.flake = false;
   };
 
