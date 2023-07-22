@@ -11,6 +11,7 @@ craneLib.buildPackage {
   cargoArtifacts = null;
   cargoExtraArgs = "--package oxide";
   doCheck = false;
+  env = {OPENSSL_NO_VENDOR = "";};
   buildInputs = [pkg-config openssl];
   patches = [./oxide-git-version.patch];
 }
