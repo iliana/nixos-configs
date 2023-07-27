@@ -1,0 +1,14 @@
+packages.aarch64-linux.helix /nix/store/xa08v6yc31nl5ymy6hxi5h2j03hj989s-helix-23.05
+packages.aarch64-linux.nix-eval-jobs /nix/store/2amkxbr1qq4v6spkf46mcf608dhvq4z7-nix-eval-jobs-2.14.0
+packages.aarch64-linux.nvd /nix/store/asjaidvarhnmzl4bqqwbhi5sgf18b7js-nvd-0.2.0
+packages.aarch64-linux.restic /nix/store/v4r2h1s5p4ddb3yycx3vcp32lw0dbdiv-restic-0.15.2
+packages.x86_64-linux.caddy /nix/store/3aa08wf5bh267mb3lq6ravq80m871ykd-caddy-2.7.0-beta.2
+packages.x86_64-linux.emojos-dot-in /nix/store/wgi1b956lag24a35nw26rd3s5psb2wqj-emojos-dot-in-2.0.0
+packages.x86_64-linux.helix /nix/store/h24wygkxsrfwsyaxi35faxx3hfwdaqks-helix-23.05
+packages.x86_64-linux.litterbox /nix/store/6iki1rn3a9d872bfscf14fpjyn04jj9k-litterbox-1.9
+packages.x86_64-linux.nix-eval-jobs /nix/store/9b88fa93s4p840ckcrk9wjb6iw5yvla9-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/z6qsn3v5qw5w25dfggn9v2xmn2f36svr-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/y1pfz5hvcqxpg3w0dsc17qnr2rqiswir-oxide-0.1.0
+packages.x86_64-linux.pkgf /nix/store/f8yd8193fvh17hz6iv6jbz9llmfcjddk-pkgf-0.1.0
+packages.x86_64-linux.pounce /nix/store/wpjwmv09xqyd3b3avh3r39hv8aflyks4-pounce-3.1
+packages.x86_64-linux.restic /nix/store/8n174lb5lhz647m9dkrsbzlqil9aw98q-restic-0.15.2
