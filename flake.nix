@@ -6,8 +6,6 @@
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    tailscale.url = "github:tailscale/tailscale/v1.44.0";
-    tailscale.inputs.nixpkgs.follows = "nixpkgs";
 
     dotfiles.url = "github:iliana/dotfiles?submodule=1";
     dotfiles.flake = false;
@@ -25,7 +23,6 @@
     nixpkgs,
     nixpkgs-unstable,
     oxide-cli,
-    tailscale,
     ...
   } @ inputs:
     import ./generate.nix {
@@ -41,7 +38,6 @@
           restic = pkgs.restic;
 
           helix = nixpkgs-unstable.legacyPackages.${system}.helix;
-          tailscale = tailscale.packages.${system}.tailscale;
         }
         // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
           caddy = pkgs.callPackage ./packages/caddy.nix {};

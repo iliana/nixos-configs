@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  myPkgs,
   pkgs,
   ...
 }: {
@@ -34,7 +33,6 @@
   in
     lib.mkIf (!config.iliana.test) {
       services.tailscale.enable = true;
-      services.tailscale.package = myPkgs.tailscale;
       iliana.persist.directories = [
         {
           directory = "/var/lib/tailscale";
