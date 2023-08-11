@@ -178,7 +178,7 @@ in {
       isSystemUser = true;
     })
     // {
-      iliana.packages = [myPkgs.litterbox];
+      iliana.packages = [myPkgs.litterbox myPkgs.weechat];
     };
   users.groups = lib.genAttrs users (name: {});
   iliana.persist.directories =

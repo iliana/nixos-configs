@@ -9,7 +9,7 @@
   nix.registry =
     lib.mkIf (!config.iliana.test)
     (lib.attrsets.genAttrs
-      ["nixpkgs"]
+      ["nixpkgs" "nixpkgs-unstable"]
       (input: {
         to = {
           inherit (inputs."${input}") lastModified narHash rev;
