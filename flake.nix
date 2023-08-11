@@ -61,7 +61,6 @@
       nixosConfigurations.x86_64-linux = {
         alecto = ./hosts/alecto;
         hydrangea = ./hosts/hydrangea;
-        kasou = ./hosts/kasou;
         lernie = ./hosts/lernie.nix;
         megaera = ./hosts/megaera.nix;
         skyrabbit = ./hosts/skyrabbit;
