@@ -1,0 +1,15 @@
+nixosConfigurations.vermilion /nix/store/0xvm94vac0xvnk7hl5sg8ivb4j5s5k6r-nixos-system-vermilion-23.05.20230809.9034b46
+packages.aarch64-linux.helix /nix/store/h9d9p4if2g2xzf2nymkgjns04dg8fywi-helix-23.05
+packages.aarch64-linux.nix-eval-jobs /nix/store/ilfsd2prhqr4i03fc0ci0hbnqwipywbd-nix-eval-jobs-2.14.0
+packages.aarch64-linux.nvd /nix/store/kql02h8yg05hq7aprp3gaz07cf7afjnw-nvd-0.2.0
+packages.aarch64-linux.restic /nix/store/hqgnj0gll4j6czc0yplph4mbv9lk8hzg-restic-0.15.2
+packages.x86_64-linux.caddy /nix/store/7ln6x1br713wbrxvh62l0qka4nkx42nr-caddy-2.7.3
+packages.x86_64-linux.emojos-dot-in /nix/store/b9xkd7qvvkfsqa62xj80n6g0q3zwgf9k-emojos-dot-in-2.0.0
+packages.x86_64-linux.helix /nix/store/nk5b8gml6rarwxkhf4qd83cqjkpwjlcs-helix-23.05
+packages.x86_64-linux.litterbox /nix/store/acad4q1sbs37wfij7ayxa24jayx83f30-litterbox-1.9
+packages.x86_64-linux.nix-eval-jobs /nix/store/baf9y2x9183i796za41ay35jqrrmcjw0-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/70xnh41wk5rmxmdvnp695d693jf70j4i-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/rm7i1pr3k41adqjsafjl6r19d8mrx69c-oxide-0.1.0
+packages.x86_64-linux.pkgf /nix/store/nb2rfrpcp4z7fz7064gqi67a8d8jbsdp-pkgf-0.1.0
+packages.x86_64-linux.pounce /nix/store/n4bdgxwqaf4z4kqxl2v15dmzfig8h4b4-pounce-3.1
+packages.x86_64-linux.restic /nix/store/rf3qps2gxqy3n22nlh8fybm09qgyy0dc-restic-0.15.2
