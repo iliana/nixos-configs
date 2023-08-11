@@ -27,16 +27,18 @@
       "flake": false,
       "locked": {
         "lastModified": 1691700047,
-        "narHash": "sha256-/okGUq2yFoE8uu3JqOSqQ7VDqQyEzycVuZKrztBUSYA=",
-        "owner": "iliana",
-        "repo": "dotfiles",
+        "narHash": "sha256-V+qAz6h5t4C4EtqmFrQlGcCDztlhyCuG6oPSpGN61qQ=",
+        "ref": "refs/heads/main",
         "rev": "9f7c7fbb72a29954436ab148a2d760f11fbfbf68",
-        "type": "github"
+        "revCount": 210,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/iliana/dotfiles"
       },
       "original": {
-        "owner": "iliana",
-        "repo": "dotfiles",
-        "type": "github"
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/iliana/dotfiles"
       }
     },
     "emojos-dot-in": {

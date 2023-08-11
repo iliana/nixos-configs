@@ -7,7 +7,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    dotfiles.url = "github:iliana/dotfiles?submodule=1";
+    dotfiles.url = "git+https://github.com/iliana/dotfiles?submodules=1";
     dotfiles.flake = false;
     emojos-dot-in.url = "github:iliana/emojos.in";
     emojos-dot-in.flake = false;
