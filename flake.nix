@@ -5,7 +5,6 @@
     flake-utils.url = "github:numtide/flake-utils";
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     dotfiles.url = "git+https://github.com/iliana/dotfiles?submodules=1";
     dotfiles.flake = false;
@@ -21,7 +20,6 @@
     flake-utils,
     impermanence,
     nixpkgs,
-    nixpkgs-unstable,
     oxide-cli,
     ...
   } @ inputs:
@@ -33,11 +31,7 @@
       packages = system: pkgs: let
         craneLib = crane.mkLib pkgs;
       in ({
-          nix-eval-jobs = pkgs.nix-eval-jobs;
-          nvd = pkgs.nvd;
-          restic = pkgs.restic;
-
-          helix = nixpkgs-unstable.legacyPackages.${system}.helix;
+          inherit (pkgs) helix nix-eval-jobs nvd restic;
         }
         // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
           caddy = pkgs.callPackage ./packages/caddy.nix {};
