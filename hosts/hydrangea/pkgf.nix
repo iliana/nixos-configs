@@ -2,7 +2,6 @@
   config,
   lib,
   myPkgs,
-  pkgs,
   ...
 }: {
   iliana.caddy.virtualHosts."hydrangea.ili.fyi" = with config.iliana.caddy.helpers; handle "/pkgf/*" (localhost 3000);

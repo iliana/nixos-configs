@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }: let
@@ -81,7 +80,7 @@ in {
     ++ builtins.map (directory: {
       inherit directory;
       user = "mediawiki";
-      group = config.users.users.mediawiki.group;
+      inherit (config.users.users.mediawiki) group;
       mode = "0750";
     }) ["/var/cache/mediawiki" "/var/lib/mediawiki"];
 

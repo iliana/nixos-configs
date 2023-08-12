@@ -66,7 +66,7 @@
         };
       };
 
-      systemd.services.ts-cert = lib.mkIf (cfg.cert.enable) {
+      systemd.services.ts-cert = lib.mkIf cfg.cert.enable {
         after = ["tailscale.service" "network-online.target" "tailscale-up.service"];
         wants = ["tailscale.service" "network-online.target" "tailscale-up.service"];
         wantedBy = ["multi-user.target"];
@@ -88,7 +88,7 @@
           RuntimeDirectory = "ts-cert";
         };
       };
-      systemd.timers.ts-cert = lib.mkIf (cfg.cert.enable) {
+      systemd.timers.ts-cert = lib.mkIf cfg.cert.enable {
         wantedBy = ["timers.target"];
         timerConfig = {
           FixedRandomDelay = true;

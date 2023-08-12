@@ -35,10 +35,8 @@
     };
 
     cookieValue = v:
-      if v == true
-      then "on"
-      else if v == false
-      then ""
+      if builtins.isBool v
+      then lib.optionalString v "on"
       else v;
     prefsCookie =
       builtins.concatStringsSep "; " (lib.mapAttrsToList (k: v: "${k}=${cookieValue v}") preferences);

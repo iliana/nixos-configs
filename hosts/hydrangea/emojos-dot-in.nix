@@ -4,7 +4,7 @@
   myPkgs,
   ...
 }: let
-  helpers = config.iliana.caddy.helpers;
+  inherit (config.iliana.caddy) helpers;
 in {
   iliana.caddy.virtualHosts."emojos.in" = helpers.localhost 8000;
 

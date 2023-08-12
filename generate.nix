@@ -13,9 +13,9 @@
   packages ? (system: pkgs: {}),
   setHostName ? true,
   systems ? flake-utils.lib.defaultSystems,
-  testModule ? ({...}: {}),
+  testModule ? (_: {}),
 }: let
-  lib = nixpkgs.lib;
+  inherit (nixpkgs) lib;
   genSystems = lib.attrsets.genAttrs systems;
 
   pkgs = genSystems (system: import nixpkgs {inherit system overlays;});
@@ -23,20 +23,19 @@
 
   mySystems =
     lib.concatMapAttrs
-    (system: systems:
+    (system:
       builtins.mapAttrs
       (name: config: {
         inherit system;
         modules =
           lib.lists.optionals setHostName [
-            ({...}: {
+            (_: {
               networking.hostName = name;
             })
           ]
           ++ nixosImports
           ++ [config];
-      })
-      systems)
+      }))
     nixosConfigurations;
   specialArgs = genSystems (system:
     nixosSpecialArgs system
@@ -46,10 +45,9 @@
 
   myNixosConfigs =
     builtins.mapAttrs
-    (name: attrs:
+    (_: attrs:
       lib.nixosSystem {
-        inherit (attrs) system;
-        modules = attrs.modules;
+        inherit (attrs) modules system;
         specialArgs = specialArgs.${attrs.system};
       })
     mySystems;
@@ -57,34 +55,31 @@
   myChecks = let
     args = name: system:
       (builtins.mapAttrs
-        (name: attrs: ({...}: {
+        (_: attrs: ({...}: {
           imports = attrs.modules ++ [testModule];
         }))
         mySystems)
       // {
         pkgs = pkgs.${system};
-        runTest = (
-          args:
-            lib.nixos.runTest
-            (lib.attrsets.recursiveUpdate
-              {
-                inherit name;
-                hostPkgs = pkgs.${system};
-                node.specialArgs = specialArgs.${system};
-              }
-              args)
-        );
+        runTest = args:
+          lib.nixos.runTest
+          (lib.attrsets.recursiveUpdate
+            {
+              inherit name;
+              hostPkgs = pkgs.${system};
+              node.specialArgs = specialArgs.${system};
+            }
+            args);
       };
   in
     builtins.mapAttrs
-    (system: checks:
+    (system:
       builtins.mapAttrs (name: check:
         (
           if builtins.isPath check
           then import check
           else check
-        ) (args name system))
-      checks)
+        ) (args name system)))
     checks;
 in
   lib.attrsets.recursiveUpdate

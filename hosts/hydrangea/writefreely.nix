@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  helpers = config.iliana.caddy.helpers;
+  inherit (config.iliana.caddy) helpers;
   host = "daily.iliana.fyi";
   port = 18080;
 

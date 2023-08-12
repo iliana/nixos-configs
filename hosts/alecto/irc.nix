@@ -30,7 +30,7 @@ in {
     toINI = attrs:
       (builtins.concatStringsSep "\n"
         (lib.mapAttrsToList (k: v:
-          if v == true
+          if (builtins.isBool v && v)
           then k
           else if builtins.isInt v
           then "${k} = ${toString v}"
@@ -180,7 +180,7 @@ in {
     // {
       iliana.packages = [myPkgs.litterbox myPkgs.weechat];
     };
-  users.groups = lib.genAttrs users (name: {});
+  users.groups = lib.genAttrs users (_: {});
   iliana.persist.directories =
     builtins.map (name: {
       directory = homes.${name};

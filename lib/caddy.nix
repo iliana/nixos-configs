@@ -96,7 +96,7 @@
         # will still warn until caddyserver/caddy#5384 lands in a release.)
         wildcardHosts =
           builtins.filter
-          (host: lib.strings.hasInfix "*" host)
+          (lib.strings.hasInfix "*")
           (builtins.attrNames final);
       in
         lib.mkAssert

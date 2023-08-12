@@ -8,7 +8,7 @@
 runTest {
   nodes = {
     inherit hydrangea skyrabbit;
-    testremote = {pkgs, ...}: {
+    testremote = _: {
       services.caddy.enable = true;
       services.caddy.virtualHosts.":80".extraConfig = ''
         respond /asdf "thx"

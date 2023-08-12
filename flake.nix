@@ -32,7 +32,8 @@
 
       packages = system: pkgs: let
         craneLib = crane.mkLib pkgs;
-      in ({
+      in
+        {
           inherit (pkgs) helix nix-eval-jobs nvd restic;
           inherit (nixpkgs-unstable.legacyPackages.${system}) weechat;
         }
@@ -43,7 +44,7 @@
           oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
           pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};
           pounce = pkgs.callPackage ./packages/pounce.nix {};
-        });
+        };
 
       nixosImports = [
         impermanence.nixosModules.impermanence
