@@ -9,6 +9,10 @@
       default = false;
       type = with lib.types; bool;
     };
+    exclude = lib.mkOption {
+      default = [];
+      type = with lib.types; listOf string;
+    };
     dirs = lib.mkOption {
       type = with lib.types; listOf string;
     };
@@ -30,6 +34,7 @@
           restic backup \
             --compression auto \
             --one-file-system \
+            ${builtins.concatStringsSep " " (builtins.map (dir: "-e ${lib.escapeShellArg dir}") cfg.exclude)} \
             ${lib.escapeShellArgs cfg.dirs}
           restic forget \
             --keep-within-hourly 24h \

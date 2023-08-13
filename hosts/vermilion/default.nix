@@ -43,6 +43,7 @@
 
   iliana.backup.enable = true;
   iliana.backup.creds = ./backup;
+  iliana.backup.exclude = ["/nix/persist/home/iliana/git/nixpkgs"];
 
   system.stateVersion = "22.11";
 }
