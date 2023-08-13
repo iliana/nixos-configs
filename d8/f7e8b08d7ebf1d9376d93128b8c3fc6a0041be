@@ -1,0 +1,10 @@
+packages.aarch64-linux.helix /nix/store/x7lha8wwrj1ac3hj2v1nav4jbhlgf17f-helix-23.05
+packages.aarch64-linux.nix-eval-jobs /nix/store/v5jm48izj2nlfjlgkaxrxam1vilb3fca-nix-eval-jobs-2.14.0
+packages.aarch64-linux.nvd /nix/store/xlr7974fk2asy96xsxslvl7vi7wc2cfw-nvd-0.2.0
+packages.aarch64-linux.restic /nix/store/r3wqcyqci35s9ybzrv6f523c9bv01np5-restic-0.15.2
+packages.aarch64-linux.weechat /nix/store/ycfl37x3cv26f99y2mxq9b0gzp1pdr11-weechat-bin-env-4.0.3
+packages.x86_64-linux.helix /nix/store/kiai99m6c3na4v4ly4hwi6yjdivcmpq1-helix-23.05
+packages.x86_64-linux.nix-eval-jobs /nix/store/v665s1mvka26mzf05k12pxd8v6zkprzp-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/dqv9i2b69i8g2cgjxyyw6qs4c0qa4f5s-nvd-0.2.0
+packages.x86_64-linux.restic /nix/store/0lz2kvjpmgyq2ygspd10yybbhygkb5mw-restic-0.15.2
+packages.x86_64-linux.weechat /nix/store/w9hmc8bsslxky52694v2c05fnznk5ggj-weechat-bin-env-4.0.3
