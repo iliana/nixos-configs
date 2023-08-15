@@ -4,7 +4,9 @@ nixosConfigurations.alecto /nix/store/ik4vdmqiiz9882xd5a4yjkq7bvlicrn5-nixos-sys
 nixosConfigurations.hydrangea /nix/store/adrx1k2i40y9xjggw14am57hx41z37cl-nixos-system-hydrangea-23.05.20230813.720e61e
 nixosConfigurations.lernie /nix/store/847gdc6p0gqfc27j8q35qskrd42q6ifa-nixos-system-lernie-23.05.20230813.720e61e
 nixosConfigurations.megaera /nix/store/gkqmjwwv7n2mvdfzb3hk2jcz0jmpyknd-nixos-system-megaera-23.05.20230813.720e61e
+nixosConfigurations.poffertje /nix/store/ms33y81zdhgpfm1x632pmkbwnzp5hk9c-nixos-system-poffertje-23.05.20230813.720e61e
 nixosConfigurations.skyrabbit /nix/store/p1ri3iwjjdmkxdkdk81zkmi54k3gk10m-nixos-system-skyrabbit-23.05.20230813.720e61e
+nixosConfigurations.stroopwafel /nix/store/vrmcxg2x56126v5hl10rlsscwhs4yhf2-nixos-system-stroopwafel-23.05.20230813.720e61e
 nixosConfigurations.tisiphone /nix/store/lnl7yrs892m0g6ac3vj61s71fa7xhpyi-nixos-system-tisiphone-23.05.20230813.720e61e
 nixosConfigurations.vermilion /nix/store/h71f7zk5sdkx22fj2k5cpgrlxyzxizad-nixos-system-vermilion-23.05.20230813.720e61e
 packages.aarch64-linux.helix /nix/store/x7lha8wwrj1ac3hj2v1nav4jbhlgf17f-helix-23.05
