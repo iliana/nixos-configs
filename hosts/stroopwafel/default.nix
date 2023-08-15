@@ -16,7 +16,7 @@
   iliana.caddy.virtualHosts."pancake.ili.fyi:80" = ''
     root * /media
     file_server {
-      hide /media/z /media/cd
+      hide /media/z *.part *.torrent
       browse
     }
   '';

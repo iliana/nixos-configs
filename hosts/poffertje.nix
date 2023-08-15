@@ -23,6 +23,7 @@
       rpc-bind-address = "100.75.61.128";
       rpc-host-whitelist = "${config.networking.hostName},${config.networking.hostName}.cat-herring.ts.net";
       rpc-whitelist-enabled = false; # because we bind to a tailscale address
+      torrent-added-verify-mode = "full";
       umask = 18; # octal 0022
       watch-dir-enabled = false;
     };
