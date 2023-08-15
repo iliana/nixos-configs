@@ -1,0 +1,55 @@
+From 7c0dc3741fe9cbaa719831301136449091e2dbfb Mon Sep 17 00:00:00 2001
+From: Charles Kerr <charles@charleskerr.com>
+Date: Wed, 26 Apr 2023 19:40:49 -0500
+Subject: [PATCH] fix: bug that prevented providing the final metadata piece
+ (#5460)
+
+Fixes bug in implementation of BEP 9
+
+Xref: https://www.bittorrent.org/beps/bep_0009.html
+
+[iliana: cherry-picked onto 4.0.3]
+---
+ libtransmission/torrent-magnet.cc | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/libtransmission/torrent-magnet.cc b/libtransmission/torrent-magnet.cc
+index c32defb43..df3d79c50 100644
+--- a/libtransmission/torrent-magnet.cc
++++ b/libtransmission/torrent-magnet.cc
+@@ -65,6 +65,12 @@ auto create_all_needed(int n_pieces)
+ 
+     return ret;
+ }
++
++[[nodiscard]] int div_ceil(int numerator, int denominator)
++{
++    auto const [quot, rem] = std::div(numerator, denominator);
++    return quot + (rem == 0 ? 0 : 1);
++}
+ } // namespace
+ 
+ bool tr_torrentSetMetadataSizeHint(tr_torrent* tor, int64_t size)
+@@ -79,12 +85,8 @@ bool tr_torrentSetMetadataSizeHint(tr_torrent* tor, int64_t size)
+         return false;
+     }
+ 
+-    int const n = (size <= 0 || size > INT_MAX) ?
+-        -1 :
+-        static_cast<int>(size / METADATA_PIECE_SIZE + (size % METADATA_PIECE_SIZE != 0 ? 1 : 0));
+-
++    int const n = (size <= 0 || size > INT_MAX) ? -1 : div_ceil(size, METADATA_PIECE_SIZE);
+     tr_logAddDebugTor(tor, fmt::format("metadata is {} bytes in {} pieces", size, n));
+-
+     if (n <= 0)
+     {
+         return false;
+@@ -121,7 +123,7 @@ std::optional<std::vector<std::byte>> tr_torrentGetMetadataPiece(tr_torrent cons
+         return {};
+     }
+ 
+-    auto const n_pieces = std::max(1, static_cast<int>(tor->infoDictSize() / METADATA_PIECE_SIZE));
++    auto const n_pieces = std::max(1, div_ceil(tor->infoDictSize(), METADATA_PIECE_SIZE));
+     if (piece < 0 || piece >= n_pieces)
+     {
+         return {};

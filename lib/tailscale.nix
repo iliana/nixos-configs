@@ -7,9 +7,15 @@
   options = {
     iliana.tailscale.acceptRoutes = lib.mkOption {
       default = false;
+      type = lib.types.bool;
     };
-    iliana.tailscale.tags = lib.mkOption {
-      default = ["tag:server"];
+    iliana.tailscale.advertiseServerTag = lib.mkOption {
+      default = true;
+      type = lib.types.bool;
+    };
+    iliana.tailscale.exitNode = lib.mkOption {
+      default = null;
+      type = with lib.types; nullOr string;
     };
     iliana.tailscale.cert = {
       enable = lib.mkOption {default = false;};
@@ -51,15 +57,17 @@
         wants = ["tailscale.service" "network-online.target"];
         wantedBy = ["multi-user.target"];
 
+        path = [config.services.tailscale.package];
+        script = ''
+          tailscale up \
+            --accept-routes=${lib.boolToString cfg.acceptRoutes} \
+            --advertise-tags=${lib.optionalString cfg.advertiseServerTag "tag:server"} \
+            --exit-node=${lib.optionalString (cfg.exitNode != null) cfg.exitNode} \
+            --ssh=true
+        '';
+
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = let
-            advertiseTags =
-              lib.optionalString
-              (builtins.isList cfg.tags && builtins.length cfg.tags > 0)
-              "--advertise-tags=${builtins.concatStringsSep "," cfg.tags}";
-            acceptRoutes = lib.optionalString cfg.acceptRoutes "--accept-routes";
-          in "${lib.getExe config.services.tailscale.package} up --ssh ${advertiseTags} ${acceptRoutes}";
           RemainAfterExit = true;
           StandardOutput = "journal+console";
           StandardError = "inherit";

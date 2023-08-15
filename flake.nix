@@ -34,16 +34,19 @@
         craneLib = crane.mkLib pkgs;
       in
         {
-          inherit (pkgs) helix nix-eval-jobs nvd restic;
-          inherit (nixpkgs-unstable.legacyPackages.${system}) weechat;
+          inherit (pkgs) helix restic;
         }
         // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          inherit (pkgs) nix-eval-jobs nvd;
+          inherit (nixpkgs-unstable.legacyPackages.${system}) weechat;
+
           caddy = pkgs.callPackage ./packages/caddy.nix {};
           emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
           litterbox = pkgs.callPackage ./packages/litterbox.nix {};
           oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
           pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};
           pounce = pkgs.callPackage ./packages/pounce.nix {};
+          transmission = pkgs.callPackage ./packages/transmission.nix {inherit (nixpkgs-unstable.legacyPackages.${system}) transmission_4;};
         };
 
       nixosImports = [
@@ -61,7 +64,9 @@
         hydrangea = ./hosts/hydrangea;
         lernie = ./hosts/lernie.nix;
         megaera = ./hosts/megaera.nix;
+        poffertje = ./hosts/poffertje.nix;
         skyrabbit = ./hosts/skyrabbit;
+        stroopwafel = ./hosts/stroopwafel;
         vermilion = ./hosts/vermilion;
       };
 
