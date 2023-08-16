@@ -40,6 +40,7 @@
           inherit (pkgs) nix-eval-jobs nvd;
           inherit (nixpkgs-unstable.legacyPackages.${system}) weechat;
 
+          bandcamp-dl = pkgs.callPackage ./packages/bandcamp-dl.nix {};
           caddy = pkgs.callPackage ./packages/caddy.nix {};
           emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
           litterbox = pkgs.callPackage ./packages/litterbox.nix {};

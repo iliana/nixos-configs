@@ -2,11 +2,29 @@
   config,
   lib,
   myPkgs,
+  pkgs,
   ...
-}: {
+}: let
+  myIp = "100.75.61.128";
+in {
   imports = [
     ./hardware/virt-v1.nix
     ../lib/media.nix
+  ];
+
+  users.users.iliana.packages = [
+    (pkgs.writeShellApplication {
+      name = "tx-untracked";
+      runtimeInputs = [pkgs.jq];
+      text = ''
+        session_id=$(curl -s -o /dev/null -w '%header{x-transmission-session-id}' http://${myIp}:9091/transmission/rpc)
+        comm -23 \
+            <(find /media/tx -type f | sort) \
+            <(curl -fsS http://${myIp}:9091/transmission/rpc -H "x-transmission-session-id: $session_id" \
+                --json '{"method":"torrent-get","arguments":{"fields":["downloadDir","files"]}}' | \
+                jq -r '.arguments.torrents[] | .downloadDir as $dir | .files[] | $dir + "/" + .name' | sort)
+      '';
+    })
   ];
 
   services.transmission = {
@@ -20,7 +38,7 @@
       incomplete-dir-enabled = false;
       peer-port = 17259;
       port-forwarding-enabled = false;
-      rpc-bind-address = "100.75.61.128";
+      rpc-bind-address = myIp;
       rpc-host-whitelist = "${config.networking.hostName},${config.networking.hostName}.cat-herring.ts.net";
       rpc-whitelist-enabled = false; # because we bind to a tailscale address
       torrent-added-verify-mode = "full";

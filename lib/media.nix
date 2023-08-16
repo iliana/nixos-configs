@@ -1,8 +1,7 @@
 {config, ...}: {
   fileSystems."/media" = {
-    fsType = "9p";
+    fsType = "virtiofs";
     device = "media";
-    options = ["trans=virtio" "version=9p2000.L"];
   };
 
   users.users.iliana.uid = 1000;
