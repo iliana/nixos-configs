@@ -1,0 +1,15 @@
+checks.x86_64-linux.pdns /nix/store/g67nppw8js0hwizsl8rchilg40n6ldis-vm-test-run-pdns
+packages.aarch64-linux.helix /nix/store/x7lha8wwrj1ac3hj2v1nav4jbhlgf17f-helix-23.05
+packages.aarch64-linux.restic /nix/store/r3wqcyqci35s9ybzrv6f523c9bv01np5-restic-0.15.2
+packages.x86_64-linux.bandcamp-dl /nix/store/ca1pdh3mprhy81jqf2vl1vw76hkawz10-bandcamp-dl-unstable-2023-04-09
+packages.x86_64-linux.emojos-dot-in /nix/store/vfkxw9022fq2l5wn3fqy3qbk06rr27jj-emojos-dot-in-2.0.0
+packages.x86_64-linux.helix /nix/store/kiai99m6c3na4v4ly4hwi6yjdivcmpq1-helix-23.05
+packages.x86_64-linux.litterbox /nix/store/6c5p74ns4c7rpispl3yfzjv6z0c42nwi-litterbox-1.9
+packages.x86_64-linux.nix-eval-jobs /nix/store/v665s1mvka26mzf05k12pxd8v6zkprzp-nix-eval-jobs-2.14.0
+packages.x86_64-linux.nvd /nix/store/dqv9i2b69i8g2cgjxyyw6qs4c0qa4f5s-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/1wqyvgqn97j04wq4vxihlgbvxl332h18-oxide-0.1.0
+packages.x86_64-linux.pkgf /nix/store/gnfw5k5g5i0a1xwh8zrf4rpvgqdq45sa-pkgf-0.1.0
+packages.x86_64-linux.pounce /nix/store/n9dj2ci2074w3kvcgqm5dci7dyifzv7w-pounce-3.1
+packages.x86_64-linux.restic /nix/store/0lz2kvjpmgyq2ygspd10yybbhygkb5mw-restic-0.15.2
+packages.x86_64-linux.transmission /nix/store/c380cvzqg99y591hnlin55qiv40fm2g9-transmission-4.0.3
+packages.x86_64-linux.weechat /nix/store/w9hmc8bsslxky52694v2c05fnznk5ggj-weechat-bin-env-4.0.3
