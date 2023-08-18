@@ -13,7 +13,17 @@
     LoadCredentialEncrypted = "config:${./mocha0.ovpn.enc}";
   };
 
-  iliana.tailscale.advertiseRoutes = ["172.20.0.0/16" "172.30.0.0/16" "172.31.0.0/16"];
+  iliana.tailscale = let
+    routes = ["172.20.0.0/16" "172.30.0.0/16" "172.31.0.0/16"];
+  in {
+    advertiseRoutes = routes;
+    rules.acls = builtins.map (proto: {
+      action = "accept";
+      src = ["iliana@github"];
+      inherit proto;
+      dst = routes;
+    }) ["tcp" "udp"];
+  };
   boot.kernel.sysctl."net.ipv4.ip_forward" = "1";
 
   system.stateVersion = "23.05";

@@ -68,5 +68,41 @@
 
     networking.firewall.allowedTCPPorts = [53];
     networking.firewall.allowedUDPPorts = [53];
+
+    iliana.tailscale.rules = {
+      acls =
+        # Our internal `home.arpa` zone is served by this setup, so all hosts on
+        # the tailnet need to be able to reach `tag:pdns:53`.
+        builtins.map (proto: {
+          action = "accept";
+          src = ["*"];
+          inherit proto;
+          dst = ["${config.networking.hostName}:53"];
+        }) ["tcp" "udp"]
+        ++ [
+          # Access to monitor.
+          {
+            action = "accept";
+            src = ["iliana@github"];
+            proto = "tcp";
+            dst = ["${config.networking.hostName}:8081"];
+          }
+          # pdns-deploy SSH.
+          {
+            action = "accept";
+            src = ["tag:pdns-deploy"];
+            proto = "tcp";
+            dst = ["${config.networking.hostName}:22"];
+          }
+        ];
+      ssh = [
+        {
+          action = "accept";
+          src = ["iliana@github" "tag:pdns-deploy"];
+          dst = [config.networking.hostName];
+          users = ["pdns-deploy"];
+        }
+      ];
+    };
   };
 }

@@ -37,6 +37,33 @@
         readOnly = true;
       };
     };
+
+    rules = {
+      acls = lib.mkOption {
+        default = [];
+        type = with lib.types;
+          listOf (submodule {
+            options = {
+              action = lib.mkOption {type = enum ["accept"];};
+              src = lib.mkOption {type = listOf str;};
+              proto = lib.mkOption {type = str;};
+              dst = lib.mkOption {type = listOf str;};
+            };
+          });
+      };
+      ssh = lib.mkOption {
+        default = [];
+        type = with lib.types;
+          listOf (submodule {
+            options = {
+              action = lib.mkOption {type = enum ["accept"];};
+              src = lib.mkOption {type = listOf str;};
+              dst = lib.mkOption {type = listOf str;};
+              users = lib.mkOption {type = listOf str;};
+            };
+          });
+      };
+    };
   };
 
   config = let

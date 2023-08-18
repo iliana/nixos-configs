@@ -81,6 +81,11 @@
           else check
         ) (args name system)))
     checks;
+
+  myTailscaleRules = lib.attrsets.genAttrs ["acls" "ssh"] (attr:
+    lib.flatten (lib.mapAttrsToList
+      (_: sys: sys.config.iliana.tailscale.rules."${attr}")
+      myNixosConfigs));
 in
   lib.attrsets.recursiveUpdate
   (flake-utils.lib.eachSystem systems eachSystem)
@@ -93,4 +98,5 @@ in
       nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) myNixosConfigs;
       checks = myChecks;
     };
+    tailscaleRules = myTailscaleRules;
   }
