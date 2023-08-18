@@ -8,6 +8,7 @@ nixosConfigurations.mocha /nix/store/79n6nc4waxbpcpfpiv0vmsdmxj5i1d51-nixos-syst
 nixosConfigurations.poffertje /nix/store/039zfj2y82j1liyf5hbj19xfkfdjh893-nixos-system-poffertje-23.05.20230816.b30c686
 nixosConfigurations.skyrabbit /nix/store/v5wmvc1l44ba3klkcm9s1kbnkw04pifm-nixos-system-skyrabbit-23.05.20230816.b30c686
 nixosConfigurations.stroopwafel /nix/store/bidvhaa6vdfw5h9jiy119aiq0mr2lwin-nixos-system-stroopwafel-23.05.20230816.b30c686
+nixosConfigurations.tisiphone /nix/store/9r2gzaa6fa4pk35qlpnzba8hjgab09q9-nixos-system-tisiphone-23.05.20230816.b30c686
 nixosConfigurations.vermilion /nix/store/mdb99s1wd39n3pzdhmjjk2gdg9dcyx4z-nixos-system-vermilion-23.05.20230816.b30c686
 packages.aarch64-linux.helix /nix/store/x7lha8wwrj1ac3hj2v1nav4jbhlgf17f-helix-23.05
 packages.aarch64-linux.restic /nix/store/r3wqcyqci35s9ybzrv6f523c9bv01np5-restic-0.15.2
