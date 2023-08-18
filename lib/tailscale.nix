@@ -4,20 +4,25 @@
   pkgs,
   ...
 }: {
-  options = {
-    iliana.tailscale.acceptRoutes = lib.mkOption {
+  options.iliana.tailscale = {
+    acceptRoutes = lib.mkOption {
       default = false;
       type = lib.types.bool;
     };
-    iliana.tailscale.advertiseServerTag = lib.mkOption {
+    advertiseRoutes = lib.mkOption {
+      default = [];
+      type = with lib.types; listOf string;
+    };
+    advertiseServerTag = lib.mkOption {
       default = true;
       type = lib.types.bool;
     };
-    iliana.tailscale.exitNode = lib.mkOption {
+    exitNode = lib.mkOption {
       default = null;
       type = with lib.types; nullOr string;
     };
-    iliana.tailscale.cert = {
+
+    cert = {
       enable = lib.mkOption {default = false;};
       users = lib.mkOption {
         default = [];
@@ -61,6 +66,7 @@
         script = ''
           tailscale up \
             --accept-routes=${lib.boolToString cfg.acceptRoutes} \
+            --advertise-routes=${builtins.concatStringsSep "," cfg.advertiseRoutes} \
             --advertise-tags=${lib.optionalString cfg.advertiseServerTag "tag:server"} \
             --exit-node=${lib.optionalString (cfg.exitNode != null) cfg.exitNode} \
             --ssh=true

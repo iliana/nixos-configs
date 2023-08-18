@@ -65,6 +65,7 @@
         hydrangea = ./hosts/hydrangea;
         lernie = ./hosts/lernie.nix;
         megaera = ./hosts/megaera.nix;
+        mocha = ./hosts/mocha;
         poffertje = ./hosts/poffertje.nix;
         skyrabbit = ./hosts/skyrabbit;
         stroopwafel = ./hosts/stroopwafel;
