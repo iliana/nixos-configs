@@ -42,7 +42,7 @@
     # deprecated rube goldberg machine for backups
     {
       action = "accept";
-      src = ["100.73.83.89" "100.121.237.95" "100.108.35.69"];
+      src = ["100.73.83.89" "100.108.35.69"];
       proto = "tcp";
       dst = ["100.117.4.72:443"];
     }
