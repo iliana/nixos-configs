@@ -38,7 +38,7 @@
       };
     };
 
-    rules = {
+    policy = {
       acls = lib.mkOption {
         default = [];
         type = with lib.types;
@@ -46,7 +46,7 @@
             options = {
               action = lib.mkOption {type = enum ["accept"];};
               src = lib.mkOption {type = listOf str;};
-              proto = lib.mkOption {type = str;};
+              proto = lib.mkOption {type = enum ["tcp" "udp"];};
               dst = lib.mkOption {type = listOf str;};
             };
           });

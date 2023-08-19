@@ -191,4 +191,12 @@ in {
 
   iliana.tailscale.cert.enable = true;
   iliana.tailscale.cert.users = ["pounce"];
+  iliana.tailscale.policy.acls =
+    lib.mapAttrsToList (_: network: {
+      action = "accept";
+      src = ["autogroup:owner"];
+      proto = "tcp";
+      dst = ["${config.networking.hostName}:${builtins.toString network.local-port}"];
+    })
+    networks;
 }

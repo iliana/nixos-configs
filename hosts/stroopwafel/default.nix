@@ -1,4 +1,5 @@
 {
+  config,
   myPkgs,
   pkgs,
   ...
@@ -35,6 +36,15 @@
       browse
     }
   '';
+
+  iliana.tailscale.policy.acls = [
+    {
+      action = "accept";
+      src = ["autogroup:owner" "autogroup:shared" "tag:tartarus"];
+      proto = "tcp";
+      dst = ["${config.networking.hostName}:80"];
+    }
+  ];
 
   system.stateVersion = "23.05";
 }

@@ -6,6 +6,7 @@
   ...
 }: let
   myIp = "100.75.61.128";
+  peerPort = 17259;
 in {
   imports = [
     ./hardware/virt-v1.nix
@@ -36,7 +37,7 @@ in {
     settings = {
       download-dir = "/media/tx";
       incomplete-dir-enabled = false;
-      peer-port = 17259;
+      peer-port = peerPort;
       port-forwarding-enabled = false;
       rpc-bind-address = myIp;
       rpc-host-whitelist = "${config.networking.hostName},${config.networking.hostName}.cat-herring.ts.net";
@@ -56,6 +57,29 @@ in {
   ];
 
   iliana.tailscale.exitNode = "gaia";
+  iliana.tailscale.policy.acls =
+    lib.flatten (builtins.map (proto: [
+      {
+        action = "accept";
+        src = [config.networking.hostName];
+        inherit proto;
+        dst = ["autogroup:internet:*"];
+      }
+      {
+        action = "accept";
+        src = ["tag:gaia"];
+        inherit proto;
+        dst = ["${config.networking.hostName}:${builtins.toString peerPort}"];
+      }
+    ]) ["tcp" "udp"])
+    ++ [
+      {
+        action = "accept";
+        src = ["autogroup:owner"];
+        proto = "tcp";
+        dst = ["${config.networking.hostName}:9091"];
+      }
+    ];
 
   system.stateVersion = "23.05";
 }

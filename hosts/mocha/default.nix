@@ -17,9 +17,9 @@
     routes = ["172.20.0.0/16" "172.30.0.0/16" "172.31.0.0/16"];
   in {
     advertiseRoutes = routes;
-    rules.acls = builtins.map (proto: {
+    policy.acls = builtins.map (proto: {
       action = "accept";
-      src = ["iliana@github"];
+      src = ["autogroup:owner"];
       inherit proto;
       dst = routes;
     }) ["tcp" "udp"];

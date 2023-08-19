@@ -14,5 +14,24 @@
     users.groups.build = {};
 
     nix.settings.trusted-users = ["root" "build"];
+
+    iliana.tailscale.policy = {
+      acls = [
+        {
+          action = "accept";
+          src = ["tag:nix-build-ci"];
+          proto = "tcp";
+          dst = ["${config.networking.hostName}:22"];
+        }
+      ];
+      ssh = [
+        {
+          action = "accept";
+          src = ["autogroup:owner" "tag:nix-build-ci"];
+          dst = [config.networking.hostName];
+          users = ["build"];
+        }
+      ];
+    };
   };
 }

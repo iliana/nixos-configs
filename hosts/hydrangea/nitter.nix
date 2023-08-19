@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   iliana.caddy.virtualHosts."nitter.home.arpa:80" = let
     # https://github.com/zedeus/nitter/wiki/Instances
     # Various instances within North America.
@@ -52,4 +56,13 @@
       header_down Which-Upstream {upstream_hostport}
     }
   '';
+
+  iliana.tailscale.policy.acls = [
+    {
+      action = "accept";
+      src = ["autogroup:owner"];
+      proto = "tcp";
+      dst = ["${config.networking.hostName}:80"];
+    }
+  ];
 }

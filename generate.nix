@@ -82,9 +82,9 @@
         ) (args name system)))
     checks;
 
-  myTailscaleRules = lib.attrsets.genAttrs ["acls" "ssh"] (attr:
+  myTailscalePolicy = lib.attrsets.genAttrs ["acls" "ssh"] (attr:
     lib.flatten (lib.mapAttrsToList
-      (_: sys: sys.config.iliana.tailscale.rules."${attr}")
+      (_: sys: sys.config.iliana.tailscale.policy."${attr}")
       myNixosConfigs));
 in
   lib.attrsets.recursiveUpdate
@@ -98,5 +98,5 @@ in
       nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) myNixosConfigs;
       checks = myChecks;
     };
-    tailscaleRules = myTailscaleRules;
+    tailscalePolicy = myTailscalePolicy;
   }
