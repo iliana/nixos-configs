@@ -60,7 +60,7 @@
   iliana.tailscale.policy.acls = [
     {
       action = "accept";
-      src = ["autogroup:owner"];
+      src = ["iliana@github"];
       proto = "tcp";
       dst = ["${config.networking.hostName}:80"];
     }

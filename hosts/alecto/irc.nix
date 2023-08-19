@@ -194,7 +194,7 @@ in {
   iliana.tailscale.policy.acls =
     lib.mapAttrsToList (_: network: {
       action = "accept";
-      src = ["autogroup:owner"];
+      src = ["iliana@github"];
       proto = "tcp";
       dst = ["${config.networking.hostName}:${builtins.toString network.local-port}"];
     })

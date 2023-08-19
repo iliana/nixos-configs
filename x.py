@@ -3,6 +3,7 @@
 
 import argparse
 import functools
+import ipaddress
 import json
 import os
 import secrets
@@ -10,6 +11,8 @@ import socket
 import string
 import subprocess
 import tempfile
+from functools import cache
+from pathlib import Path
 
 GIT_FLAKE = f"git+file:{os.path.dirname(__file__)}"
 subcommands = {}
@@ -318,6 +321,26 @@ def backup_setup(args):
 ########################################################################################
 
 
+@subcommand
+def update_hosts_file(_args):
+    def is_ipv4(address):
+        return ipaddress.ip_address(address).version == 4
+
+    path = Path(__file__).parent / "lib" / "hosts.json"
+    peers = json.loads(run(["tailscale", "status", "--json"]))["Peer"].values()
+    output = sorted(
+        (peer["HostName"], next(filter(is_ipv4, peer["TailscaleIPs"])))
+        for peer in peers
+        if peer["HostName"] in all_hosts()
+    )
+    with open(path, "w", encoding="utf-8") as file:
+        json.dump(dict(output), file, indent=2)
+        file.write("\n")
+
+
+########################################################################################
+
+
 def color(text, color_name):
     value = {
         "red": 31,
@@ -481,6 +504,7 @@ def nix_eval(installable, apply=None):
     return json.loads(run(args))
 
 
+@cache
 def all_hosts():
     return nix_eval(".#nixosConfigurations", "builtins.attrNames")
 

@@ -1,0 +1,89 @@
+# Tailscale policy rules that don't fit in any other modules.
+{
+  acls = [
+    {
+      action = "accept";
+      src = ["iliana@github"];
+      proto = ["tcp" "udp"];
+      dst = [
+        "iliana@github:*"
+        "autogroup:internet:*"
+        "100.111.252.113:*"
+
+        # sambaaaaa
+        "100.108.35.69:139"
+        "100.108.35.69:445"
+      ];
+    }
+    {
+      action = "accept";
+      src = ["iliana@github"];
+      proto = "tcp";
+      dst = [
+        "tag:home-assistant:80"
+        "tag:server:22"
+      ];
+    }
+    {
+      action = "accept";
+      src = ["autogroup:shared"];
+      proto = "tcp";
+      dst = ["100.113.241.94:22"];
+    }
+
+    # used by old web server, will eventually move to hydrangea's module
+    {
+      action = "accept";
+      src = ["tag:www-deploy"];
+      proto = "tcp";
+      dst = ["100.73.83.89:22"];
+    }
+
+    # deprecated rube goldberg machine for backups
+    {
+      action = "accept";
+      src = ["100.73.83.89" "100.121.237.95" "100.108.35.69"];
+      proto = "tcp";
+      dst = ["100.117.4.72:443"];
+    }
+  ];
+
+  ssh = [
+    {
+      action = "accept";
+      src = ["iliana@github"];
+      dst = ["iliana@github" "tag:server"];
+      users = ["iliana"];
+    }
+
+    # used by old web server, will eventually move to hydrangea's module
+    {
+      action = "accept";
+      src = ["iliana@github" "tag:www-deploy"];
+      dst = ["tag:www"];
+      users = ["www-deploy"];
+    }
+  ];
+
+  tags = [
+    "tag:home-assistant"
+    "tag:server"
+    "tag:tartarus"
+
+    # used by old web server, will eventually move to hydrangea's module
+    "tag:www"
+    "tag:www-deploy"
+  ];
+
+  tests = [
+    {
+      user = "iliana@github";
+      allow = ["iliana@github:1312" "alecto:53" "1.1.1.1:443" "172.20.3.69:22"];
+    }
+    {
+      user = "tag:server";
+      allow = ["alecto:53"];
+      deny = ["iliana@github:22" "tag:server:22" "1.1.1.1:443" "172.20.3.69:22"];
+    }
+  ];
+}

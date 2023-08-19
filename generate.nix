@@ -82,10 +82,33 @@
         ) (args name system)))
     checks;
 
-  myTailscalePolicy = lib.attrsets.genAttrs ["acls" "ssh"] (attr:
-    lib.flatten (lib.mapAttrsToList
-      (_: sys: sys.config.iliana.tailscale.policy."${attr}")
-      myNixosConfigs));
+  myTailscalePolicy = let
+    extraPolicy = import ./tailscale-policy.nix;
+    configs =
+      [
+        # elaborate way of ensuring ./tailscale-policy.nix matches our schema
+        (lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = nixosImports ++ [{iliana.tailscale.policy = {inherit (extraPolicy) acls ssh tags;};}];
+        })
+      ]
+      ++ builtins.attrValues myNixosConfigs;
+    combinedPolicy =
+      lib.attrsets.genAttrs ["acls" "ssh" "tags"]
+      (attr: lib.concatMap (sys: sys.config.iliana.tailscale.policy.${attr}) configs);
+  in {
+    inherit (combinedPolicy) ssh;
+    inherit (extraPolicy) tests;
+    acls =
+      builtins.map
+      (acl:
+        if acl.proto == ["tcp" "udp"]
+        then builtins.removeAttrs acl ["proto"]
+        else acl)
+      combinedPolicy.acls;
+    hosts = lib.importJSON ./lib/hosts.json;
+    tagOwners = lib.genAttrs combinedPolicy.tags (_: ["iliana@github"]);
+  };
 in
   lib.attrsets.recursiveUpdate
   (flake-utils.lib.eachSystem systems eachSystem)

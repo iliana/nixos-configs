@@ -27,11 +27,12 @@
       ssh = [
         {
           action = "accept";
-          src = ["autogroup:owner" "tag:nix-build-ci"];
-          dst = [config.networking.hostName];
+          src = ["iliana@github" "tag:nix-build-ci"];
+          dst = ["tag:nix-build"];
           users = ["build"];
         }
       ];
+      tags = ["tag:nix-build" "tag:nix-build-ci"];
     };
   };
 }

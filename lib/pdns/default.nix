@@ -70,39 +70,39 @@
     networking.firewall.allowedUDPPorts = [53];
 
     iliana.tailscale.policy = {
-      acls =
+      acls = [
         # Our internal `home.arpa` zone is served by this setup, so all hosts on
         # the tailnet need to be able to reach `tag:pdns:53`.
-        builtins.map (proto: {
+        {
           action = "accept";
           src = ["*"];
-          inherit proto;
+          proto = ["tcp" "udp"];
           dst = ["${config.networking.hostName}:53"];
-        }) ["tcp" "udp"]
-        ++ [
-          # Access to monitor.
-          {
-            action = "accept";
-            src = ["autogroup:owner"];
-            proto = "tcp";
-            dst = ["${config.networking.hostName}:8081"];
-          }
-          # pdns-deploy SSH.
-          {
-            action = "accept";
-            src = ["tag:pdns-deploy"];
-            proto = "tcp";
-            dst = ["${config.networking.hostName}:22"];
-          }
-        ];
+        }
+        # Access to monitor.
+        {
+          action = "accept";
+          src = ["iliana@github"];
+          proto = "tcp";
+          dst = ["${config.networking.hostName}:8081"];
+        }
+        # pdns-deploy SSH.
+        {
+          action = "accept";
+          src = ["tag:pdns-admin"];
+          proto = "tcp";
+          dst = ["${config.networking.hostName}:22"];
+        }
+      ];
       ssh = [
         {
           action = "accept";
-          src = ["autogroup:owner" "tag:pdns-deploy"];
-          dst = [config.networking.hostName];
+          src = ["iliana@github" "tag:pdns-admin"];
+          dst = ["tag:pdns"];
           users = ["pdns-deploy"];
         }
       ];
+      tags = ["tag:pdns" "tag:pdns-admin"];
     };
   };
 }

@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  myIp = "100.75.61.128";
+  myIp = (lib.importJSON ../lib/hosts.json).${config.networking.hostName};
   peerPort = 17259;
 in {
   imports = [
@@ -57,29 +57,27 @@ in {
   ];
 
   iliana.tailscale.exitNode = "gaia";
-  iliana.tailscale.policy.acls =
-    lib.flatten (builtins.map (proto: [
-      {
-        action = "accept";
-        src = [config.networking.hostName];
-        inherit proto;
-        dst = ["autogroup:internet:*"];
-      }
-      {
-        action = "accept";
-        src = ["tag:gaia"];
-        inherit proto;
-        dst = ["${config.networking.hostName}:${builtins.toString peerPort}"];
-      }
-    ]) ["tcp" "udp"])
-    ++ [
-      {
-        action = "accept";
-        src = ["autogroup:owner"];
-        proto = "tcp";
-        dst = ["${config.networking.hostName}:9091"];
-      }
-    ];
+  iliana.tailscale.policy.acls = [
+    {
+      action = "accept";
+      src = [config.networking.hostName];
+      proto = ["tcp" "udp"];
+      dst = ["autogroup:internet:*"];
+    }
+    {
+      action = "accept";
+      src = ["tag:gaia"];
+      proto = "tcp";
+      dst = ["${config.networking.hostName}:${builtins.toString peerPort}"];
+    }
+    {
+      action = "accept";
+      src = ["iliana@github"];
+      proto = "tcp";
+      dst = ["${config.networking.hostName}:9091"];
+    }
+  ];
+  iliana.tailscale.policy.tags = ["tag:gaia"];
 
   system.stateVersion = "23.05";
 }

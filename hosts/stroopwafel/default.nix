@@ -40,7 +40,7 @@
   iliana.tailscale.policy.acls = [
     {
       action = "accept";
-      src = ["autogroup:owner" "autogroup:shared" "tag:tartarus"];
+      src = ["iliana@github" "autogroup:shared" "tag:tartarus"];
       proto = "tcp";
       dst = ["${config.networking.hostName}:80"];
     }
