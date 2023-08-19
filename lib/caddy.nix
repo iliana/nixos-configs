@@ -25,6 +25,15 @@
           localhost = port: ''
             reverse_proxy localhost:${toString port}
           '';
+          redirMap = map: ''
+            route {
+              ${builtins.concatStringsSep "\n" (lib.mapAttrsToList (matcher: to: "redir ${matcher} ${to}") map)}
+              error 404
+            }
+          '';
+          redirPrefix = prefix: ''
+            redir ${prefix}{uri}
+          '';
           serve = path: ''
             root * ${path}
             file_server

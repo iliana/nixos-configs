@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   imports = [
@@ -8,6 +9,7 @@
 
     ./emojos-dot-in.nix
     ./nitter.nix
+    ./old-blog.nix
     ./pkgf.nix
     ./writefreely.nix
     ./www-deploy.nix
@@ -15,15 +17,34 @@
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
     "209.251.245.209:80" = serve "/var/www/209.251.245.209";
-    "beefymiracle.org" = "redir https://web.archive.org/web/20230101000000/https://beefymiracle.org{uri}";
+    "beefymiracle.org" = redirPrefix "https://web.archive.org/web/20230101000000/https://beefymiracle.org";
     "files.iliana.fyi" = serve "/var/www/files.iliana.fyi";
     "haha.business" = serve ./haha.business;
     "hydrangea.ili.fyi" = handle "/yo" "respond yo";
+    "iliana.seattle.wa.us" = redirMap {"/" = "https://iliana.fyi";};
     "space.pizza" = serve ./space.pizza;
 
     "buttslol.net" = ''
       redir / https://iliana.fyi
       ${serve "/var/www/buttslol.net"}
+    '';
+
+    "ili.fyi" = redirMap {
+      "/" = "https://iliana.fyi";
+      "/lowercase" = "https://iliana.fyi/lowercase/";
+      "/pgp" = "https://iliana.fyi/8631E022.txt";
+    };
+
+    "qalico.net" = let
+      client = builtins.toJSON {"m.homeserver" = {base_url = "https://matrix.qalico.net";};};
+      server = builtins.toJSON {"m.server" = "matrix.qalico.net:443";};
+    in ''
+      header /.well-known/matrix/client access-control-allow-origin "*"
+      ${serve (pkgs.runCommandLocal "qalico.net" {} ''
+        mkdir -p $out/.well-known/matrix
+        echo -n ${lib.escapeShellArg client} >$out/.well-known/matrix/client
+        echo -n ${lib.escapeShellArg server} >$out/.well-known/matrix/server
+      '')}
     '';
   };
 
