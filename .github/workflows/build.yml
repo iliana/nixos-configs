@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
 env:
-  NIX_VERSION: "2.13.3"
+  NIX_VERSION: "2.13.5"
 jobs:
   build:
     runs-on: ubuntu-latest
