@@ -5,6 +5,7 @@ on:
   push:
 env:
   NIX_VERSION: "2.13.5"
+  TAILSCALE_VERSION: "1.40.1"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,7 +20,7 @@ jobs:
           TS_EXPERIMENT_OAUTH_AUTHKEY: true
         with:
           authkey: '${{ secrets.TS_OAUTH_CLIENT_SECRET }}'
-          version: 1.40.1
+          version: '${{ env.TAILSCALE_VERSION }}'
           args: --advertise-tags tag:nix-build-ci
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v21
@@ -66,3 +67,24 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.B2_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_APP_KEY }}
+
+  tailscale-acl:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: Do not do a concurrency please.
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v21
+        with:
+          install_url: https://releases.nixos.org/nix/nix-${{ env.NIX_VERSION }}/install
+      - name: Install gitops-pusher
+        run: go install tailscale.com/cmd/gitops-pusher@v${{ env.TAILSCALE_VERSION }}
+      - name: Generate tailnet policy
+        run: |
+          echo "// This tailnet's ACLs are maintained in https://github.com/iliana/nixos-configs" > policy.hujson
+          nix eval --json .#tailscalePolicy >> policy.hujson
+      - name: Deploy tailnet policy
+        run: ~/go/bin/gitops-pusher --policy-file policy.hujson apply
+        env:
+          TS_OAUTH_ID: '${{ secrets.TS_OAUTH_CLIENT_ID }}'
+          TS_OAUTH_SECRET: '${{ secrets.TS_OAUTH_CLIENT_SECRET }}'
