@@ -10,6 +10,7 @@
     ./nitter.nix
     ./pkgf.nix
     ./writefreely.nix
+    ./www-deploy.nix
   ];
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {

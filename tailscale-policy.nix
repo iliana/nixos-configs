@@ -31,14 +31,6 @@
       dst = ["100.113.241.94:22"];
     }
 
-    # used by old web server, will eventually move to hydrangea's module
-    {
-      action = "accept";
-      src = ["tag:www-deploy"];
-      proto = "tcp";
-      dst = ["100.73.83.89:22"];
-    }
-
     # deprecated rube goldberg machine for backups
     {
       action = "accept";
@@ -55,24 +47,12 @@
       dst = ["iliana@github" "tag:server"];
       users = ["iliana"];
     }
-
-    # used by old web server, will eventually move to hydrangea's module
-    {
-      action = "accept";
-      src = ["iliana@github" "tag:www-deploy"];
-      dst = ["tag:www"];
-      users = ["www-deploy"];
-    }
   ];
 
   tags = [
     "tag:home-assistant"
     "tag:server"
     "tag:tartarus"
-
-    # used by old web server, will eventually move to hydrangea's module
-    "tag:www"
-    "tag:www-deploy"
   ];
 
   tests = [
