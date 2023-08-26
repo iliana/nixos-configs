@@ -27,11 +27,11 @@
     "dotfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1691700047,
-        "narHash": "sha256-V+qAz6h5t4C4EtqmFrQlGcCDztlhyCuG6oPSpGN61qQ=",
+        "lastModified": 1693090077,
+        "narHash": "sha256-O2s3NgllWZW/baDDaP7EGql+Dt6ElNz8D4tnOluHqns=",
         "ref": "refs/heads/main",
-        "rev": "9f7c7fbb72a29954436ab148a2d760f11fbfbf68",
-        "revCount": 210,
+        "rev": "575c8e1c50911968c2da80edebbde38733ef72ac",
+        "revCount": 212,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/iliana/dotfiles"
@@ -109,11 +109,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1692794066,
-        "narHash": "sha256-H0aG8r16dj0x/Wz6wQhQxc9V7AsObOiHPaKxQgH6Y08=",
+        "lastModified": 1692986144,
+        "narHash": "sha256-M4VFpy7Av9j+33HF5nIGm0k2+DXXW4qSSKdidIKg5jY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fc944919f743bb22379dddf18dcb72db6cff84aa",
+        "rev": "74e5bdc5478ebbe7ba5849f0d765f92757bb9dbf",
         "type": "github"
       },
       "original": {
@@ -125,11 +125,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1692913444,
-        "narHash": "sha256-1SvMQm2DwofNxXVtNWWtIcTh7GctEVrS/Xel/mdc6iY=",
+        "lastModified": 1693003285,
+        "narHash": "sha256-5nm4yrEHKupjn62MibENtfqlP6pWcRTuSKrMiH9bLkc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "18324978d632ffc55ef1d928e81630c620f4f447",
+        "rev": "5690c4271f2998c304a45c91a0aeb8fb69feaea7",
         "type": "github"
       },
       "original": {
