@@ -10,8 +10,6 @@
     dotfiles.flake = false;
     emojos-dot-in.url = "github:iliana/emojos.in";
     emojos-dot-in.flake = false;
-    oxide-cli.url = "github:oxidecomputer/oxide.rs/v0.1.0-beta.3";
-    oxide-cli.flake = false;
   };
 
   outputs = {
@@ -20,7 +18,6 @@
     impermanence,
     nixpkgs,
     nixpkgs-unstable,
-    oxide-cli,
     ...
   } @ inputs:
     import ./generate.nix {
@@ -42,7 +39,7 @@
           caddy = pkgs.callPackage ./packages/caddy.nix {};
           emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
           litterbox = pkgs.callPackage ./packages/litterbox.nix {};
-          oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib oxide-cli;};
+          oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib;};
           pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};
           pounce = pkgs.callPackage ./packages/pounce.nix {};
           transmission = pkgs.callPackage ./packages/transmission.nix {inherit (nixpkgs-unstable.legacyPackages.${system}) transmission_4;};

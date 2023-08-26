@@ -139,23 +139,6 @@
         "type": "github"
       }
     },
-    "oxide-cli": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1689884325,
-        "narHash": "sha256-/HunH3ZVuPyKRHQfzY0g2xok5VfosG7Mg5skgU0oDfg=",
-        "owner": "oxidecomputer",
-        "repo": "oxide.rs",
-        "rev": "f0ba6a2f9e2fd4365eae21e03f3458c8f653f969",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxidecomputer",
-        "ref": "v0.1.0-beta.3",
-        "repo": "oxide.rs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "crane": "crane",
@@ -163,8 +146,7 @@
         "emojos-dot-in": "emojos-dot-in",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable",
-        "oxide-cli": "oxide-cli"
+        "nixpkgs-unstable": "nixpkgs-unstable"
       }
     },
     "rust-overlay": {
