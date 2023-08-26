@@ -30,14 +30,6 @@
       proto = "tcp";
       dst = ["100.113.241.94:22"];
     }
-
-    # deprecated rube goldberg machine for backups
-    {
-      action = "accept";
-      src = ["100.73.83.89" "100.108.35.69"];
-      proto = "tcp";
-      dst = ["100.117.4.72:443"];
-    }
   ];
 
   ssh = [
