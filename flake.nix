@@ -2,7 +2,6 @@
   inputs = {
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
-    flake-utils.url = "github:numtide/flake-utils";
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -18,7 +17,6 @@
   outputs = {
     crane,
     emojos-dot-in,
-    flake-utils,
     impermanence,
     nixpkgs,
     nixpkgs-unstable,
@@ -26,7 +24,7 @@
     ...
   } @ inputs:
     import ./generate.nix {
-      inherit flake-utils nixpkgs;
+      inherit nixpkgs;
 
       systems = ["aarch64-linux" "x86_64-linux"];
 
@@ -76,10 +74,6 @@
       checks.x86_64-linux = {
         pdns = ./tests/pdns.nix;
         web = ./tests/web.nix;
-      };
-
-      eachSystem = system: {
-        formatter = nixpkgs.legacyPackages.${system}.alejandra;
       };
     };
 }

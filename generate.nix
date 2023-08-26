@@ -2,24 +2,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 {
-  flake-utils,
   nixpkgs,
   checks ? {},
-  eachSystem ? (system: {}),
   nixosConfigurations ? {},
   nixosImports ? [],
   nixosSpecialArgs ? (system: {}),
   overlays ? [],
   packages ? (system: pkgs: {}),
   setHostName ? true,
-  systems ? flake-utils.lib.defaultSystems,
+  systems,
   testModule ? (_: {}),
 }: let
   inherit (nixpkgs) lib;
-  genSystems = lib.attrsets.genAttrs systems;
+  eachSystem = lib.attrsets.genAttrs systems;
 
-  pkgs = genSystems (system: import nixpkgs {inherit system overlays;});
-  myPkgs = genSystems (system: packages system pkgs.${system});
+  pkgs = eachSystem (system: import nixpkgs {inherit system overlays;});
+  myPkgs = eachSystem (system: packages system pkgs.${system});
 
   mySystems =
     lib.concatMapAttrs
@@ -37,7 +35,7 @@
           ++ [config];
       }))
     nixosConfigurations;
-  specialArgs = genSystems (system:
+  specialArgs = eachSystem (system:
     nixosSpecialArgs system
     // {
       myPkgs = myPkgs.${system};
@@ -109,17 +107,15 @@
     hosts = lib.importJSON ./lib/hosts.json;
     tagOwners = lib.genAttrs combinedPolicy.tags (_: ["iliana@github"]);
   };
-in
-  lib.attrsets.recursiveUpdate
-  (flake-utils.lib.eachSystem systems eachSystem)
-  {
+in {
+  packages = myPkgs;
+  nixosConfigurations = myNixosConfigs;
+  checks = myChecks;
+  hydraJobs = {
     packages = myPkgs;
-    nixosConfigurations = myNixosConfigs;
+    nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) myNixosConfigs;
     checks = myChecks;
-    hydraJobs = {
-      packages = myPkgs;
-      nixosConfigurations = builtins.mapAttrs (_: sys: sys.config.system.build.toplevel) myNixosConfigs;
-      checks = myChecks;
-    };
-    tailscalePolicy = myTailscalePolicy;
-  }
+  };
+  formatter = eachSystem (system: pkgs.${system}.alejandra);
+  tailscalePolicy = myTailscalePolicy;
+}
