@@ -1,4 +1,3 @@
-# TODO: set up `hooks/post-update` to run `git update-server-info`
 {
   config,
   lib,
@@ -64,5 +63,35 @@ in {
       user = "iliana";
       group = "users";
     }
+  ];
+
+  environment.etc.git-hooks.source = pkgs.linkFarm "git-hooks" {
+    "post-update" = pkgs.writeShellScript "post-update" ''
+      exec ${pkgs.gitMinimal}/bin/git update-server-info
+    '';
+  };
+  users.users.iliana.packages = [
+    (
+      pkgs.writeShellApplication rec {
+        name = "create-empty-repo";
+        runtimeInputs = [pkgs.gitMinimal];
+        text = ''
+          if [[ $# -lt 1 ]]; then
+            >&2 echo "usage: ${name} NAME"
+            exit 1
+          fi
+          repo_path="${gitDir}/$1.git"
+          if [[ -e "$repo_path" ]]; then
+            >&2 echo "error: $repo_path exists"
+            exit 2
+          fi
+          git init --bare "$repo_path"
+          touch "$repo_path/git-daemon-export-ok"
+          rm -rf "$repo_path/hooks"
+          ln -sv /etc/git-hooks "$repo_path/hooks"
+          git -C "$repo_path" update-server-info
+        '';
+      }
+    )
   ];
 }
