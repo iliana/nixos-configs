@@ -24,17 +24,10 @@
   });
 in {
   iliana.caddy.virtualHosts.${host} = let
-    tryServe = path: let
-      matcher = "@x${builtins.hashString "sha256" (builtins.toString path)}";
-    in ''
-      ${matcher} file {
-        root ${path}
-      }
-      file_server ${matcher} {
-        root ${path}
-      }
-      ${lib.optionalString (lib.hasPrefix builtins.storeDir path) "header ${matcher} -Last-Modified"}
-    '';
+    cgit = pkgs.symlinkJoin {
+      name = "cgit-merged";
+      paths = ["${pkgs.cgit-pink}/cgit" ./cgit-files];
+    };
   in ''
     root * ${gitDir}
     route {
@@ -45,12 +38,17 @@ in {
         }
       }
 
-      ${tryServe ./cgit-files}
-      ${tryServe (pkgs.cgit-pink + "/cgit")}
+      @static file {
+        root ${cgit}
+      }
+      file_server @static {
+        root ${cgit}
+      }
+      header @static -Last-Modified
 
       reverse_proxy * unix/${config.services.fcgiwrap.socketAddress} {
         transport fastcgi {
-          env SCRIPT_FILENAME ${pkgs.cgit-pink}/cgit/cgit.cgi
+          env SCRIPT_FILENAME ${cgit}/cgit.cgi
           env CGIT_CONFIG ${cgitCfg}
         }
       }
