@@ -7,6 +7,10 @@
   host = "git.iliana.fyi";
   gitDir = "/git";
 
+  cgit = pkgs.cgit-pink.overrideAttrs (old: {
+    patches = [./cgit-dark-mode.patch];
+  });
+
   cgitCfg = pkgs.writeText "cgitrc" (lib.generators.toKeyValue {} {
     clone-prefix = "https://${host}";
     css = "/custom.css";
@@ -19,35 +23,39 @@
     root-desc = "";
     root-title = "da git z0ne";
     scan-path = gitDir;
-    side-by-side-diffs = 1;
   });
 in {
   iliana.caddy.virtualHosts.${host} = let
-    cgit = pkgs.symlinkJoin {
-      name = "cgit-merged";
-      paths = ["${pkgs.cgit-pink}/cgit" ./cgit-files];
+    cgitFiles = pkgs.symlinkJoin {
+      name = "cgit-files";
+      paths = ["${cgit}/cgit" ./cgit-files];
+      postBuild = ''
+        rm $out/cgit.cgi
+      '';
     };
   in ''
     root * ${gitDir}
+
+    @gitUploadPack path /*/info/refs /*/git-upload-pack
+    @static file {
+      root ${cgitFiles}
+    }
+
+    header @static -last-modified
+    header @static etag `"${cgitFiles}"`
+
     route {
-      @gitUploadPack path /*/info/refs /*/git-upload-pack
       reverse_proxy @gitUploadPack unix/${config.services.fcgiwrap.socketAddress} {
         transport fastcgi {
           env SCRIPT_FILENAME ${pkgs.gitMinimal}/libexec/git-core/git-http-backend
         }
       }
-
-      @static file {
-        root ${cgit}
-      }
       file_server @static {
-        root ${cgit}
+        root ${cgitFiles}
       }
-      header @static -Last-Modified
-
       reverse_proxy * unix/${config.services.fcgiwrap.socketAddress} {
         transport fastcgi {
-          env SCRIPT_FILENAME ${cgit}/cgit.cgi
+          env SCRIPT_FILENAME ${cgit}/cgit/cgit.cgi
           env CGIT_CONFIG ${cgitCfg}
         }
       }

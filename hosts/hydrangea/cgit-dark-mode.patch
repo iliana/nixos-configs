@@ -1,0 +1,361 @@
+From 8ed1bef90f631989c0cadc326a163b874a64e02d Mon Sep 17 00:00:00 2001
+From: Samuel Lidén Borell <samuel@kodafritt.se>
+Date: Sun, 29 Jan 2023 17:55:29 +0100
+Subject: css: Support for dark mode
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Modern browsers have a "dark mode" preference, which enables alternate
+styles on web sites that support this.
+
+This patch adds a dark color scheme, that is automatically activated
+via a CSS @media query.
+
+Older browsers that do not support color schemes will simply show the
+light scheme, but possibly without syntax highlighting.
+
+Note that filters that use color (such as source highlighters) and
+logotypes may need to be updated to work with a black background!
+See the updated files in the filters/ directory.
+
+Signed-off-by: Samuel Lidén Borell <samuel@kodafritt.se>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+ cgit.css                        | 113 ++++++++++++++++++++++++++++++++++++++++
+ filters/html-converters/md2html |  30 ++++++++++-
+ filters/syntax-highlighting.py  |  14 +++--
+ filters/syntax-highlighting.sh  | 104 ++++++++++++++++++++++--------------
+ 4 files changed, 217 insertions(+), 44 deletions(-)
+
+diff --git a/cgit.css b/cgit.css
+index 35ec45b..76eb3f4 100644
+--- a/cgit.css
++++ b/cgit.css
+@@ -930,3 +930,116 @@ div#cgit span.libravatar:hover > img.onhover {
+         background-color: #eeeeee;
+         box-shadow: 2px 2px 7px rgba(100,100,100,0.75);
+ }
++
++/*
++   Color overrides for browsers running in dark mode.
++   "only all and ..." forces very old browsers to ignore the media query:
++   https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries#improving_compatibility_with_older_browsers
++*/
++:root { color-scheme: light dark; }
++@media only all and (prefers-color-scheme: dark) {
++	html, div#cgit { color: #eee; background: #171717; }
++	div#cgit a { color: #3af; }
++	div#cgit .diffstat-header a { color: #28d; }
++	div#cgit table#header td.main a { color: #eee; }
++	div#cgit table#header td.sub { color: #999; }
++	div#cgit table.tabs { border-bottom-color: #444; }
++	div#cgit table.tabs td a { color: #888; }
++	div#cgit table.tabs td a.active { color: #fff; background-color: #444; }
++	div#cgit div.path { color: #eee; background-color: #333; }
++	div#cgit div.content { border-bottom-color: #bbb; }
++	div#cgit table.list tr { background: #171717; }
++	div#cgit table.list tr.logheader { background: #171717; }
++	div#cgit table.list tr:nth-child(even) { background: #171717; }
++	div#cgit table.list tr:nth-child(odd) { background: #1f1f1f; }
++	div#cgit table.list tr:hover { background: #333; }
++	div#cgit table.list tr.nohover { background: #171717; }
++	div#cgit table.list tr.nohover:hover { background: #171717; }
++	div#cgit table.list tr.nohover-highlight:hover:nth-child(even) { background: #171717; }
++	div#cgit table.list tr.nohover-highlight:hover:nth-child(odd) { background: #1f1f1f; }
++	div#cgit table.list td.commitgraph .column1 { color: #f55; }
++	div#cgit table.list td.commitgraph .column2 { color: #5f5; }
++	div#cgit table.list td.commitgraph .column3 { color: #ff5; }
++	div#cgit table.list td.commitgraph .column4 { color: #55f; }
++	div#cgit table.list td.commitgraph .column5 { color: #f5f; }
++	div#cgit table.list td.commitgraph .column6 { color: #5ff; }
++	div#cgit table.list td a { color: #eee; }
++	div#cgit table.list td a.ls-dir { color: #28d; }
++	div#cgit table.list td a:hover { color: #3af; }
++	div#cgit table#downloads { border-color: #888; }
++	div#cgit table#downloads th { background-color: #333; }
++	div#cgit div#blob { border-color: #eee; }
++	div#cgit table.blob { border-top-color: #eee; }
++	div#cgit table.blob td.hashes,
++	div#cgit table.blob td.lines { color: #eee; }
++	div#cgit table.blob td.linenumbers { border-right-color: gray; }
++	div#cgit table.blob td.linenumbers a,
++	div#cgit table.ssdiff td.lineno a { color: gray; }
++	div#cgit table.blob td.linenumbers a:hover,
++	div#cgit table.ssdiff td.lineno a:hover { color: #eee; }
++	div#cgit table.blame div.alt:nth-child(even) { background: #171717; }
++	div#cgit table.blame div.alt:nth-child(odd) { background: #1f1f1f; }
++	div#cgit table.bin-blob { border-color: #eee; }
++	div#cgit table.bin-blob th { border-color: #888; }
++	div#cgit table.bin-blob td { border-left-color: #888; }
++	div#cgit div.cgit-panel table { border-color: #555; background-color: #282828; }
++	div#cgit div.notes { border-color: #661; background-color: #220; }
++	div#cgit table.diffstat { border-color: #555; background-color: #282828; }
++	div#cgit table.diffstat td span.modechange { color: #c66; }
++	div#cgit table.diffstat td.add a { color: #6c6; }
++	div#cgit table.diffstat td.del a { color: #c66; }
++	div#cgit table.diffstat td.upd a { color: #3af; }
++	div#cgit table.diffstat td.graph td.add { background-color: #3a3; }
++	div#cgit table.diffstat td.graph td.rem { background-color: #a33; }
++	div#cgit div.diffstat-summary { color: #777; }
++	div#cgit table.diff td div.head { color: #eee; }
++	div#cgit table.diff td div.hunk { color: #28d; }
++	div#cgit table.diff td div.add { color: #6c6; }
++	div#cgit table.diff td div.del { color: #c66; }
++	div#cgit table.list td.reposection { color: #777; }
++	div#cgit ul.pager a { color: #888; }
++	div#cgit span.age-mins { color: #7f7; }
++	div#cgit span.age-hours { color: #7f7; }
++	div#cgit span.age-days { color: #9d9; }
++	div#cgit span.age-weeks { color: #bbb; }
++	div#cgit span.age-months { color: #888; }
++	div#cgit span.age-years { color: #666; }
++	div#cgit span.insertions { color: #7f7; }
++	div#cgit span.deletions { color: #e33; }
++	div#cgit div.footer { color: #555; }
++	div#cgit div.footer a { color: #555; }
++	div#cgit a.branch-deco { color: #fff; background-color: #361; border-color: #3b2; }
++	div#cgit a.tag-deco { color: #fff; background-color: #650; border-color: #ba3; }
++	div#cgit a.tag-annotated-deco { color: #fff; background-color: #840; border-color: #b96; }
++	div#cgit a.remote-deco { color: #fff; background-color: #348; border-color: #67c; }
++	div#cgit a.deco { color: #fff; background-color: #922; border-color: #d55; }
++	div#cgit a.branch-deco:hover, div#cgit table.list td a.branch-deco:hover,
++	div#cgit a.tag-deco:hover, div#cgit table.list td a.tag-deco:hover,
++	div#cgit a.tag-annotated-deco:hover, div#cgit table.list td a.tag-annotated-deco:hover,
++	div#cgit a.remote-deco:hover, div#cgit table.list td a.remote-deco:hover,
++	div#cgit a.deco:hover, div#cgit table.list td a.deco:hover { color: #fff; }
++	div#cgit table.stats { border-color: #555; }
++	div#cgit table.stats th { background-color: #333; border-color: #555; }
++	div#cgit table.stats td { border-color: #555; }
++	div#cgit table.stats td.sum { color: #5C7E9B; }
++	div#cgit table.vgraph { border-color: #eee; }
++	div#cgit table.vgraph th { background-color: #1f1f1f; border-color: black; }
++	div#cgit table.vgraph div.bar { background-color: #1f1f1f; }
++	div#cgit table.hgraph { border-color: #eee; }
++	div#cgit table.hgraph th { background-color: #1f1f1f; border-color: #eee; }
++	div#cgit table.hgraph div.bar { background-color: #1f1f1f; }
++	div#cgit table.ssdiff td { border-left-color: #555; border-right-color: #555; }
++	div#cgit table.ssdiff td.add { color: #eee; background: #353; }
++	div#cgit table.ssdiff td.add_dark { color: #eee; background: #030; }
++	div#cgit table.ssdiff span.add { background: #030; }
++	div#cgit table.ssdiff td.del { color: #eee; background: #533; }
++	div#cgit table.ssdiff td.del_dark { color: #eee; background: #411; }
++	div#cgit table.ssdiff span.del { background: #300; }
++	div#cgit table.ssdiff td.changed { color: #eee; background: #553; }
++	div#cgit table.ssdiff td.changed_dark { color: #eee; background: #330; }
++	div#cgit table.ssdiff td.lineno { color: #eee; background: #1f1f1f; }
++	div#cgit table.ssdiff td.hunk { color: #eee; background: #0D3D64; border-top-color: #555; border-bottom-color: #555; }
++	div#cgit table.ssdiff td.head { border-top-color: #555; border-bottom-color: #555; }
++	div#cgit table.ssdiff td.head div.head { color: #eee; }
++	div#cgit table.ssdiff td.foot { border-top-color: #555; }
++}
+diff --git a/filters/html-converters/md2html b/filters/html-converters/md2html
+index 59f43a8..627808a 100755
+--- a/filters/html-converters/md2html
++++ b/filters/html-converters/md2html
+@@ -4,6 +4,11 @@ import sys
+ import io
+ from pygments.formatters import HtmlFormatter
+ from markdown.extensions.toc import TocExtension
++
++# The dark style is automatically selected if the browser is in dark mode
++light_style='pastie'
++dark_style='monokai'
++
+ sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
+ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+ sys.stdout.write('''
+@@ -283,10 +288,31 @@ div#cgit .markdown-body h1 a.toclink, div#cgit .markdown-body h2 a.toclink, div#
+     background-color: transparent;
+     border: none;
+ }
++@media only all and (prefers-color-scheme: dark) {
++.markdown-body a.absent { color: #f33; }
++.markdown-body h1 .mini-icon-link, .markdown-body h2 .mini-icon-link, .markdown-body h3 .mini-icon-link, .markdown-body h4 .mini-icon-link, .markdown-body h5 .mini-icon-link, .markdown-body h6 .mini-icon-link { color: #eee; }
++div#cgit .markdown-body h1 a.toclink, div#cgit .markdown-body h2 a.toclink, div#cgit .markdown-body h3 a.toclink, div#cgit .markdown-body h4 a.toclink, div#cgit .markdown-body h5 a.toclink, div#cgit .markdown-body h6 a.toclink { color: #eee; }
++.markdown-body h1 { color: #eee; }
++.markdown-body h2 { border-bottom-color: #333; color: #eee; }
++.markdown-body h6 { color: #888; }
++.markdown-body hr { border-color: #333; }
++.markdown-body blockquote { border-left-color: #222; color: #888; }
++.markdown-body table th, .markdown-body table td { border-color: #333; }
++.markdown-body table tr { border-top-color: #333; background-color: #111; }
++.markdown-body table tr:nth-child(2n) { background-color: #070707; }
++.markdown-body span.frame span span { color: #ccc; }
++.markdown-body code, .markdown-body tt { border-color: #151515; background-color: #070707; }
++.markdown-body .highlight pre, .markdown-body pre { background-color: #070707; border-color: #333; }
+ ''')
+-sys.stdout.write(HtmlFormatter(style='pastie').get_style_defs('.highlight'))
++sys.stdout.write(HtmlFormatter(style=dark_style).get_style_defs('.highlight'))
+ sys.stdout.write('''
+-</style>   
++}
++@media (prefers-color-scheme: light) {
++''')
++sys.stdout.write(HtmlFormatter(style=light_style).get_style_defs('.highlight'))
++sys.stdout.write('''
++}
++</style>
+ ''')
+ sys.stdout.write("<div class='markdown-body'>")
+ sys.stdout.flush()
+diff --git a/filters/syntax-highlighting.py b/filters/syntax-highlighting.py
+index e912594..f2c0fe1 100755
+--- a/filters/syntax-highlighting.py
++++ b/filters/syntax-highlighting.py
+@@ -29,12 +29,16 @@ from pygments.lexers import guess_lexer
+ from pygments.lexers import guess_lexer_for_filename
+ from pygments.formatters import HtmlFormatter
+ 
++# The dark style is automatically selected if the browser is in dark mode
++light_style='pastie'
++dark_style='monokai'
+ 
+ sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8', errors='replace')
+ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+ data = sys.stdin.read()
+ filename = sys.argv[1]
+-formatter = HtmlFormatter(style='pastie', nobackground=True)
++light_formatter = HtmlFormatter(style=light_style, nobackground=True)
++dark_formatter = HtmlFormatter(style=dark_style, nobackground=True)
+ 
+ try:
+ 	lexer = guess_lexer_for_filename(filename, data)
+@@ -50,6 +54,10 @@ except TypeError:
+ # highlight! :-)
+ # printout pygments' css definitions as well
+ sys.stdout.write('<style>')
+-sys.stdout.write(formatter.get_style_defs('.highlight'))
++sys.stdout.write('\n@media only all and (prefers-color-scheme: dark) {\n')
++sys.stdout.write(dark_formatter.get_style_defs('.highlight'))
++sys.stdout.write('\n}\n@media (prefers-color-scheme: light) {\n')
++sys.stdout.write(light_formatter.get_style_defs('.highlight'))
++sys.stdout.write('\n}\n')
+ sys.stdout.write('</style>')
+-sys.stdout.write(highlight(data, lexer, formatter, outfile=None))
++sys.stdout.write(highlight(data, lexer, light_formatter, outfile=None))
+diff --git a/filters/syntax-highlighting.sh b/filters/syntax-highlighting.sh
+index 840bc34..0429b0f 100755
+--- a/filters/syntax-highlighting.sh
++++ b/filters/syntax-highlighting.sh
+@@ -25,6 +25,20 @@
+ # table.blob .kwb  { color:#830000; }
+ # table.blob .kwc  { color:#000000; font-weight:bold; }
+ # table.blob .kwd  { color:#010181; }
++# @media only all and (prefers-color-scheme: dark) { /* cgit addition for dark mode */
++# 	table.blob .num  { color:#ff814f; }
++# 	table.blob .esc  { color:#f60; }
++# 	table.blob .str  { color:#cc0; }
++# 	table.blob .dstr { color:#ffff7e; }
++# 	table.blob .slc  { color:#7f7c7f; }
++# 	table.blob .com  { color:#7e7c7e; }
++# 	table.blob .dir  { color:#7dff7d; }
++# 	table.blob .sym  { color:#eeeeee; }
++# 	table.blob .kwa  { color:#bb0; }
++# 	table.blob .kwb  { color:#0a0; }
++# 	table.blob .kwc  { color:#eeeeee; }
++# 	table.blob .kwd  { color:#7e7efe; }
++# }
+ #
+ #
+ # Style definition file generated by highlight 2.6.14, http://www.andre-simon.de/
+@@ -45,45 +59,57 @@
+ # .hl.kwb  { color:#830000; }
+ # .hl.kwc  { color:#000000; font-weight:bold; }
+ # .hl.kwd  { color:#010181; }
+-#
+-#
+-# Style definition file generated by highlight 3.8, http://www.andre-simon.de/
+-#
+-# body.hl { background-color:#e0eaee; }
+-# pre.hl  { color:#000000; background-color:#e0eaee; font-size:10pt; font-family:'Courier New';}
+-# .hl.num { color:#b07e00; }
+-# .hl.esc { color:#ff00ff; }
+-# .hl.str { color:#bf0303; }
+-# .hl.pps { color:#818100; }
+-# .hl.slc { color:#838183; font-style:italic; }
+-# .hl.com { color:#838183; font-style:italic; }
+-# .hl.ppc { color:#008200; }
+-# .hl.opt { color:#000000; }
+-# .hl.lin { color:#555555; }
+-# .hl.kwa { color:#000000; font-weight:bold; }
+-# .hl.kwb { color:#0057ae; }
+-# .hl.kwc { color:#000000; font-weight:bold; }
+-# .hl.kwd { color:#010181; }
+-#
+-#
+-# Style definition file generated by highlight 3.13, http://www.andre-simon.de/
+-#
+-# body.hl { background-color:#e0eaee; }
+-# pre.hl  { color:#000000; background-color:#e0eaee; font-size:10pt; font-family:'Courier New',monospace;}
+-# .hl.num { color:#b07e00; }
+-# .hl.esc { color:#ff00ff; }
+-# .hl.str { color:#bf0303; }
+-# .hl.pps { color:#818100; }
+-# .hl.slc { color:#838183; font-style:italic; }
+-# .hl.com { color:#838183; font-style:italic; }
+-# .hl.ppc { color:#008200; }
+-# .hl.opt { color:#000000; }
+-# .hl.ipl { color:#0057ae; }
+-# .hl.lin { color:#555555; }
+-# .hl.kwa { color:#000000; font-weight:bold; }
+-# .hl.kwb { color:#0057ae; }
+-# .hl.kwc { color:#000000; font-weight:bold; }
+-# .hl.kwd { color:#010181; }
++# @media only all and (prefers-color-scheme: dark) { /* cgit addition for dark mode */
++# 	pre.hl  { color:#eeeeee; background-color:#111; }
++# 	.hl.num  { color:#ff814f; }
++# 	.hl.esc  { color:#f60; }
++# 	.hl.str  { color:#cc0; }
++# 	.hl.dstr { color:#ffff7e; }
++# 	.hl.slc  { color:#7f7c7f; }
++# 	.hl.com  { color:#7e7c7e; }
++# 	.hl.dir  { color:#7dff7d; }
++# 	.hl.sym  { color:#eeeeee; }
++# 	.hl.line { color:#aaaaaa; }
++# 	.hl.mark { background-color:#444400; }
++# 	.hl.kwa  { color:#bb0; }
++# 	.hl.kwb  { color:#a0a; }
++# 	.hl.kwc  { color:#eeeeee; }
++# 	.hl.kwd  { color:#7e7efe; }
++# }
++#
++#
++# Style definition file generated by highlight 3.8 / 3.13 / 3.41, http://www.andre-simon.de/
++#
++# table.blob .num { color:#b07e00; }
++# table.blob .esc { color:#ff00ff; }
++# table.blob .str { color:#bf0303; }
++# table.blob .pps { color:#818100; }
++# table.blob .slc { color:#838183; font-style:italic; }
++# table.blob .com { color:#838183; font-style:italic; }
++# table.blob .ppc { color:#008200; }
++# table.blob .opt { color:#000000; }
++# table.blob .ipl { color:#0057ae; }
++# table.blob .lin { color:#555555; }
++# table.blob .kwa { color:#000000; font-weight:bold; }
++# table.blob .kwb { color:#0057ae; }
++# table.blob .kwc { color:#000000; font-weight:bold; }
++# table.blob .kwd { color:#010181; }
++# @media only all and (prefers-color-scheme: dark) { /* cgit addition for dark mode */
++# 	table.blob .num { color:#ff814f; }
++# 	table.blob .esc { color:#f60; }
++# 	table.blob .str { color:#cc0; }
++# 	table.blob .pps { color:#ffff7f; }
++# 	table.blob .slc { color:#7f7c7f; }
++# 	table.blob .com { color:#7e7c7e; }
++# 	table.blob .ppc { color:#8dd; }
++# 	table.blob .opt { color:#eeeeee; }
++# 	table.blob .ipl { color:#51a8ff; }
++# 	table.blob .lin { color:#aaaaaa; }
++# 	table.blob .kwa { color:#bb0; }
++# 	table.blob .kwb { color:#0a0; }
++# 	table.blob .kwc { color:#eeeeee; }
++# 	table.blob .kwd { color:#7e7efe; }
++# }
+ #
+ #
+ # The following environment variables can be used to retrieve the configuration
+-- 
+cgit v1.2.3-59-g8ed1b
+
