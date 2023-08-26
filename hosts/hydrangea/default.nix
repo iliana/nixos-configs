@@ -8,6 +8,7 @@
     ../hardware/virt-v1.nix
 
     ./emojos-dot-in.nix
+    ./git.nix
     ./nitter.nix
     ./old-blog.nix
     ./pkgf.nix
