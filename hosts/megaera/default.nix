@@ -21,5 +21,10 @@
     ];
   };
 
+  iliana.backup = {
+    enable = true;
+    creds = ./backup;
+  };
+
   system.stateVersion = "22.11";
 }
