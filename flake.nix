@@ -25,9 +25,11 @@
 
       systems = ["aarch64-linux" "x86_64-linux"];
 
-      packages = system: pkgs: let
-        craneLib = crane.mkLib pkgs;
-      in
+      overlays = [
+        (self: _: {craneLib = crane.mkLib self;})
+      ];
+
+      packages = system: pkgs:
         {
           inherit (pkgs) helix restic;
         }
@@ -37,12 +39,12 @@
 
           bandcamp-dl = pkgs.callPackage ./packages/bandcamp-dl.nix {};
           caddy = pkgs.callPackage ./packages/caddy.nix {};
-          emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit craneLib emojos-dot-in;};
+          emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit emojos-dot-in;};
           litterbox = pkgs.callPackage ./packages/litterbox.nix {};
-          oxide = pkgs.callPackage ./packages/oxide.nix {inherit craneLib;};
-          pkgf = pkgs.callPackage ./packages/pkgf {inherit craneLib;};
+          oxide = pkgs.callPackage ./packages/oxide.nix {};
+          pkgf = pkgs.callPackage ./packages/pkgf {};
           pounce = pkgs.callPackage ./packages/pounce.nix {};
-          transmission = pkgs.callPackage ./packages/transmission.nix {inherit (nixpkgs-unstable.legacyPackages.${system}) transmission_4;};
+          transmission = pkgs.callPackage ./packages/transmission {inherit (nixpkgs-unstable.legacyPackages.${system}) transmission_4;};
         };
 
       nixosImports = [

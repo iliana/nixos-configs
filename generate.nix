@@ -9,7 +9,6 @@
   nixosSpecialArgs ? (system: {}),
   overlays ? [],
   packages ? (system: pkgs: {}),
-  setHostName ? true,
   systems,
   testModule ? (_: {}),
 }: let
@@ -26,7 +25,7 @@
       (name: config: {
         inherit system;
         modules =
-          lib.lists.optionals setHostName [
+          [
             (_: {
               networking.hostName = name;
             })
