@@ -13,7 +13,7 @@
 
       helpers = mkOption {
         readOnly = true;
-        default = {
+        default = rec {
           container = name: port: ''
             reverse_proxy ${config.containers.${name}.localAddress}:${toString port}
           '';
@@ -34,7 +34,7 @@
           redirPrefix = prefix: ''
             redir ${prefix}{uri}
           '';
-          serve = path: let
+          serveWith = {passthru ? false}: path: let
             matcher = "@exists${builtins.hashString "sha256" "${path}"}";
             index = ["index.html" "index.txt"];
           in ''
@@ -51,9 +51,10 @@
             file_server {
               root ${path}
               index ${builtins.concatStringsSep " " index}
-              pass_thru
+              ${lib.optionalString passthru "pass_thru"}
             }
           '';
+          serve = serveWith {};
           tsOnly = config: ''
             @external not remote_ip 100.64.0.0/10 127.0.0.0/24
             abort @external

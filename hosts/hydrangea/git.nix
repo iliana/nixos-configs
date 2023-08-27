@@ -36,7 +36,7 @@ in {
   in ''
     root * ${gitDir}
     route {
-      ${config.iliana.caddy.helpers.serve cgitFiles}
+      ${config.iliana.caddy.helpers.serveWith {passthru = true;} cgitFiles}
 
       @gitUploadPack path /*/info/refs /*/git-upload-pack
       reverse_proxy @gitUploadPack unix/${config.services.fcgiwrap.socketAddress} {
