@@ -3,6 +3,7 @@ checks.x86_64-linux.web /nix/store/r95c216y3pppn2p5lfjfj14gys8lzydn-vm-test-run-
 nixosConfigurations.alecto /nix/store/dc5ja1f8609qmf4gks263j8h9rrbq05g-nixos-system-alecto-23.05.20230825.74e5bdc
 nixosConfigurations.hydrangea /nix/store/b8y8gha4bafqzfdj79mfmp70xn46qdzx-nixos-system-hydrangea-23.05.20230825.74e5bdc
 nixosConfigurations.lernie /nix/store/gx7g7bf8x7bj656gbgh8rrs43m82jq2g-nixos-system-lernie-23.05.20230825.74e5bdc
+nixosConfigurations.megaera /nix/store/cbnwvfqs75p0s3fs9xm7pls1lg2x80q5-nixos-system-megaera-23.05.20230825.74e5bdc
 nixosConfigurations.mocha /nix/store/zz3diij1q2lvskrzlc4hkkks693rljnv-nixos-system-mocha-23.05.20230825.74e5bdc
 nixosConfigurations.poffertje /nix/store/6wii0zaqs8grkjjslzwp6shwa32mnxl4-nixos-system-poffertje-23.05.20230825.74e5bdc
 nixosConfigurations.skyrabbit /nix/store/w2r3z96cm4f5jw7knmsnxjx25fghnw4m-nixos-system-skyrabbit-23.05.20230825.74e5bdc
