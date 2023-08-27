@@ -35,24 +35,16 @@ in {
     };
   in ''
     root * ${gitDir}
-
-    @gitUploadPack path /*/info/refs /*/git-upload-pack
-    @static file {
-      root ${cgitFiles}
-    }
-
-    header @static -last-modified
-    header @static etag `"${cgitFiles}"`
-
     route {
+      ${config.iliana.caddy.helpers.serve cgitFiles}
+
+      @gitUploadPack path /*/info/refs /*/git-upload-pack
       reverse_proxy @gitUploadPack unix/${config.services.fcgiwrap.socketAddress} {
         transport fastcgi {
           env SCRIPT_FILENAME ${pkgs.gitMinimal}/libexec/git-core/git-http-backend
         }
       }
-      file_server @static {
-        root ${cgitFiles}
-      }
+
       reverse_proxy * unix/${config.services.fcgiwrap.socketAddress} {
         transport fastcgi {
           env SCRIPT_FILENAME ${cgit}/cgit/cgit.cgi

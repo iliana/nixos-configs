@@ -34,18 +34,24 @@
           redirPrefix = prefix: ''
             redir ${prefix}{uri}
           '';
-          serve = path: ''
-            root * ${path}
-            file_server
+          serve = path: let
+            matcher = "@exists${builtins.hashString "sha256" "${path}"}";
+            index = ["index.html" "index.txt"];
+          in ''
             ${
-              # If we're serving from the Nix store, unset Last-Modified.
-              # https://github.com/caddyserver/caddy/pull/5550#issuecomment-1558047346
-              #
-              # Also keep an eye on caddyserver/caddy#5556, and maybe a future
-              # NixOS Caddy module that will bring Etags back?
               lib.optionalString (lib.hasPrefix builtins.storeDir path) ''
-                header -Last-Modified
+                ${matcher} file {
+                  root ${path}
+                  try_files {path} ${builtins.concatStringsSep " " (builtins.map (x: "{path}/${x}") index)}
+                }
+                header ${matcher} -last-modified
+                header ${matcher} etag `"${builtins.substring (builtins.stringLength builtins.storeDir + 1) 32 path}"`
               ''
+            }
+            file_server {
+              root ${path}
+              index ${builtins.concatStringsSep " " index}
+              pass_thru
             }
           '';
           tsOnly = config: ''

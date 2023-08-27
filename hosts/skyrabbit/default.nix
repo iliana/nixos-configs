@@ -52,19 +52,17 @@ in {
     skip_networking = 1;
   };
 
-  iliana.caddy.virtualHosts."${hostName}" = ''
+  iliana.caddy.virtualHosts."${hostName}" = with config.iliana.caddy.helpers; ''
     handle /images {
-      root * ${config.services.mediawiki.uploadsDir}
-      file_server
+      ${serve config.services.mediawiki.uploadsDir}
     }
     handle {
-      root * ${config.services.mediawiki.finalPackage}/share/mediawiki
-      php_fastcgi unix/${config.services.phpfpm.pools.mediawiki.socket}
-      file_server
-
-      # See note about caddy#5556 in /lib/caddy.nix.
-      # This isn't ideal because it will strip the header from MediaWiki responses, but eh.
-      header -Last-Modified
+      route {
+        php_fastcgi unix/${config.services.phpfpm.pools.mediawiki.socket} {
+          root ${config.services.mediawiki.finalPackage}/share/mediawiki
+        }
+        ${serve "${config.services.mediawiki.finalPackage}/share/mediawiki"}
+      }
     }
   '';
   users.groups.mediawiki.members = [config.services.caddy.user];
