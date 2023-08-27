@@ -20,7 +20,7 @@
     max-repodesc-length = 420;
     owner-filter = "${pkgs.coreutils}/bin/true";
     remove-suffix = 1;
-    root-desc = "";
+    root-desc = "patches unwelcome: the movie: the game: the soundtrack";
     root-title = "da git z0ne";
     scan-path = gitDir;
   });
