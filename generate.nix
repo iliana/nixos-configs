@@ -2,11 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 {
+  inputs,
   nixpkgs,
   checks ? {},
   nixosConfigurations ? {},
   nixosImports ? [],
-  nixosSpecialArgs ? (system: {}),
   overlays ? [],
   packages ? (system: pkgs: {}),
   systems,
@@ -28,24 +28,23 @@
           [
             (_: {
               networking.hostName = name;
+              _module.args = {
+                inherit inputs;
+                pkgs = lib.mkForce pkgs.${system};
+                myPkgs = myPkgs.${system};
+              };
             })
           ]
           ++ nixosImports
           ++ [config];
       }))
     nixosConfigurations;
-  specialArgs = eachSystem (system:
-    nixosSpecialArgs system
-    // {
-      myPkgs = myPkgs.${system};
-    });
 
   myNixosConfigs =
     builtins.mapAttrs
     (_: attrs:
       lib.nixosSystem {
         inherit (attrs) modules system;
-        specialArgs = specialArgs.${attrs.system};
       })
     mySystems;
 
@@ -64,7 +63,6 @@
             {
               inherit name;
               hostPkgs = pkgs.${system};
-              node.specialArgs = specialArgs.${system};
             }
             args);
       };

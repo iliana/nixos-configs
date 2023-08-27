@@ -21,7 +21,7 @@
     ...
   } @ inputs:
     import ./generate.nix {
-      inherit nixpkgs;
+      inherit inputs nixpkgs;
 
       systems = ["aarch64-linux" "x86_64-linux"];
 
@@ -51,9 +51,6 @@
         impermanence.nixosModules.impermanence
         ./lib
       ];
-      nixosSpecialArgs = system: {
-        inherit inputs;
-      };
       nixosConfigurations.aarch64-linux = {
         tisiphone = ./hosts/tisiphone.nix;
       };
