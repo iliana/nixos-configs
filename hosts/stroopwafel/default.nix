@@ -29,7 +29,7 @@
     pkgs.yt-dlp
   ];
 
-  iliana.caddy.virtualHosts."pancake.ili.fyi:80" = ''
+  iliana.caddy.virtualHosts."pancake.ili.fyi:80" = config.iliana.caddy.helpers.tsOnly ''
     root * /media
     file_server {
       hide /media/z *.part *.torrent

@@ -44,18 +44,19 @@
       else v;
     prefsCookie =
       builtins.concatStringsSep "; " (lib.mapAttrsToList (k: v: "${k}=${cookieValue v}") preferences);
-  in ''
-    reverse_proxy ${builtins.concatStringsSep " " instances} {
-      lb_policy cookie lb
+  in
+    config.iliana.caddy.helpers.tsOnly ''
+      reverse_proxy ${builtins.concatStringsSep " " instances} {
+        lb_policy cookie lb
 
-      fail_duration 15m
-      unhealthy_status 429
+        fail_duration 15m
+        unhealthy_status 429
 
-      header_up Cookie "${prefsCookie}"
-      header_up Host {upstream_hostport}
-      header_down Which-Upstream {upstream_hostport}
-    }
-  '';
+        header_up Cookie "${prefsCookie}"
+        header_up Host {upstream_hostport}
+        header_down Which-Upstream {upstream_hostport}
+      }
+    '';
 
   iliana.tailscale.policy.acls = [
     {
