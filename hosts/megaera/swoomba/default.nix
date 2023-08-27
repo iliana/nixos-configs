@@ -44,6 +44,7 @@ in
           ExecStart = "${swoomba}/bin/swoomba";
           Environment = [
             "DISCORD_TOKEN_FILE=%d/token"
+            "RUST_LOG=error,swoomba=debug"
             "SWOOMBA_DB=/var/lib/swoomba/db"
           ];
           StateDirectory = "swoomba";
