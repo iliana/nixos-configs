@@ -58,7 +58,7 @@
         alecto = ./hosts/alecto;
         hydrangea = ./hosts/hydrangea;
         lernie = ./hosts/lernie.nix;
-        megaera = ./hosts/megaera.nix;
+        megaera = ./hosts/megaera;
         mocha = ./hosts/mocha;
         poffertje = ./hosts/poffertje.nix;
         skyrabbit = ./hosts/skyrabbit;

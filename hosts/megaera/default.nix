@@ -4,7 +4,9 @@
   ...
 }: {
   imports = [
-    ./hardware/virt-v1.nix
+    ../hardware/virt-v1.nix
+
+    ./swoomba
   ];
 
   iliana.pdns.enable = true;
