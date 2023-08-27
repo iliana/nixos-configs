@@ -34,22 +34,24 @@
           redirPrefix = prefix: ''
             redir ${prefix}{uri}
           '';
-          serveWith = {passthru ? false}: path: let
-            matcher = "@exists${builtins.hashString "sha256" "${path}"}";
-            index = ["index.html" "index.txt"];
+          serveWith = {
+            index ? ["index.html"],
+            passthru ? false,
+          }: root: let
+            matcher = "@exists${builtins.hashString "sha256" "${root}"}";
           in ''
             ${
-              lib.optionalString (lib.hasPrefix builtins.storeDir path) ''
+              lib.optionalString (lib.hasPrefix builtins.storeDir root) ''
                 ${matcher} file {
-                  root ${path}
+                  root ${root}
                   try_files {path} ${builtins.concatStringsSep " " (builtins.map (x: "{path}/${x}") index)}
                 }
                 header ${matcher} -last-modified
-                header ${matcher} etag `"${builtins.substring (builtins.stringLength builtins.storeDir + 1) 32 path}"`
+                header ${matcher} etag `"${builtins.substring (builtins.stringLength builtins.storeDir + 1) 32 root}"`
               ''
             }
             file_server {
-              root ${path}
+              root ${root}
               index ${builtins.concatStringsSep " " index}
               ${lib.optionalString passthru "pass_thru"}
             }
