@@ -7,10 +7,6 @@
   host = "git.iliana.fyi";
   gitDir = "/git";
 
-  cgit = pkgs.cgit-pink.overrideAttrs (old: {
-    patches = [./cgit-dark-mode.patch];
-  });
-
   cgitCfg = pkgs.writeText "cgitrc" (lib.generators.toKeyValue {} {
     clone-prefix = "https://${host}";
     css = "/custom.css";
@@ -28,7 +24,7 @@ in {
   iliana.caddy.virtualHosts.${host} = let
     cgitFiles = pkgs.symlinkJoin {
       name = "cgit-files";
-      paths = ["${cgit}/cgit" ./cgit-files];
+      paths = ["${pkgs.cgit-pink}/cgit" ./cgit-files];
       postBuild = ''
         rm $out/cgit.cgi
       '';
@@ -47,7 +43,7 @@ in {
 
       reverse_proxy * unix/${config.services.fcgiwrap.socketAddress} {
         transport fastcgi {
-          env SCRIPT_FILENAME ${cgit}/cgit/cgit.cgi
+          env SCRIPT_FILENAME ${pkgs.cgit-pink}/cgit/cgit.cgi
           env CGIT_CONFIG ${cgitCfg}
         }
       }
