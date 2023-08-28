@@ -52,6 +52,7 @@
         ./lib
       ];
       nixosConfigurations.aarch64-linux = {
+        juice = ./hosts/juice.nix;
         tisiphone = ./hosts/tisiphone.nix;
       };
       nixosConfigurations.x86_64-linux = {

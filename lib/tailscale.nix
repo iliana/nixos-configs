@@ -22,6 +22,11 @@
       type = with lib.types; nullOr string;
     };
 
+    authKeyFile = lib.mkOption {
+      default = null;
+      type = with lib.types; nullOr string;
+    };
+
     cert = {
       enable = lib.mkOption {default = false;};
       users = lib.mkOption {
@@ -107,10 +112,12 @@
         script = ''
           tailscale up \
             --accept-routes=${lib.boolToString cfg.acceptRoutes} \
-            --advertise-routes=${builtins.concatStringsSep "," cfg.advertiseRoutes} \
+            --advertise-routes=${lib.escapeShellArg (builtins.concatStringsSep "," cfg.advertiseRoutes)} \
             --advertise-tags=${lib.optionalString cfg.advertiseServerTag "tag:server"} \
-            --exit-node=${lib.optionalString (cfg.exitNode != null) cfg.exitNode} \
+            --auth-key="${lib.optionalString (cfg.authKeyFile != null) "$(if [[ -f ${lib.escapeShellArg cfg.authKeyFile} ]]; then echo ${lib.escapeShellArg "file:${cfg.authKeyFile}"}; fi)"}" \
+            --exit-node=${lib.optionalString (cfg.exitNode != null) (lib.escapeShellArg cfg.exitNode)} \
             --ssh=true
+          ${lib.optionalString (cfg.authKeyFile != null) "rm -fv ${lib.escapeShellArg cfg.authKeyFile}"}
         '';
 
         serviceConfig = {
