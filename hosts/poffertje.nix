@@ -56,7 +56,7 @@ in {
     }
   ];
 
-  iliana.tailscale.exitNode = "gaia";
+  iliana.tailscale.exitNode = "100.94.213.2";
   iliana.tailscale.policy.acls = [
     {
       action = "accept";
