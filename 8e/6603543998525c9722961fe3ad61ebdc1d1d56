@@ -5,6 +5,7 @@ nixosConfigurations.hydrangea /nix/store/b8y8gha4bafqzfdj79mfmp70xn46qdzx-nixos-
 nixosConfigurations.lernie /nix/store/gx7g7bf8x7bj656gbgh8rrs43m82jq2g-nixos-system-lernie-23.05.20230825.74e5bdc
 nixosConfigurations.megaera /nix/store/s3jd82aw9836px3xsx0kjx43db1sy7cz-nixos-system-megaera-23.05.20230825.74e5bdc
 nixosConfigurations.mocha /nix/store/zz3diij1q2lvskrzlc4hkkks693rljnv-nixos-system-mocha-23.05.20230825.74e5bdc
+nixosConfigurations.poffertje /nix/store/5l77fid0i39ld2x84swsj8q1f11g6lcw-nixos-system-poffertje-23.05.20230825.74e5bdc
 nixosConfigurations.skyrabbit /nix/store/w2r3z96cm4f5jw7knmsnxjx25fghnw4m-nixos-system-skyrabbit-23.05.20230825.74e5bdc
 nixosConfigurations.stroopwafel /nix/store/nhlmzsp2sa7acmllpw2mdx0dv780rfyl-nixos-system-stroopwafel-23.05.20230825.74e5bdc
 nixosConfigurations.tisiphone /nix/store/jpjvwa3nr9pkkfmv44l4q5xgymq0zgyb-nixos-system-tisiphone-23.05.20230825.74e5bdc
