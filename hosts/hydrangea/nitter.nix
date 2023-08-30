@@ -5,12 +5,8 @@
 }: {
   iliana.caddy.virtualHosts."nitter.home.arpa:80" = let
     # https://github.com/zedeus/nitter/wiki/Instances
-    # Various instances within North America.
     instances = [
-      "https://nitter.1d4.us"
-      "https://nitter.cutelab.space"
-      "https://nitter.moomoo.me"
-      "https://nitter.us.projectsegfau.lt"
+      "https://nitter.net"
     ];
 
     # Because different instances can set different default preferences, set
