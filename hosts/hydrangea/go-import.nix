@@ -1,6 +1,7 @@
 {lib, ...}: let
   # There is currently nothing worth importing from these URLs but I have
   # nerdsniped myself into setting this up and seeing if it works.
+  hosts = ["iliana.fyi"];
   imports = {
     "iliana.fyi/striped" = {repo = "https://github.com/iliana/striped";};
   };
@@ -28,12 +29,9 @@
       redir ${repo}
     }
   '';
-
-  hosts = builtins.map (path: builtins.head (lib.splitString "/" path)) (builtins.attrNames imports);
-  byHost = host:
+in {
+  iliana.caddy.virtualHosts = lib.genAttrs hosts (host:
     lib.mapAttrs'
     (path: repo: lib.nameValuePair (lib.removePrefix host path) (cfg path repo))
-    (lib.filterAttrs (name: _: lib.hasPrefix host name) imports);
-in {
-  iliana.caddy.virtualHosts = lib.genAttrs hosts byHost;
+    (lib.filterAttrs (name: _: lib.hasPrefix host name) imports));
 }
