@@ -4,7 +4,7 @@
   myPkgs,
   ...
 }: {
-  iliana.caddy.virtualHosts."hydrangea.ili.fyi" = with config.iliana.caddy.helpers; handle "/pkgf/*" (localhost 3000);
+  iliana.caddy.virtualHosts."hydrangea.ili.fyi"."/pkgf/*" = config.iliana.caddy.helpers.localhost 3000;
 
   systemd.services.pkgf = {
     after = ["network.target"];

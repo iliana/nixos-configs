@@ -8,7 +8,7 @@
     iliana.caddy = {
       virtualHosts = mkOption {
         default = {};
-        type = with lib.types; attrsOf lines;
+        type = with lib.types; attrsOf (either lines (attrsOf lines));
       };
 
       helpers = mkOption {
@@ -16,11 +16,6 @@
         default = rec {
           container = name: port: ''
             reverse_proxy ${config.containers.${name}.localAddress}:${toString port}
-          '';
-          handle = path: config: ''
-            handle ${path} {
-              ${config}
-            }
           '';
           localhost = port: ''
             reverse_proxy localhost:${toString port}
@@ -94,13 +89,24 @@
               tls {
                 on_demand
               }
-
-              ${cfg}
-
               ${
-                lib.optionalString
-                (builtins.match "(^|.*[[:space:]])handle .* \\{.*" cfg != null)
-                "handle { respond 404 }"
+                if builtins.isAttrs cfg
+                then let
+                  matchers = lib.sort (left: right: (builtins.stringLength left) > (builtins.stringLength right)) (builtins.attrNames cfg);
+                in
+                  lib.concatStrings (builtins.map
+                    (matcher: ''
+                      handle ${matcher} {
+                        ${cfg.${matcher}}
+                      }
+                    '')
+                    matchers)
+                  + lib.optionalString (!(cfg ? "*")) ''
+                    handle * {
+                      error 404
+                    }
+                  ''
+                else cfg
               }
             '';
             logFormat = lib.mkIf config.iliana.test ''

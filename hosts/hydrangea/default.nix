@@ -21,7 +21,7 @@
     "beefymiracle.org" = redirPrefix "https://web.archive.org/web/20230101000000/https://beefymiracle.org";
     "files.iliana.fyi" = serve "/var/www/files.iliana.fyi";
     "haha.business" = serve ./haha.business;
-    "hydrangea.ili.fyi" = handle "/yo" "respond yo";
+    "hydrangea.ili.fyi"."/yo" = "respond yo";
     "iliana.seattle.wa.us" = redirMap {"/" = "https://iliana.fyi";};
     "space.pizza" = serve ./space.pizza;
 

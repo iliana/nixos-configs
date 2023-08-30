@@ -52,19 +52,17 @@ in {
     skip_networking = 1;
   };
 
-  iliana.caddy.virtualHosts."${hostName}" = with config.iliana.caddy.helpers; ''
-    handle /images {
-      ${serve config.services.mediawiki.uploadsDir}
-    }
-    handle {
+  iliana.caddy.virtualHosts."${hostName}" = with config.iliana.caddy.helpers; {
+    "/images" = serve config.services.mediawiki.uploadsDir;
+    "*" = ''
       route {
         php_fastcgi unix/${config.services.phpfpm.pools.mediawiki.socket} {
           root ${config.services.mediawiki.finalPackage}/share/mediawiki
         }
         ${serve "${config.services.mediawiki.finalPackage}/share/mediawiki"}
       }
-    }
-  '';
+    '';
+  };
   users.groups.mediawiki.members = [config.services.caddy.user];
 
   iliana.persist.directories =
