@@ -1,6 +1,6 @@
 {
   inputs = {
-    crane.url = "github:ipetkov/crane/v0.13.0";
+    crane.url = "github:ipetkov/crane/v0.13.1";
     crane.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
