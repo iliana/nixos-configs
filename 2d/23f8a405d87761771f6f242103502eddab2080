@@ -1,5 +1,14 @@
 checks.x86_64-linux.pdns /nix/store/ip3y9jnblg4a4m55n9jz0x5942brfz1q-vm-test-run-pdns
 checks.x86_64-linux.web /nix/store/gdcs5y01q1j3zaakaa4g9xhhjgjy9pw0-vm-test-run-web
+nixosConfigurations.alecto /nix/store/jx620qzqlg5nsz8lyyd6zyc52h76g2n6-nixos-system-alecto-23.05.20230829.2ab91c8
+nixosConfigurations.hydrangea /nix/store/ipj08y8ah7xs7k6hmhn3jps1im1hilin-nixos-system-hydrangea-23.05.20230829.2ab91c8
+nixosConfigurations.lernie /nix/store/favf9whzqmjq326zkxc19y2nfbfbxzmn-nixos-system-lernie-23.05.20230829.2ab91c8
+nixosConfigurations.megaera /nix/store/rzc8nwp6mnhzkpjz2g3az60jcjnd9g43-nixos-system-megaera-23.05.20230829.2ab91c8
+nixosConfigurations.mocha /nix/store/jrmiklpjih7kra7yvi06bwjk96iqcha0-nixos-system-mocha-23.05.20230829.2ab91c8
+nixosConfigurations.poffertje /nix/store/m3jqhljc6dzl5zlh89r0nkzqy3g2wk4x-nixos-system-poffertje-23.05.20230829.2ab91c8
+nixosConfigurations.skyrabbit /nix/store/awrgp04zs083bcj56pj33gmdiin8kjhl-nixos-system-skyrabbit-23.05.20230829.2ab91c8
+nixosConfigurations.stroopwafel /nix/store/j5i38qw5z905kjv5lzn0dynrbddrxmi4-nixos-system-stroopwafel-23.05.20230829.2ab91c8
+nixosConfigurations.vermilion /nix/store/2frhvrb7vyarzrmsik8blwq5jjddj828-nixos-system-vermilion-23.05.20230829.2ab91c8
 packages.aarch64-linux.helix /nix/store/x7lha8wwrj1ac3hj2v1nav4jbhlgf17f-helix-23.05
 packages.aarch64-linux.restic /nix/store/r3wqcyqci35s9ybzrv6f523c9bv01np5-restic-0.15.2
 packages.x86_64-linux.bandcamp-dl /nix/store/ca1pdh3mprhy81jqf2vl1vw76hkawz10-bandcamp-dl-unstable-2023-04-09
@@ -9,7 +18,9 @@ packages.x86_64-linux.helix /nix/store/kiai99m6c3na4v4ly4hwi6yjdivcmpq1-helix-23
 packages.x86_64-linux.litterbox /nix/store/6c5p74ns4c7rpispl3yfzjv6z0c42nwi-litterbox-1.9
 packages.x86_64-linux.nix-eval-jobs /nix/store/v665s1mvka26mzf05k12pxd8v6zkprzp-nix-eval-jobs-2.14.0
 packages.x86_64-linux.nvd /nix/store/dqv9i2b69i8g2cgjxyyw6qs4c0qa4f5s-nvd-0.2.0
+packages.x86_64-linux.oxide /nix/store/x0bqdrxngsq447ak8mg5jymw0y97hkfq-oxide-0.1.0
 packages.x86_64-linux.pkgf /nix/store/gnfw5k5g5i0a1xwh8zrf4rpvgqdq45sa-pkgf-0.1.0
 packages.x86_64-linux.pounce /nix/store/n9dj2ci2074w3kvcgqm5dci7dyifzv7w-pounce-3.1
 packages.x86_64-linux.restic /nix/store/0lz2kvjpmgyq2ygspd10yybbhygkb5mw-restic-0.15.2
+packages.x86_64-linux.transmission /nix/store/5b4m48yschd9k9q83wd2m68jcx8i4hdm-transmission-4.0.3
 packages.x86_64-linux.weechat /nix/store/d2ajgj73l7qym5w14jvnzi9n4gyi5xh9-weechat-bin-env-4.0.4
