@@ -2,7 +2,7 @@
 # that isn't just rsync. (maybe WebDAV, somehow?)
 {config, ...}: {
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
-    "iliana.fyi" = serve "/var/www/iliana.fyi";
+    "iliana.fyi"."*" = serve "/var/www/iliana.fyi";
   };
 
   iliana.persist.directories =

@@ -9,6 +9,7 @@
 
     ./emojos-dot-in.nix
     ./git.nix
+    ./go-import.nix
     ./nitter.nix
     ./old-blog.nix
     ./pkgf.nix
