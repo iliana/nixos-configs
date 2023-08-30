@@ -10,6 +10,10 @@
         default = {};
         type = with lib.types; attrsOf (either lines (attrsOf lines));
       };
+      openFirewall = mkOption {
+        default = true;
+        type = lib.types.bool;
+      };
 
       helpers = mkOption {
         readOnly = true;
@@ -64,8 +68,10 @@
   };
 
   config = lib.mkIf (config.iliana.caddy.virtualHosts != {}) {
-    networking.firewall.allowedTCPPorts = [80 443];
-    networking.firewall.allowedUDPPorts = [443];
+    networking.firewall = lib.mkIf config.iliana.caddy.openFirewall {
+      allowedTCPPorts = [80 443];
+      allowedUDPPorts = [443];
+    };
 
     services.caddy = {
       enable = true;

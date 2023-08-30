@@ -36,6 +36,7 @@
       browse
     }
   '';
+  iliana.caddy.openFirewall = false;
 
   iliana.tailscale.policy.acls = [
     {
