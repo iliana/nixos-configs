@@ -35,7 +35,6 @@
         }
         // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
           inherit (pkgs) nix-eval-jobs nvd;
-          inherit (nixpkgs-unstable.legacyPackages.${system}) weechat;
 
           bandcamp-dl = pkgs.callPackage ./packages/bandcamp-dl.nix {};
           caddy = pkgs.callPackage ./packages/caddy.nix {};
@@ -44,7 +43,8 @@
           oxide = pkgs.callPackage ./packages/oxide.nix {};
           pkgf = pkgs.callPackage ./packages/pkgf {};
           pounce = pkgs.callPackage ./packages/pounce.nix {};
-          transmission = pkgs.callPackage ./packages/transmission {inherit (nixpkgs-unstable.legacyPackages.${system}) transmission_4;};
+          transmission = pkgs.callPackage ./packages/transmission {inherit nixpkgs-unstable;};
+          weechat = pkgs.callPackage ./packages/weechat.nix {inherit nixpkgs-unstable;};
         };
 
       nixosImports = [
