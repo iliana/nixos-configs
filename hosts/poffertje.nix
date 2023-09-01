@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  myIp = (lib.importJSON ../lib/hosts.json).${config.networking.hostName};
+  myIp = config.iliana.tailscale.ip;
   peerPort = 17259;
 in {
   imports = [

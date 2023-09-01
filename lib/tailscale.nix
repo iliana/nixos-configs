@@ -83,6 +83,11 @@
         type = with lib.types; listOf str;
       };
     };
+
+    ip = lib.mkOption {
+      default = (lib.importJSON ./hosts.json).${config.networking.hostName};
+      readOnly = true;
+    };
   };
 
   config = let
