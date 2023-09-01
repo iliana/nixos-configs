@@ -41,6 +41,7 @@
       pkgs.htop
       pkgs.jq
       pkgs.ncdu
+      pkgs.pv
       pkgs.ripgrep
       pkgs.tmux
       pkgs.tree
