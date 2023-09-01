@@ -1,3 +1,14 @@
+checks.x86_64-linux.pdns /nix/store/r218py9jgjw4127l42a100xq1r6jgp64-vm-test-run-pdns
+checks.x86_64-linux.web /nix/store/rmxscbasl7a77lq024l5b6c2cmixjwmm-vm-test-run-web
+nixosConfigurations.alecto /nix/store/fx7k8iw4h1x01a5zpdpnky5yjspvaxdw-nixos-system-alecto-23.05
+nixosConfigurations.hydrangea /nix/store/mbii2r94qz8znpzdi277vyx1pnl8l53y-nixos-system-hydrangea-23.05
+nixosConfigurations.lernie /nix/store/3n761yijnbibwxfpbhw8q60p6ra6wc45-nixos-system-lernie-23.05
+nixosConfigurations.megaera /nix/store/7dkjs06cn6mbjnjv802m550kqrzd42q8-nixos-system-megaera-23.05
+nixosConfigurations.mocha /nix/store/lxhmj7kf0ia5wss1laz92qh233axr455-nixos-system-mocha-23.05
+nixosConfigurations.poffertje /nix/store/gdf2zwj48bdgd3rnny0vwybj2v5kbwvw-nixos-system-poffertje-23.05
+nixosConfigurations.skyrabbit /nix/store/qzj07j1bhsp03d7whd2ashf22yrrb2w0-nixos-system-skyrabbit-23.05
+nixosConfigurations.stroopwafel /nix/store/nds2lf1z6a3zns8q8d09xrsz2ajw5pjn-nixos-system-stroopwafel-23.05
+nixosConfigurations.vermilion /nix/store/6i8lgndwmlg4ddlmdkidcp2l08slqp24-nixos-system-vermilion-23.05
 packages.aarch64-linux.helix /nix/store/x7lha8wwrj1ac3hj2v1nav4jbhlgf17f-helix-23.05
 packages.aarch64-linux.restic /nix/store/r3wqcyqci35s9ybzrv6f523c9bv01np5-restic-0.15.2
 packages.x86_64-linux.bandcamp-dl /nix/store/ca1pdh3mprhy81jqf2vl1vw76hkawz10-bandcamp-dl-unstable-2023-04-09
