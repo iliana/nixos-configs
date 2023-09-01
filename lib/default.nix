@@ -26,6 +26,12 @@
   };
 
   config = {
+    # Removes the date/revision information from the version string. This makes
+    # the result of `config.system.build.toplevel` the same if nothing has
+    # changed, which allows us to trivially determine if there are changes that
+    # impact us between two different revisions.
+    system.nixos.version = config.system.nixos.release;
+
     users.mutableUsers = false;
     users.users.iliana = {
       isNormalUser = true;
