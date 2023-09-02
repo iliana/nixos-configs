@@ -17,7 +17,7 @@ in {
     # The mediawiki-init start script has a bug where this is not escaped.
     # This option is only used there and to populate `$wgSitename`. We override
     # `$wgSitename` in `extraConfig`.
-    name = "seana";
+    name = "renna";
 
     # It would be nice if mediawiki.nix supported passwordFile being not a path.
     passwordFile = "/run/credentials/mediawiki-init.service/password";
@@ -29,7 +29,7 @@ in {
       $wgGroupPermissions['*']['createaccount'] = false;
       $wgGroupPermissions['*']['edit'] = false;
       $wgMetaNamepsace = 'Project';
-      $wgSitename = 'seana wiki';
+      $wgSitename = 'the renna earth wiki';
     '';
 
     skins = {
