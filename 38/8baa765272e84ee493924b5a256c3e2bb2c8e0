@@ -1,4 +1,5 @@
 checks.x86_64-linux.pdns /nix/store/r218py9jgjw4127l42a100xq1r6jgp64-vm-test-run-pdns
+checks.x86_64-linux.web /nix/store/5snpbrhnnn3m3pdynk551kyqlk39651h-vm-test-run-web
 nixosConfigurations.alecto /nix/store/fx7k8iw4h1x01a5zpdpnky5yjspvaxdw-nixos-system-alecto-23.05
 nixosConfigurations.hydrangea /nix/store/mbii2r94qz8znpzdi277vyx1pnl8l53y-nixos-system-hydrangea-23.05
 nixosConfigurations.juice /nix/store/sca0f06sgd7f34f0h3g5bvvgxanndg8c-nixos-system-juice-23.05
@@ -6,6 +7,7 @@ nixosConfigurations.lernie /nix/store/3n761yijnbibwxfpbhw8q60p6ra6wc45-nixos-sys
 nixosConfigurations.megaera /nix/store/id8rjyrll17gnfk3m2a6qqi0wy91jabs-nixos-system-megaera-23.05
 nixosConfigurations.mocha /nix/store/lxhmj7kf0ia5wss1laz92qh233axr455-nixos-system-mocha-23.05
 nixosConfigurations.poffertje /nix/store/gdf2zwj48bdgd3rnny0vwybj2v5kbwvw-nixos-system-poffertje-23.05
+nixosConfigurations.skyrabbit /nix/store/4523hknqvmkxhm92nh48yqvn3vc55i2q-nixos-system-skyrabbit-23.05
 nixosConfigurations.stroopwafel /nix/store/nds2lf1z6a3zns8q8d09xrsz2ajw5pjn-nixos-system-stroopwafel-23.05
 nixosConfigurations.tisiphone /nix/store/b2mx9spzdk8pviwjl9xm36zliq973knv-nixos-system-tisiphone-23.05
 nixosConfigurations.vermilion /nix/store/6i8lgndwmlg4ddlmdkidcp2l08slqp24-nixos-system-vermilion-23.05
