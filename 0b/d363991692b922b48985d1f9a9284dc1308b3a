@@ -4,6 +4,7 @@ nixosConfigurations.alecto /nix/store/fx7k8iw4h1x01a5zpdpnky5yjspvaxdw-nixos-sys
 nixosConfigurations.hydrangea /nix/store/mbii2r94qz8znpzdi277vyx1pnl8l53y-nixos-system-hydrangea-23.05
 nixosConfigurations.juice /nix/store/sca0f06sgd7f34f0h3g5bvvgxanndg8c-nixos-system-juice-23.05
 nixosConfigurations.lernie /nix/store/3n761yijnbibwxfpbhw8q60p6ra6wc45-nixos-system-lernie-23.05
+nixosConfigurations.megaera /nix/store/id8rjyrll17gnfk3m2a6qqi0wy91jabs-nixos-system-megaera-23.05
 nixosConfigurations.mocha /nix/store/lxhmj7kf0ia5wss1laz92qh233axr455-nixos-system-mocha-23.05
 nixosConfigurations.poffertje /nix/store/gdf2zwj48bdgd3rnny0vwybj2v5kbwvw-nixos-system-poffertje-23.05
 nixosConfigurations.skyrabbit /nix/store/qzj07j1bhsp03d7whd2ashf22yrrb2w0-nixos-system-skyrabbit-23.05
