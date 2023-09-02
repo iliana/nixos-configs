@@ -37,7 +37,7 @@
       action = "accept";
       src = ["*"];
       proto = "udp";
-      dst = "${config.networking.hostName}:123";
+      dst = ["${config.networking.hostName}:123"];
     }
   ];
 }
