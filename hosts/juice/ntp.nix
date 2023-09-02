@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # The Uputronics GPS HAT sends garbage (well, NMEA 0183 data, but to U-Boot
   # it's garbage) over the serial console, which interrupts boot. Unfortunately
   # the only way to deal with this is to completely disable input and output for
@@ -23,6 +23,21 @@
   ];
 
   services.chrony.extraConfig = ''
-    refclock PPS /dev/pps0
+    allow 100.64.0.0/10
+    refclock PPS /dev/pps0 prefer
+    refclock SHM 0 refid NMEA noselect
   '';
+
+  services.gpsd.enable = true;
+  services.gpsd.devices = ["/dev/ttyS1"];
+  services.gpsd.nowait = true;
+
+  iliana.tailscale.policy.acls = [
+    {
+      action = "accept";
+      src = ["*"];
+      proto = ["udp"];
+      dst = "${config.networking.hostName}:123";
+    }
+  ];
 }
