@@ -22,15 +22,17 @@
     }
   ];
 
+  services.chrony.servers = [
+    "ntppool1.time.nl"
+    "nts.netnod.se"
+    "oregon.time.system76.com"
+    "time.cloudflare.com"
+  ];
+  services.chrony.enableNTS = true;
   services.chrony.extraConfig = ''
     allow 100.64.0.0/10
     refclock PPS /dev/pps0 prefer
-    refclock SHM 0 refid NMEA noselect
   '';
-
-  services.gpsd.enable = true;
-  services.gpsd.devices = ["/dev/ttyS1"];
-  services.gpsd.nowait = true;
 
   iliana.tailscale.policy.acls = [
     {
