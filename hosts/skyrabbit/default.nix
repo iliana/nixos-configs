@@ -55,12 +55,9 @@ in {
   iliana.caddy.virtualHosts."${hostName}" = with config.iliana.caddy.helpers; {
     "/images" = serve config.services.mediawiki.uploadsDir;
     "*" = ''
-      route {
-        php_fastcgi unix/${config.services.phpfpm.pools.mediawiki.socket} {
-          root ${config.services.mediawiki.finalPackage}/share/mediawiki
-        }
-        ${serve "${config.services.mediawiki.finalPackage}/share/mediawiki"}
-      }
+      root * ${config.services.mediawiki.finalPackage}/share/mediawiki
+      php_fastcgi unix/${config.services.phpfpm.pools.mediawiki.socket}
+      ${serve "${config.services.mediawiki.finalPackage}/share/mediawiki"}
     '';
   };
   users.groups.mediawiki.members = [config.services.caddy.user];

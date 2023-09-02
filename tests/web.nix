@@ -59,5 +59,7 @@ runTest {
     skyrabbit.wait_for_unit("caddy")
     skyrabbit.wait_for_unit("phpfpm-mediawiki")
     fetch("https://skyrabbit.7x6.net/index.php?title=Main_Page", f=skyrabbit.wait_until_succeeds)
+    fetch("https://skyrabbit.7x6.net/resources/assets/poweredby_mediawiki_88x31.png", f=skyrabbit.wait_until_succeeds)
+    fetch("https://skyrabbit.7x6.net/", f=skyrabbit.wait_until_succeeds)
   '';
 }
