@@ -1,0 +1,14 @@
+diff --git a/board/raspberrypi/rpi/rpi.c b/board/raspberrypi/rpi/rpi.c
+index 8603c93de7..2abb7619f0 100644
+--- a/board/raspberrypi/rpi/rpi.c
++++ b/board/raspberrypi/rpi/rpi.c
+@@ -519,3 +519,9 @@ int ft_board_setup(void *blob, struct bd_info *bd)
+ 
+ 	return 0;
+ }
++
++int board_early_init_f(void)
++{
++	gd->flags |= (GD_FLG_SILENT | GD_FLG_DISABLE_CONSOLE);
++	return 0;
++}

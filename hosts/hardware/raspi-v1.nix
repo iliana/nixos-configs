@@ -37,13 +37,24 @@
 
     ${cfg.configTxt}
   '';
+  overrideUboot = prev: prev.override {
+    # https://stackoverflow.com/a/40367443
+    extraConfig = ''
+      CONFIG_BOARD_EARLY_INIT_F=y
+      CONFIG_BOOTDELAY=-2
+      CONFIG_DISABLE_CONSOLE=y
+      CONFIG_SILENT_CONSOLE=y
+      CONFIG_SYS_DEVICE_NULLDEV=y
+    '';
+    extraPatches = [./u-boot-no-uart.patch];
+  };
   firmware = pkgs.runCommandLocal "firmware" {} ''
     mkdir $out
     ln -s ${configTxt} $out/config.txt
     ln -s ${pkgs.raspberrypi-armstubs}/armstub8-gic.bin $out/
     ln -s ${pkgs.raspberrypifw}/share/raspberrypi/boot/{bootcode.bin,fixup*.dat,start*.elf,bcm2711-*.dtb} $out/
-    ln -s ${pkgs.ubootRaspberryPi3_64bit}/u-boot.bin $out/u-boot-rpi3.bin
-    ln -s ${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin $out/u-boot-rpi4.bin
+    ln -s ${overrideUboot pkgs.ubootRaspberryPi3_64bit}/u-boot.bin $out/u-boot-rpi3.bin
+    ln -s ${overrideUboot pkgs.ubootRaspberryPi4_64bit}/u-boot.bin $out/u-boot-rpi4.bin
   '';
 
   extlinuxBuilder = import (modulesPath + "/system/boot/loader/generic-extlinux-compatible/extlinux-conf-builder.nix") {inherit pkgs;};
