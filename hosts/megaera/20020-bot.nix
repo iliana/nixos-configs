@@ -25,12 +25,21 @@ in
         config.iliana.systemd.sandboxConfig {}
         // {
           ExecStart = "${package}/bin/cohost-20020-bot --post";
+          Type = "oneshot";
           Environment = [
             "COHOST_EMAIL=iliana+cohost-bot-auth@buttslol.net"
             "COHOST_PASSWORD_FILE=%d/password"
             "COHOST_PROJECT=the-future-of-football"
-            # "COHOST_LIVE=true"
+            "COHOST_LIVE=true"
           ];
         };
+    };
+    systemd.timers.cohost-20020-bot = {
+      wantedBy = ["timers.target"];
+      timerConfig = {
+        OnUnitActiveSec = "35h";
+        RandomizedDelaySec = "1h";
+        Persistent = true;
+      };
     };
   }
