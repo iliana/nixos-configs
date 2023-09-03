@@ -4,11 +4,13 @@ nixosConfigurations.alecto /nix/store/dacrqq7s1kqzri61424rm1n0ay74kxkf-nixos-sys
 nixosConfigurations.hydrangea /nix/store/xjsk3h4r97rq2i73ajzja8w2bmchxyzy-nixos-system-hydrangea-23.05
 nixosConfigurations.juice /nix/store/6hgm2c0ca55jgmj32jdc24jb2l9rhqni-nixos-system-juice-23.05
 nixosConfigurations.lernie /nix/store/zxwwwrq0p679ds7mq36qd91ybric5p7q-nixos-system-lernie-23.05
+nixosConfigurations.megaera /nix/store/63f8gccxxrrd130mddgj1bgsv009nwa9-nixos-system-megaera-23.05
 nixosConfigurations.mocha /nix/store/7n1vswa005j88y1zg4dwycxhpdq53wdg-nixos-system-mocha-23.05
 nixosConfigurations.poffertje /nix/store/yzbmlhjs21sljzbb3ya1wrnzj9ap1ijd-nixos-system-poffertje-23.05
 nixosConfigurations.skyrabbit /nix/store/f8fwwzwzqv4apx3xr7kjl6dq2rdpcbc2-nixos-system-skyrabbit-23.05
 nixosConfigurations.stroopwafel /nix/store/la68pgfwlgzl3nbz1jqnpss39q86xmn3-nixos-system-stroopwafel-23.05
 nixosConfigurations.tisiphone /nix/store/3qbgr0c7rhra2qfscb82wd219cqnfgcc-nixos-system-tisiphone-23.05
+nixosConfigurations.vermilion /nix/store/gyvvr85vjrwvv30f2f27m1blfgnsdybf-nixos-system-vermilion-23.05
 packages.aarch64-linux.helix /nix/store/x7lha8wwrj1ac3hj2v1nav4jbhlgf17f-helix-23.05
 packages.aarch64-linux.restic /nix/store/r3wqcyqci35s9ybzrv6f523c9bv01np5-restic-0.15.2
 packages.x86_64-linux.bandcamp-dl /nix/store/ca1pdh3mprhy81jqf2vl1vw76hkawz10-bandcamp-dl-unstable-2023-04-09
