@@ -13,6 +13,8 @@
     pkgs.black
     pkgs.cachix
     pkgs.git
+    pkgs.go
+    pkgs.gopls
     pkgs.grab-site
     pkgs.isort
     pkgs.nil
