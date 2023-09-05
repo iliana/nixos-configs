@@ -27,11 +27,11 @@
     "dotfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1693090077,
-        "narHash": "sha256-O2s3NgllWZW/baDDaP7EGql+Dt6ElNz8D4tnOluHqns=",
+        "lastModified": 1693900703,
+        "narHash": "sha256-Fw8sYYto8/2UsMb9xII3BGD6ulsj8yP/Je82jNrYiJc=",
         "ref": "refs/heads/main",
-        "rev": "575c8e1c50911968c2da80edebbde38733ef72ac",
-        "revCount": 212,
+        "rev": "735b308fd540df1fe868425f0a9cdd87d8c9864b",
+        "revCount": 213,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/iliana/dotfiles"

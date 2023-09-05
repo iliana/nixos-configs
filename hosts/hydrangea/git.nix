@@ -63,7 +63,12 @@ in {
 
   environment.etc.git-hooks.source = pkgs.linkFarm "git-hooks" {
     "post-update" = pkgs.writeShellScript "post-update" ''
-      exec ${pkgs.gitMinimal}/bin/git update-server-info
+      agefile="$(${pkgs.gitMinimal}/bin/git rev-parse --git-dir)"/info/web/last-modified
+      mkdir -p "$(dirname "$agefile")" &&
+      ${pkgs.gitMinimal}/bin/git for-each-ref \
+        --sort=-authordate --count=1 \
+        --format='%(authordate:iso8601)' \
+        >"$agefile"
     '';
   };
   users.users.iliana.packages = [
@@ -85,7 +90,6 @@ in {
           touch "$repo_path/git-daemon-export-ok"
           rm -rf "$repo_path/hooks"
           ln -sv /etc/git-hooks "$repo_path/hooks"
-          git -C "$repo_path" update-server-info
         '';
       }
     )
