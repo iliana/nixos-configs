@@ -9,6 +9,7 @@
         "iliana@github:*"
         "autogroup:internet:*"
         "100.111.252.113:*"
+        "192.168.1.0/24:*"
       ];
     }
     {
