@@ -37,7 +37,7 @@
           inherit (pkgs) nix-eval-jobs nvd;
 
           bandcamp-dl = pkgs.callPackage ./packages/bandcamp-dl.nix {};
-          caddy = pkgs.callPackage ./packages/caddy.nix {};
+          caddy = pkgs.callPackage ./packages/caddy.nix {inherit nixpkgs-unstable;};
           emojos-dot-in = pkgs.callPackage ./packages/emojos-dot-in.nix {inherit emojos-dot-in;};
           litterbox = pkgs.callPackage ./packages/litterbox.nix {};
           oxide = pkgs.callPackage ./packages/oxide.nix {};
