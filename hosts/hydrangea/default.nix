@@ -18,23 +18,23 @@
   ];
 
   iliana.caddy.virtualHosts = with config.iliana.caddy.helpers; {
-    "209.251.245.209:80" = serve "/var/www/209.251.245.209";
+    "209.251.245.209:80"."*" = serve "/var/www/209.251.245.209";
     "beefymiracle.org" = redirPrefix "https://web.archive.org/web/20230101000000/https://beefymiracle.org";
-    "files.iliana.fyi" = serve "/var/www/files.iliana.fyi";
+    "files.iliana.fyi"."*" = serve "/var/www/files.iliana.fyi";
     "haha.business" = serve ./haha.business;
     "hydrangea.ili.fyi"."/yo" = "respond yo";
-    "iliana.seattle.wa.us" = redirMap {"/" = "https://iliana.fyi";};
+    "iliana.seattle.wa.us" = {"/" = "redir https://iliana.fyi";};
     "space.pizza" = serve ./space.pizza;
 
-    "buttslol.net" = ''
-      redir / https://iliana.fyi
-      ${serve "/var/www/buttslol.net"}
-    '';
+    "buttslol.net" = {
+      "/" = "redir https://iliana.fyi";
+      "*" = serve "/var/www/buttslol.net";
+    };
 
-    "ili.fyi" = redirMap {
-      "/" = "https://iliana.fyi";
-      "/lowercase" = "https://iliana.fyi/lowercase/";
-      "/pgp" = "https://iliana.fyi/8631E022.txt";
+    "ili.fyi" = {
+      "/" = "redir https://iliana.fyi";
+      "/lowercase" = "redir https://iliana.fyi/lowercase/";
+      "/pgp" = "redir https://iliana.fyi/8631E022.txt";
     };
 
     "qalico.net" = let

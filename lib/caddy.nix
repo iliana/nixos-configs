@@ -8,7 +8,7 @@
     iliana.caddy = {
       virtualHosts = mkOption {
         default = {};
-        type = with lib.types; attrsOf (either lines (attrsOf lines));
+        type = with lib.types; attrsOf (either lines (attrsOf str));
       };
       openFirewall = mkOption {
         default = true;
@@ -23,12 +23,6 @@
           '';
           localhost = port: ''
             reverse_proxy localhost:${toString port}
-          '';
-          redirMap = map: ''
-            route {
-              ${builtins.concatStringsSep "\n" (lib.mapAttrsToList (matcher: to: "redir ${matcher} ${to}") map)}
-              error 404
-            }
           '';
           redirPrefix = prefix: ''
             redir ${prefix}{uri}
@@ -81,58 +75,37 @@
         local_certs
         skip_install_trust
       '';
-      virtualHosts = let
-        final =
-          builtins.mapAttrs
-          (_: cfg: {
-            extraConfig = ''
-              encode zstd gzip
-              header {
-                ?cache-control "private, max-age=0, must-revalidate"
-                permissions-policy "interest-cohort=()"
-                ?referrer-policy "no-referrer-when-downgrade"
-              }
-              tls {
-                on_demand
-              }
-              ${
-                if builtins.isAttrs cfg
-                then let
-                  matchers = lib.sort (left: right: (builtins.stringLength left) > (builtins.stringLength right)) (builtins.attrNames cfg);
-                in
-                  lib.concatStrings (builtins.map
-                    (matcher: ''
-                      handle ${matcher} {
-                        ${cfg.${matcher}}
-                      }
-                    '')
-                    matchers)
-                  + lib.optionalString (!(cfg ? "*")) ''
-                    handle * {
-                      error 404
+      virtualHosts =
+        builtins.mapAttrs
+        (_: cfg: {
+          extraConfig = ''
+            encode zstd gzip
+            header {
+              ?cache-control "private, max-age=0, must-revalidate"
+              permissions-policy "interest-cohort=()"
+              ?referrer-policy "no-referrer-when-downgrade"
+            }
+            tls {
+              on_demand
+            }
+            ${
+              if builtins.isAttrs cfg
+              then
+                lib.concatStrings (lib.mapAttrsToList
+                  (matcher: value: ''
+                    handle ${matcher} {
+                      ${value}
                     }
-                  ''
-                else cfg
-              }
-            '';
-            logFormat = lib.mkIf config.iliana.test ''
-              output stderr
-            '';
-          })
-          config.iliana.caddy.virtualHosts;
-
-        # `on_demand` is safe only if only if the `on_demand_tls` global option
-        # is configured or there are no wildcard hosts with `on_demand`. (caddy
-        # will still warn until caddyserver/caddy#5384 lands in a release.)
-        wildcardHosts =
-          builtins.filter
-          (lib.strings.hasInfix "*")
-          (builtins.attrNames final);
-      in
-        lib.mkAssert
-        (wildcardHosts == [])
-        "wildcard virtual hosts detected: ${toString wildcardHosts}"
-        final;
+                  '')
+                  ({"*" = "error 404";} // cfg))
+              else cfg
+            }
+          '';
+          logFormat = lib.mkIf config.iliana.test ''
+            output stderr
+          '';
+        })
+        config.iliana.caddy.virtualHosts;
     };
 
     # Unset the custom Exec* settings that the Caddy NixOS module sets. Instead,
