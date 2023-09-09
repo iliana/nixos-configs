@@ -1,15 +1,7 @@
 {lib, ...}: let
-  # There is currently nothing worth importing from these URLs but I have
-  # nerdsniped myself into setting this up and seeing if it works.
-  hosts = ["iliana.fyi"];
-  imports = {
-    "iliana.fyi/striped" = {repo = "https://github.com/iliana/striped";};
-  };
-
-  cfg = path: {
-    repo,
-    branch ? "main",
-  }: let
+  goGet = repo: let
+    path = "{host}{path}";
+    branch = "main";
     go-source =
       if (lib.hasPrefix "https://github.com/" repo)
       then {
@@ -30,8 +22,7 @@
     }
   '';
 in {
-  iliana.caddy.virtualHosts = lib.genAttrs hosts (host:
-    lib.mapAttrs'
-    (path: repo: lib.nameValuePair (lib.removePrefix host path) (cfg path repo))
-    (lib.filterAttrs (name: _: lib.hasPrefix host name) imports));
+  iliana.caddy.virtualHosts = {
+    "iliana.fyi"."/striped" = goGet "https://github.com/iliana/striped";
+  };
 }
