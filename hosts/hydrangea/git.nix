@@ -22,13 +22,12 @@
   });
 in {
   iliana.caddy.virtualHosts.${host} = let
-    cgitFiles = pkgs.symlinkJoin {
-      name = "cgit-files";
-      paths = ["${pkgs.cgit-pink}/cgit" ./cgit-files];
-      postBuild = ''
-        rm $out/cgit.cgi
-      '';
-    };
+    cgitFiles = pkgs.runCommand "cgit-files" {} ''
+      mkdir $out
+      ${pkgs.xorg.lndir}/bin/lndir -silent ${pkgs.cgit-pink}/cgit $out
+      rm $out/cgit.cgi
+      cp ${./cgit-files/custom.css} $out/custom.css
+    '';
   in ''
     root * ${gitDir}
     route {

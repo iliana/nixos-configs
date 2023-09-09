@@ -6,6 +6,6 @@
 craneLib.buildPackage {
   pname = "pkgf";
   version = "0.1.0";
-  src = ./.;
+  src = craneLib.cleanCargoSource ./.;
   buildInputs = [pkg-config openssl];
 }
