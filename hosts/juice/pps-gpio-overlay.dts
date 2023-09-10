@@ -2,7 +2,7 @@
 /plugin/;
 
 / {
-	compatible = "brcm,bcm2711";
+	compatible = "raspberrypi";
 	fragment@0 {
 		target-path = "/";
 		__overlay__ {
