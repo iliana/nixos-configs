@@ -22,9 +22,9 @@
         "repo": "dotfiles"
       },
       "branch": "main",
-      "revision": "735b308fd540df1fe868425f0a9cdd87d8c9864b",
-      "url": "https://github.com/iliana/dotfiles/archive/735b308fd540df1fe868425f0a9cdd87d8c9864b.tar.gz",
-      "hash": "0wslc2adz2sfgrll68x4hqibw2y4skjclwn1lhra4y10qxvhdv6r"
+      "revision": "348edddbda1b6cb3ce349df6e66b1602ccbe6374",
+      "url": "https://github.com/iliana/dotfiles/archive/348edddbda1b6cb3ce349df6e66b1602ccbe6374.tar.gz",
+      "hash": "1kkb9bds0kdcyx66q2v6zn5hr1bxfns6g16mvw8zsmdsazvr102j"
     },
     "emojos.in": {
       "type": "Git",
@@ -53,14 +53,14 @@
     "nixpkgs": {
       "type": "Channel",
       "name": "nixos-23.05",
-      "url": "https://releases.nixos.org/nixos/23.05/nixos-23.05.3327.4f77ea639305/nixexprs.tar.xz",
-      "hash": "1n57vg16vjqqz0ks56ffr2n709xxyqk5mm659dcwfh94vnvxvhpn"
+      "url": "https://releases.nixos.org/nixos/23.05/nixos-23.05.3376.4c8cf44c5b94/nixexprs.tar.xz",
+      "hash": "0y4rgn0qynj8a2pnz5hhjpszr5zgjixgvcvimnncgx2sczbmrnp5"
     },
     "nixpkgs-unstable": {
       "type": "Channel",
       "name": "nixos-unstable",
-      "url": "https://releases.nixos.org/nixos/unstable/nixos-23.11pre522946.0bffda19b8af/nixexprs.tar.xz",
-      "hash": "1hxa2hdjrx4pinsl0px94nkpfcvdvg7qzk4hr810bfm52ld1cjbj"
+      "url": "https://releases.nixos.org/nixos/unstable/nixos-23.11pre523790.db9208ab987c/nixexprs.tar.xz",
+      "hash": "0273wd8cvfrhkpcmqyj57wlzqfa09dhbcmvwr5z63gh7ghwlfxxs"
     }
   },
   "version": 3
