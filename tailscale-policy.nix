@@ -27,6 +27,12 @@ let
         proto = "tcp";
         dst = ["100.113.241.94:22"];
       }
+      {
+        action = "accept";
+        src = ["tag:tartarus"];
+        proto = ["tcp" "udp"];
+        dst = ["100.64.31.59:*"];
+      }
     ];
 
     ssh = [
