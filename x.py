@@ -288,9 +288,10 @@ def ci(_args):
         )
         note_outputs(arm_outputs)
 
+    outputs = sorted((*x86_outputs, *arm_outputs))
     if "GITHUB_OUTPUT" in os.environ:
         with open(os.environ["GITHUB_OUTPUT"], "w", encoding="utf-8") as file:
-            file.write(f"built={' '.join(read_notes())}\n")
+            file.write(f"built={' '.join(outputs)}\n")
 
 
 ########################################################################################
