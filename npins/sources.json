@@ -1,0 +1,67 @@
+{
+  "pins": {
+    "crane": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "ipetkov",
+        "repo": "crane"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "version": "v0.13.1",
+      "revision": "ee0dc5b4e137773d50e74f549d5b6f0bb3394bf9",
+      "url": "https://api.github.com/repos/ipetkov/crane/tarball/v0.13.1",
+      "hash": "02yz1v9smcggl3lr4p1fai2x3ncmnbk3wzaq0za6vfzfwlfgk4wz"
+    },
+    "dotfiles": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "iliana",
+        "repo": "dotfiles"
+      },
+      "branch": "main",
+      "revision": "735b308fd540df1fe868425f0a9cdd87d8c9864b",
+      "url": "https://github.com/iliana/dotfiles/archive/735b308fd540df1fe868425f0a9cdd87d8c9864b.tar.gz",
+      "hash": "0wslc2adz2sfgrll68x4hqibw2y4skjclwn1lhra4y10qxvhdv6r"
+    },
+    "emojos.in": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "iliana",
+        "repo": "emojos.in"
+      },
+      "branch": "main",
+      "revision": "5986f2b1a5392c85e7b1de2f3e4ce72d359aeeca",
+      "url": "https://github.com/iliana/emojos.in/archive/5986f2b1a5392c85e7b1de2f3e4ce72d359aeeca.tar.gz",
+      "hash": "17n86s4nadv0wxl4wkmd7m74bslqbdv8nmmkss94lz0drqh2yk8x"
+    },
+    "impermanence": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "impermanence"
+      },
+      "branch": "master",
+      "revision": "e3a7acd113903269a1b5c8b527e84ce7ee859851",
+      "url": "https://github.com/nix-community/impermanence/archive/e3a7acd113903269a1b5c8b527e84ce7ee859851.tar.gz",
+      "hash": "1kypb376fyxqb1nn65j579nm5cl5cyrhghcbf2ajgpdpszbv728q"
+    },
+    "nixpkgs": {
+      "type": "Channel",
+      "name": "nixos-23.05",
+      "url": "https://releases.nixos.org/nixos/23.05/nixos-23.05.3327.4f77ea639305/nixexprs.tar.xz",
+      "hash": "1n57vg16vjqqz0ks56ffr2n709xxyqk5mm659dcwfh94vnvxvhpn"
+    },
+    "nixpkgs-unstable": {
+      "type": "Channel",
+      "name": "nixos-unstable",
+      "url": "https://releases.nixos.org/nixos/unstable/nixos-23.11pre522946.0bffda19b8af/nixexprs.tar.xz",
+      "hash": "1hxa2hdjrx4pinsl0px94nkpfcvdvg7qzk4hr810bfm52ld1cjbj"
+    }
+  },
+  "version": 3
+}

@@ -82,7 +82,7 @@ jobs:
       - name: Generate tailnet policy
         run: |
           echo "// This tailnet's ACLs are maintained in https://github.com/iliana/nixos-configs" > policy.hujson
-          nix eval --json .#tailscalePolicy >> policy.hujson
+          NIX_PATH= nix eval --json -f tailscale-policy.nix >> policy.hujson
       - name: Deploy tailnet policy
         run: ~/go/bin/gitops-pusher --policy-file policy.hujson apply
         env:

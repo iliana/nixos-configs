@@ -1,49 +1,78 @@
-# Tailscale policy rules that don't fit in any other modules.
-{
-  acls = [
-    {
-      action = "accept";
-      src = ["iliana@github"];
-      proto = ["tcp" "udp"];
-      dst = [
-        "iliana@github:*"
-        "autogroup:internet:*"
-        "100.111.252.113:*"
-        "192.168.1.0/24:*"
-      ];
-    }
-    {
-      action = "accept";
-      src = ["iliana@github"];
-      proto = "tcp";
-      dst = [
-        "tag:home-assistant:80"
-        "tag:server:22"
-      ];
-    }
-    {
-      action = "accept";
-      src = ["autogroup:shared"];
-      proto = "tcp";
-      dst = ["100.113.241.94:22"];
-    }
-  ];
+let
+  base = {
+    acls = [
+      {
+        action = "accept";
+        src = ["iliana@github"];
+        proto = ["tcp" "udp"];
+        dst = [
+          "iliana@github:*"
+          "autogroup:internet:*"
+          "100.111.252.113:*"
+          "192.168.1.0/24:*"
+        ];
+      }
+      {
+        action = "accept";
+        src = ["iliana@github"];
+        proto = "tcp";
+        dst = [
+          "tag:home-assistant:80"
+          "tag:server:22"
+        ];
+      }
+      {
+        action = "accept";
+        src = ["autogroup:shared"];
+        proto = "tcp";
+        dst = ["100.113.241.94:22"];
+      }
+    ];
 
-  ssh = [
-    {
-      action = "accept";
-      src = ["iliana@github"];
-      dst = ["iliana@github" "tag:server"];
-      users = ["iliana"];
-    }
-  ];
+    ssh = [
+      {
+        action = "accept";
+        src = ["iliana@github"];
+        dst = ["iliana@github" "tag:server"];
+        users = ["iliana"];
+      }
+    ];
 
-  tags = [
-    "tag:home-assistant"
-    "tag:server"
-    "tag:tartarus"
-  ];
+    tags = [
+      "tag:home-assistant"
+      "tag:server"
+      "tag:tartarus"
+    ];
+  };
 
+  sources = import ./npins;
+  inherit (import ./default.nix) hosts;
+  configs =
+    [
+      (import (sources.nixpkgs + "/nixos/lib/eval-config.nix") {
+        modules = [
+          ./modules/base/policy.nix
+          {iliana.tailscale.policy = base;}
+        ];
+      })
+    ]
+    ++ builtins.attrValues hosts;
+  combinedPolicy = builtins.mapAttrs (attr: _: builtins.concatMap (system: system.config.iliana.tailscale.policy.${attr}) configs) base;
+in {
+  inherit (combinedPolicy) ssh;
+  acls =
+    builtins.map
+    (acl:
+      if acl.proto == ["tcp" "udp"]
+      then builtins.removeAttrs acl ["proto"]
+      else acl)
+    combinedPolicy.acls;
+  hosts = builtins.fromJSON (builtins.readFile ./modules/base/hosts.json);
+  tagOwners = builtins.listToAttrs (builtins.map (name: {
+      inherit name;
+      value = ["iliana@github"];
+    })
+    combinedPolicy.tags);
   tests = [
     {
       user = "iliana@github";

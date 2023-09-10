@@ -11,10 +11,8 @@ import socket
 import string
 import subprocess
 import tempfile
-from functools import cache
 from pathlib import Path
 
-GIT_FLAKE = f"git+file:{os.path.dirname(__file__)}"
 subcommands = {}
 
 
@@ -26,25 +24,6 @@ def subcommand(*args, **kwargs):
     if len(args) == 1 and callable(args[0]):
         return decorator(args[0])
     return decorator
-
-
-########################################################################################
-
-
-@subcommand(
-    parser=lambda parser: (
-        parser.add_argument("--host"),
-        parser.add_argument("old", nargs="?"),
-        parser.add_argument("new", nargs="?"),
-    )
-)
-def diff(args):
-    fetch_notes()
-    for host in sorted([args.host] if args.host else all_hosts()):
-        flake_attr = f"nixosConfigurations.{host}"
-        old = realise(flake_attr, args.old or "HEAD")
-        new = realise(flake_attr, args.new)
-        run(["nix", "run", ".#nvd", "--", "diff", old, new], capture=False)
 
 
 ########################################################################################
@@ -102,8 +81,40 @@ def status(args):
     )
 )
 def deploy(args):
+    # First, see if we have a note for our current commit.
     fetch_notes()
-    result = realise(f"nixosConfigurations.{args.host}", args.rev, host=args.host)
+    result = next(
+        (x for x in read_notes(args.rev) if f"nixos-system-{args.host}" in x), None
+    )
+    if result is not None:
+        try:
+            run_on(args.host, ["nix-store", "--realise", result])
+        except subprocess.CalledProcessError:
+            result = None
+
+    # If we didn't find a note, or if we couldn't realise the noted path, we
+    # need to evaluate the configuration and build it on the host.
+    if result is None:
+        if args.rev is not None:
+            raise ValueError("cannot evaluate configuration for another revision")
+        drv = run(
+            [
+                "nix",
+                "eval",
+                "-f",
+                "default.nix",
+                "--raw",
+                f"hosts.{args.host}.config.system.build.toplevel.drvPath",
+            ],
+            env={"NIX_PATH": ""},
+        )
+        if not is_local_host(args.host):
+            run(
+                ["nix", "copy", "--derivation", "--to", f"ssh-ng://{args.host}", drv],
+                capture=False,
+            )
+        result = run_on(args.host, ["nix-store", "--realise", drv])
+
     if args.dry_run:
         action = "dry-activate"
     else:
@@ -175,31 +186,25 @@ def ci(_args):
     with tempfile.TemporaryDirectory() as tempdir:
         jobs = run(
             [
-                "nix",
-                "run",
-                ".#nix-eval-jobs",
-                "--",
+                tool("nix-eval-jobs"),
                 "--gc-roots-dir",
                 tempdir,
-                "--flake",
-                ".#hydraJobs",
-                "--force-recurse",
                 "--check-cache-status",
                 "--workers",
                 "2",
                 "--max-memory-size",
                 "2048",
-            ]
+                "default.nix",
+            ],
+            env={"NIX_PATH": ""},
         )
     jobs = [json.loads(job) for job in jobs.splitlines()]
 
     # 1. Note cached jobs
     note_outputs(
-        {
-            job["attr"]: job["outputs"]["out"]
-            for job in jobs
-            if job["isCached"] and "out" in job["outputs"]
-        }
+        job["outputs"]["out"]
+        for job in jobs
+        if job["isCached"] and "out" in job["outputs"]
     )
 
     def filter_jobs(system):
@@ -208,11 +213,11 @@ def ci(_args):
             for job in jobs
             if job["system"] == system and not job["isCached"]
         ]
-        outputs = {
-            job["attr"]: job["outputs"]["out"]
+        outputs = (
+            job["outputs"]["out"]
             for job in jobs
             if job["drvPath"] in drvs and "out" in job["outputs"]
-        }
+        )
         return drvs, outputs
 
     # 2. Perform x86_64-linux jobs locally
@@ -253,9 +258,10 @@ def ci(_args):
         )
         note_outputs(arm_outputs)
 
-    outputs = sorted((*x86_outputs.values(), *arm_outputs.values()))
-    with open(os.environ["GITHUB_OUTPUT"], "w", encoding="utf-8") as file:
-        file.write(f"built={' '.join(outputs)}\n")
+    outputs = sorted((*x86_outputs, *arm_outputs))
+    if "GITHUB_OUTPUT" in os.environ:
+        with open(os.environ["GITHUB_OUTPUT"], "w", encoding="utf-8") as file:
+            file.write(f"built={' '.join(outputs)}\n")
 
 
 ########################################################################################
@@ -292,8 +298,8 @@ def backup_setup(args):
             )
 
     with tempfile.TemporaryDirectory(dir="/dev/shm") as tempdir:
-        restic = ["nix", "run", ".#restic", "--", "-r", data["repo"]]
-        env = os.environ | {
+        restic = [tool("restic"), "-r", data["repo"]]
+        env = {
             "AWS_SHARED_CREDENTIALS_FILE": os.path.join(tempdir, "s3"),
         }
         new_password_file = os.path.join(tempdir, "password")
@@ -326,7 +332,7 @@ def update_hosts_file(_args):
     def is_ipv4(address):
         return ipaddress.ip_address(address).version == 4
 
-    path = Path(__file__).parent / "lib" / "hosts.json"
+    path = Path(__file__).parent / "modules" / "base" / "hosts.json"
     peers = json.loads(run(["tailscale", "status", "--json"]))["Peer"].values()
     output = sorted(
         (peer["HostName"], next(filter(is_ipv4, peer["TailscaleIPs"])))
@@ -356,11 +362,13 @@ def is_local_host(host):
 
 # pylint: disable-next=redefined-builtin
 def run(args, capture=True, check=True, env=None, input=None):
+    if env is None:
+        env = {}
     result = subprocess.run(
         args,
         check=check,
         encoding="utf-8",
-        env=env,
+        env=os.environ | env,
         input=input,
         stdout=subprocess.PIPE if capture else None,
     )
@@ -373,6 +381,24 @@ def run_on(host, args, **kwargs):
     if is_local_host(host):
         return run(args, **kwargs)
     return run(["ssh", host, *args], **kwargs)
+
+
+def tool(name, bin_name=None):
+    if bin_name is None:
+        bin_name = name
+    pkg = run(
+        [
+            "nix",
+            "build",
+            "--no-link",
+            "--print-out-paths",
+            "-f",
+            "default.nix",
+            f"pkgs.{name}",
+        ],
+        env={"NIX_PATH": ""},
+    )
+    return f"{pkg}/bin/{bin_name}"
 
 
 def rev_parse(rev):
@@ -407,13 +433,11 @@ def read_notes(rev=None):
         if is_tree_clean():
             rev = rev_parse("HEAD")
         else:
-            return {}
-    return dict(
-        line.strip().rsplit(None, 1)
-        for line in run(
+            return set()
+    return set(
+        run(
             ["git", "notes", "--ref", "nix-store", "show", rev], check=False
         ).splitlines()
-        if line
     )
 
 
@@ -422,18 +446,13 @@ def note_outputs(outputs):
         return
 
     notes = read_notes()
-    original = dict(notes)
+    original = len(notes)
     notes.update(outputs)
-    if notes != original:
+    if len(notes) != original:
         run(
             ["git", "notes", "--ref", "nix-store", "add", "-f", "-F", "-"],
             capture=False,
-            input=(
-                "\n".join(
-                    f"{attr} {output}" for (attr, output) in sorted(notes.items())
-                )
-                + "\n"
-            ),
+            input="\n".join(sorted(notes)) + "\n",
         )
 
 
@@ -454,59 +473,23 @@ def commit_for_output(output):
     return None
 
 
-def realise(flake_attr, rev, host=None):
-    def do_realise(drv):
-        args = ["nix-store", "--realise", drv]
-        if host:
-            return run_on(host, args)
-        return run(args)
-
-    if rev:
-        rev = rev_parse(rev)
-
-    # First, see if we have a note for our current commit.
-    notes = read_notes(rev)
-    result = notes.get(flake_attr)
-    # If we do, try to fetch it from a substituter.
-    if result:
-        try:
-            return do_realise(result)
-        except subprocess.CalledProcessError:
-            pass
-
-    # If we didn't find a note, or if we couldn't realise the noted path, we
-    # need to evaluate the configuration and build it on the host.
-    if rev:
-        flake = f"{GIT_FLAKE}?rev={rev}"
-    else:
-        flake = "."
-    drv = run(
-        [
-            "nix",
-            "eval",
-            "--raw",
-            f"{flake}#{flake_attr}.config.system.build.toplevel.drvPath",
-        ]
-    )
-    if host and not is_local_host(host):
-        run(
-            ["nix", "copy", "--derivation", "--to", f"ssh-ng://{host}", drv],
-            capture=False,
-        )
-    return do_realise(drv)
-
-
 @functools.cache
-def nix_eval(installable, apply=None):
-    args = ["nix", "eval", installable, "--json"]
-    if apply:
-        args.extend(["--apply", apply])
-    return json.loads(run(args))
-
-
-@cache
 def all_hosts():
-    return nix_eval(".#nixosConfigurations", "builtins.attrNames")
+    return json.loads(
+        run(
+            [
+                "nix",
+                "eval",
+                "-f",
+                "default.nix",
+                "hosts",
+                "--json",
+                "--apply",
+                "builtins.attrNames",
+            ],
+            env={"NIX_PATH": ""},
+        )
+    )
 
 
 def main():
