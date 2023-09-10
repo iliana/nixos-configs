@@ -270,7 +270,7 @@ def ci(_args):
         # destination was the local store, but alas.
         closure = run_on(
             "build@tisiphone",
-            ["nix-store", "--query", "--requisites", *arm_outputs.values()],
+            ["nix-store", "--query", "--requisites", *arm_outputs],
         ).splitlines()
         run(["nix-store", "--realise", "--ignore-unknown", *closure], capture=False)
 
@@ -282,7 +282,7 @@ def ci(_args):
                 "--substitute-on-destination",
                 "--from",
                 "ssh-ng://build@tisiphone",
-                *arm_outputs.values(),
+                *arm_outputs,
             ],
             capture=False,
         )
