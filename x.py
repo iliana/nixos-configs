@@ -243,11 +243,11 @@ def ci(_args):
             for job in jobs
             if job["system"] == system and not job["isCached"]
         ]
-        outputs = (
+        outputs = [
             job["outputs"]["out"]
             for job in jobs
             if job["drvPath"] in drvs and "out" in job["outputs"]
-        )
+        ]
         return drvs, outputs
 
     # 2. Perform x86_64-linux jobs locally
