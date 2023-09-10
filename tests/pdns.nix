@@ -17,10 +17,10 @@ in {
     inherit megaera;
     client = {
       config,
+      lib,
       pkgs,
       ...
     }: {
-      system.nixos.version = "${config.system.nixos.release}pre-git"; # FIXME lmao
       environment.systemPackages = [pkgs.dig];
     };
   };

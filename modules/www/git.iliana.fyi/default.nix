@@ -53,7 +53,7 @@ in {
   services.fcgiwrap.enable = true;
   systemd.services.fcgiwrap.serviceConfig = helpers.systemdSandbox {};
 
-  iliana.persist.directories = lib.mkOrder 950 [
+  iliana.persist.directories = [
     {
       directory = gitDir;
       user = "iliana";

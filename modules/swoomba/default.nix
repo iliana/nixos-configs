@@ -24,7 +24,7 @@ in
     };
     users.groups.swoomba = {};
 
-    iliana.persist.directories = lib.mkOrder 900 [
+    iliana.persist.directories = [
       {
         directory = "/var/lib/swoomba";
         user = "swoomba";

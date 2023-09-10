@@ -60,7 +60,7 @@ in {
   };
   users.groups.mediawiki.members = [config.services.caddy.user];
 
-  iliana.persist.directories = lib.mkOrder 1300 (
+  iliana.persist.directories =
     [
       {
         directory = "/var/lib/mysql";
@@ -73,6 +73,5 @@ in {
       user = "mediawiki";
       inherit (config.users.users.mediawiki) group;
       mode = "0750";
-    }) ["/var/cache/mediawiki" "/var/lib/mediawiki"]
-  );
+    }) ["/var/cache/mediawiki" "/var/lib/mediawiki"];
 }

@@ -15,7 +15,7 @@ in {
 
     iliana.hardware.networkInterfaceName = "eth0";
     networking = lib.mkIf (!test) {
-      dhcpcd.IPv6rs = null; # TODO: make this `false`
+      dhcpcd.IPv6rs = false;
       defaultGateway6 = lib.mkIf (cfg.ipv6Address != null) {
         address = "fe80::1";
         interface = "eth0";

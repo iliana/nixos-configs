@@ -17,6 +17,7 @@
     environment.systemPackages = with pkgs; [
       fd
       gitMinimal
+      helix
       htop
       jq
       ncdu
@@ -31,7 +32,6 @@
     users.users.iliana = {
       isNormalUser = true;
       extraGroups = ["wheel"];
-      packages = lib.mkBefore [pkgs.helix]; # FIXME: move to environment.systemPackages
     };
     security.sudo.wheelNeedsPassword = false;
 

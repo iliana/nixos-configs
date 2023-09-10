@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}: {
+{config, ...}: {
   services.syncthing = {
     enable = true;
     guiAddress = "${config.iliana.tailscale.ip}:8384";
@@ -23,7 +19,7 @@
     };
   };
 
-  iliana.persist.directories = lib.mkOrder 1300 [
+  iliana.persist.directories = [
     {
       directory = config.services.syncthing.dataDir;
       inherit (config.services.syncthing) user group;

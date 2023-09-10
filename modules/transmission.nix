@@ -42,7 +42,7 @@ in {
   };
   systemd.services.transmission.unitConfig.After = lib.mkForce ["network.target" "tailscaled.service"];
   systemd.services.transmission.unitConfig.BindsTo = ["tailscaled.service"];
-  iliana.persist.directories = lib.mkOrder 1300 [
+  iliana.persist.directories = [
     {
       inherit (config.services.transmission) user group;
       directory = config.services.transmission.home;

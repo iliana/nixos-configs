@@ -79,7 +79,7 @@ in {
     # can result in undesired behavior if any ExecStop* settings are set.
     systemd.services.caddy.stopIfChanged = false;
 
-    iliana.persist.directories = lib.mkOrder 1200 [
+    iliana.persist.directories = [
       {
         directory = "/var/lib/caddy";
         user = "caddy";

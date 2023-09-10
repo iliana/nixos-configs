@@ -7,7 +7,6 @@
   nodes = {
     inherit hydrangea skyrabbit;
     testremote = {config, ...}: {
-      system.nixos.version = "${config.system.nixos.release}pre-git"; # FIXME lmao
       services.caddy.enable = true;
       services.caddy.virtualHosts.":80".extraConfig = ''
         respond /asdf "thx"

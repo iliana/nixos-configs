@@ -28,36 +28,18 @@
         "209.251.245.209:80" = "iliana";
         "buttslol.net" = "iliana";
         "files.iliana.fyi" = "iliana";
-      };
-      dirs = builtins.mapAttrs (host: _: "/var/www/${builtins.head (lib.splitString ":" host)}") hosts;
-    in {
-      iliana.www.virtualHosts = builtins.mapAttrs (_: directory: {"*" = helpers.caddy.serve directory;}) dirs;
-      iliana.persist.directories =
-        lib.mkOrder 1250
-        (lib.mapAttrsToList (host: user: {
-            directory = dirs.${host};
-            inherit user;
-            inherit (config.users.users."${user}") group;
-          })
-          hosts);
-    })
-
-    # FIXME combine with above
-    (let
-      hosts = {
         "iliana.fyi" = "www-deploy";
       };
       dirs = builtins.mapAttrs (host: _: "/var/www/${builtins.head (lib.splitString ":" host)}") hosts;
     in {
       iliana.www.virtualHosts = builtins.mapAttrs (_: directory: {"*" = helpers.caddy.serve directory;}) dirs;
       iliana.persist.directories =
-        lib.mkOrder 800
-        (lib.mapAttrsToList (host: user: {
-            directory = dirs.${host};
-            inherit user;
-            inherit (config.users.users."${user}") group;
-          })
-          hosts);
+        lib.mapAttrsToList (host: user: {
+          directory = dirs.${host};
+          inherit user;
+          inherit (config.users.users."${user}") group;
+        })
+        hosts;
       users.users.www-deploy = {
         group = "www-deploy";
         isSystemUser = true;

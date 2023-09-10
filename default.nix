@@ -1,5 +1,3 @@
-# TODO: Find uses of lib.mkBefore, lib.mkAfter, lib.mkOrder that were used to
-# keep derivations equivalent, and remove
 let
   sources = import ./npins;
 
@@ -8,7 +6,6 @@ let
     caddy = pkgs.callPackage (sources.nixpkgs-unstable + "/pkgs/servers/caddy") {};
     craneLib = import sources.crane {inherit pkgs;};
     litterbox = pkgs.callPackage ./packages/litterbox.nix {};
-    oxide = pkgs.callPackage ./packages/oxide.nix {};
     pounce = pkgs.callPackage ./packages/pounce.nix {inherit (orig) pounce;};
     transmission = pkgs.callPackage ./packages/transmission {inherit (sources) nixpkgs-unstable;};
     weechat = pkgs.callPackage ./packages/weechat.nix {inherit (sources) nixpkgs-unstable;};

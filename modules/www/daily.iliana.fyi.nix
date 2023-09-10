@@ -1,5 +1,4 @@
 {
-  config,
   helpers,
   lib,
   pkgs,
@@ -50,7 +49,7 @@
   };
 in {
   iliana.www.virtualHosts."${host}" = helpers.caddy.localhost port;
-  iliana.persist.directories = lib.mkOrder 950 [
+  iliana.persist.directories = [
     {
       directory = stateDir;
       user = "writefreely";

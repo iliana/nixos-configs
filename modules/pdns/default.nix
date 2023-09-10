@@ -1,10 +1,9 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }: {
-  users.users.iliana.packages = lib.mkOrder 800 [pkgs.pdns];
+  users.users.iliana.packages = [pkgs.pdns];
 
   users.users.pdns-deploy = {
     isSystemUser = true;
@@ -23,7 +22,7 @@
     pdns-deploy ALL=(pdns:pdns) NOPASSWD: ${pkgs.pdns}/bin/pdns_control rediscover
   '';
 
-  iliana.persist.directories = lib.mkOrder 1300 [
+  iliana.persist.directories = [
     {
       directory = "/srv/bind";
       user = "pdns-deploy";

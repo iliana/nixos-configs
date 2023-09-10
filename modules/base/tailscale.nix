@@ -55,7 +55,7 @@
   in
     lib.mkIf (!test) {
       services.tailscale.enable = true;
-      iliana.persist.directories = lib.mkOrder 1200 [
+      iliana.persist.directories = [
         {
           directory = "/var/lib/tailscale";
           mode = "0700";

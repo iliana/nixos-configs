@@ -10,6 +10,7 @@ import secrets
 import socket
 import string
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -67,6 +68,35 @@ def status(args):
             )
             result += " " + color(f"(needs reboot, {vercmp})", "yellow")
         print(format_string.format(host, result))
+
+
+########################################################################################
+
+
+@subcommand
+def fmt(_args):
+    run([tool_bin("alejandra"), "-e", "./npins", "."])
+
+
+########################################################################################
+
+
+@subcommand(
+    parser=lambda parser: (
+        parser.add_argument("--bin-name"),
+        parser.add_argument("tool"),
+        parser.add_argument("args", nargs="*"),
+    )
+)
+def tool(args):
+    done = subprocess.run(
+        [tool_bin(args.tool, args.bin_name), *args.args],
+        check=False,
+        stdin=sys.stdin,
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+    )
+    sys.exit(done.returncode)
 
 
 ########################################################################################
@@ -186,7 +216,7 @@ def ci(_args):
     with tempfile.TemporaryDirectory() as tempdir:
         jobs = run(
             [
-                tool("nix-eval-jobs"),
+                tool_bin("nix-eval-jobs"),
                 "--gc-roots-dir",
                 tempdir,
                 "--check-cache-status",
@@ -298,7 +328,7 @@ def backup_setup(args):
             )
 
     with tempfile.TemporaryDirectory(dir="/dev/shm") as tempdir:
-        restic = [tool("restic"), "-r", data["repo"]]
+        restic = [tool_bin("restic"), "-r", data["repo"]]
         env = {
             "AWS_SHARED_CREDENTIALS_FILE": os.path.join(tempdir, "s3"),
         }
@@ -383,7 +413,7 @@ def run_on(host, args, **kwargs):
     return run(["ssh", host, *args], **kwargs)
 
 
-def tool(name, bin_name=None):
+def tool_bin(name, bin_name=None):
     if bin_name is None:
         bin_name = name
     pkg = run(

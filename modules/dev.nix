@@ -1,10 +1,6 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   iliana.dotfiles = false;
-  iliana.persist.directories = lib.mkOrder 1300 [
+  iliana.persist.directories = [
     {
       directory = "/home/iliana";
       user = "iliana";
@@ -16,7 +12,6 @@
   iliana.tailscale.advertiseServerTag = false;
 
   users.users.iliana.packages = with pkgs; [
-    oxide
     actionlint
     black
     cachix
