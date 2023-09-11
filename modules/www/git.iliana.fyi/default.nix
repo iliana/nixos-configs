@@ -8,19 +8,25 @@
   host = "git.iliana.fyi";
   gitDir = "/git";
 
-  cgitCfg = pkgs.writeText "cgitrc" (lib.generators.toKeyValue {} {
-    clone-prefix = "https://${host}";
-    css = "/custom.css";
-    enable-git-config = 1;
-    enable-index-owner = 0;
-    logo = "";
-    max-repodesc-length = 420;
-    owner-filter = "${pkgs.coreutils}/bin/true";
-    remove-suffix = 1;
-    root-desc = "patches unwelcome: the movie: the game: the soundtrack";
-    root-title = "da git z0ne";
-    scan-path = gitDir;
-  });
+  cgitCfg = pkgs.writeText "cgitrc" (lib.concatStrings (builtins.map (lib.generators.toKeyValue {}) [
+    {
+      clone-prefix = "https://${host}";
+      css = "/custom.css";
+      enable-git-config = 1;
+      enable-index-owner = 0;
+      logo = "";
+      max-repodesc-length = 420;
+      owner-filter = "${pkgs.coreutils}/bin/true";
+      remove-suffix = 1;
+      root-desc = "patches unwelcome: the movie: the game: the soundtrack";
+      root-title = "da git z0ne";
+      snapshots = "tar.gz";
+    }
+    {
+      # scan-path must come after snapshots, and probably some other options
+      scan-path = gitDir;
+    }
+  ]));
 in {
   iliana.www.virtualHosts.${host} = let
     staticFiles = pkgs.runCommand "cgit-files" {} ''
