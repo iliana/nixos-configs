@@ -13,7 +13,11 @@ in
       inherit (test) nodes testScript;
       hostPkgs = pkgs;
 
-      defaults = {config, lib, ...}: {
+      defaults = {
+        config,
+        lib,
+        ...
+      }: {
         # This statement in nixos/lib/testing/nixos-test-base:
         #     config.system.nixos.revision = mkForce "constant-nixos-revision";
         # does not actually make the nodes equivalent across otherwise-unchanged
