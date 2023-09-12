@@ -9,7 +9,6 @@ let
           "iliana@github:*"
           "autogroup:internet:*"
           "100.111.252.113:*"
-          "192.168.1.0/24:*"
         ];
       }
       {
@@ -33,6 +32,18 @@ let
         proto = ["tcp" "udp"];
         dst = ["100.64.31.59:*"];
       }
+
+      # Development Oxide control plane on onerous-tooth, via subnet router
+      {
+        action = "accept";
+        src = ["iliana@github"];
+        proto = ["tcp" "udp"];
+        dst = [
+          "192.168.1.0/24:*"
+        ];
+      }
+      # DNS resolution for Oxide control plane (needs to be allowed for any exit
+      # node, because DNS queries are forwarded to the exit node)
       {
         action = "accept";
         src = ["*"];
