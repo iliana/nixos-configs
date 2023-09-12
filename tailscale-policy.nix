@@ -33,6 +33,12 @@ let
         proto = ["tcp" "udp"];
         dst = ["100.64.31.59:*"];
       }
+      {
+        action = "accept";
+        src = ["*"];
+        proto = ["tcp" "udp"];
+        dst = ["192.168.1.20:53" "192.168.1.21:53"];
+      }
     ];
 
     ssh = [
