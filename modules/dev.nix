@@ -20,6 +20,7 @@
     gopls
     grab-site
     isort
+    moreutils
     nil
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
