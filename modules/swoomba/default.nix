@@ -9,8 +9,8 @@
     name = "swoomba";
     src = pkgs.fetchgit {
       url = "https://git.iliana.fyi/swoomba";
-      rev = "6b3461591cc38e506a469256b6dc7cbed9f5056f";
-      hash = "sha256-vGtyXYwRjaSCtG2Grne/8JLR7yPPS6C44T+/6x7vtdo=";
+      rev = "a4ef8a7ce5174bddad4f51d544c1176455de21a1";
+      hash = "sha256-rZeJBnp1hGUVes1SBd3cdOBp6NH/eG5QHdTVjkqQbfg=";
     };
     cargoArtifacts = null;
     buildInputs = [pkgs.pkg-config pkgs.openssl];
