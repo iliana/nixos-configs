@@ -9,8 +9,8 @@
     name = "cohost-20020-bot";
     src = pkgs.fetchgit {
       url = "https://git.iliana.fyi/cohost-20020-bot";
-      rev = "277669582112129a1cbd0c7cbb32856d9169ddbe";
-      hash = "sha256-sLPtfKR/bCogI2F3nZzHHpg2xwvyN7ZUD6FSwk5PdFQ=";
+      rev = "ccfe95d6b54748ad7efdbd907a80684b1712272a";
+      hash = "sha256-IinhPGFdLIYMCFXo1NRNO8agcOeeqwgIwbo/Smo2THc=";
     };
     cargoArtifacts = null;
     buildInputs = [pkgs.pkg-config pkgs.openssl];
