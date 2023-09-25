@@ -26,16 +26,9 @@ in {
         group = "chrony";
       }
     ];
-    iliana.persist.files =
-      [
-        "/etc/machine-id"
-      ]
-      ++ lib.lists.optionals config.services.openssh.enable [
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_ed25519_key.pub"
-        "/etc/ssh/ssh_host_rsa_key"
-        "/etc/ssh/ssh_host_rsa_key.pub"
-      ];
+    iliana.persist.files = [
+      "/etc/machine-id"
+    ];
 
     # Work around /var/lib/nixos and /var/log being "required for boot".
     #
