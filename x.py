@@ -3,6 +3,7 @@
 
 import argparse
 import functools
+import glob
 import ipaddress
 import json
 import os
@@ -637,7 +638,8 @@ def all_hosts():
 
 @functools.cache
 def add_tool_env():
-    site.addsitedir(nix_build("misc.tool-env"))
+    result = nix_build("misc.tool-env")
+    site.addsitedir(glob.glob(result + "/lib/python*/site-packages")[0])
 
 
 def main():
