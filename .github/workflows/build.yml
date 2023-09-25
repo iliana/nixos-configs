@@ -26,7 +26,7 @@ jobs:
       - uses: cachix/install-nix-action@v21
         with:
           install_url: https://releases.nixos.org/nix/nix-${{ env.NIX_VERSION }}/install
-          extra_nix_config: "builders = ssh-ng://build@lernie x86_64-linux - 2 1 kvm,nixos-test kvm c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUgraW1WRG5MWWxCTUFFQytIUFF5Z1ZTSHNWWFZoOEVobE5pajgwUE56ZVA="
+          extra_nix_config: "builders = ssh-ng://build@lernie?ssh-key=/home/runner/.ssh/id_ed25519 x86_64-linux - 2 1 kvm,nixos-test kvm c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUgraW1WRG5MWWxCTUFFQytIUFF5Z1ZTSHNWWFZoOEVobE5pajgwUE56ZVA="
       - uses: cachix/cachix-action@v12
         with:
           name: iliana
@@ -37,9 +37,11 @@ jobs:
           mkdir ~/.ssh; cp .github/workflows/known_hosts ~/.ssh/known_hosts
           echo "$SSH_PRIVATE_KEY" >~/.ssh/id_ed25519
           chmod 0600 ~/.ssh/id_ed25519
+
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git fetch origin refs/notes/nix-store:refs/notes/nix-store
+
           ./x.py ci
           # Successful builds that were part of failing jobs will not be listed
           # in the notes and will not be backed up.

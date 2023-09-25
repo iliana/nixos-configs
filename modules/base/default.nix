@@ -48,6 +48,8 @@
         path = "/nix/persist/etc/ssh/ssh_host_ed25519_key";
       }
     ];
+    services.openssh.settings.KbdInteractiveAuthentication = false;
+    services.openssh.settings.PasswordAuthentication = false;
 
     time.timeZone = "Etc/UTC";
     services.chrony.enable = true;
