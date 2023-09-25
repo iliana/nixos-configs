@@ -61,8 +61,7 @@ let
     ];
   };
 
-  sources = import ./npins;
-  inherit (import ./default.nix) hosts;
+  inherit (import ./default.nix) sources hosts;
   configs =
     [
       (import (sources.nixpkgs + "/nixos/lib/eval-config.nix") {

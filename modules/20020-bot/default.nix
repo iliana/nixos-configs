@@ -2,16 +2,13 @@
   helpers,
   lib,
   pkgs,
+  sources,
   test,
   ...
 }: let
   package = pkgs.craneLib.buildPackage {
     name = "cohost-20020-bot";
-    src = pkgs.fetchgit {
-      url = "https://git.iliana.fyi/cohost-20020-bot";
-      rev = "ccfe95d6b54748ad7efdbd907a80684b1712272a";
-      hash = "sha256-IinhPGFdLIYMCFXo1NRNO8agcOeeqwgIwbo/Smo2THc=";
-    };
+    src = sources.cohost-20020-bot;
     cargoArtifacts = null;
     buildInputs = [pkgs.pkg-config pkgs.openssl];
   };

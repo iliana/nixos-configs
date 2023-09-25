@@ -5,11 +5,10 @@
   sources,
   ...
 }: let
-  # npins doesn't support submodules quite yet.
-  dotfiles = builtins.fetchGit {
-    url = "https://github.com/iliana/dotfiles.git";
-    rev = sources.dotfiles.revision;
-    submodules = true;
+  dotfiles = pkgs.fetchgit {
+    url = sources.dotfiles.repo;
+    inherit (sources.dotfiles) rev sha256;
+    fetchSubmodules = true;
   };
   script = lib.getExe (pkgs.writeShellApplication {
     name = "sync-dotfiles";

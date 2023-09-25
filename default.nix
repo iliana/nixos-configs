@@ -1,5 +1,8 @@
 let
-  sources = import ./npins;
+  sources =
+    builtins.mapAttrs
+    (_: source: source // {outPath = builtins.fetchTarball {inherit (source) url sha256;};})
+    (builtins.fromJSON (builtins.readFile ./sources.json));
 
   overlay = pkgs: orig: {
     bandcamp-dl = pkgs.callPackage ./packages/bandcamp-dl.nix {};
@@ -121,9 +124,10 @@ let
     web = import ./tests/web.nix;
   };
 in {
-  inherit pkgs hosts tests;
+  inherit sources pkgs hosts tests;
   ciJobs = recurseIntoAttrs {
     hosts = recurseIntoAttrs (builtins.mapAttrs (_: system: system.config.system.build.toplevel) hosts);
     tests = recurseIntoAttrs tests;
   };
+  misc.tool-env = pkgs.python3.withPackages (ps: [ps.semver]);
 }

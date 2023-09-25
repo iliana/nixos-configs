@@ -2,16 +2,13 @@
   helpers,
   lib,
   pkgs,
+  sources,
   test,
   ...
 }: let
   swoomba = pkgs.craneLib.buildPackage {
     name = "swoomba";
-    src = pkgs.fetchgit {
-      url = "https://git.iliana.fyi/swoomba";
-      rev = "a4ef8a7ce5174bddad4f51d544c1176455de21a1";
-      hash = "sha256-rZeJBnp1hGUVes1SBd3cdOBp6NH/eG5QHdTVjkqQbfg=";
-    };
+    src = sources.swoomba;
     cargoArtifacts = null;
     buildInputs = [pkgs.pkg-config pkgs.openssl];
   };

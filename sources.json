@@ -1,0 +1,53 @@
+{
+  "cohost-20020-bot": {
+    "repo": "https://git.iliana.fyi/cohost-20020-bot",
+    "branch": "main",
+    "rev": "ccfe95d6b54748ad7efdbd907a80684b1712272a",
+    "url": "https://git.iliana.fyi/cohost-20020-bot/snapshot/cohost-20020-bot-ccfe95d6b54748ad7efdbd907a80684b1712272a.tar.gz",
+    "sha256": "0xsc6rm4lgxsq440iawywxqa1iiv9pad9s2m1068cb2xc4yf2a92"
+  },
+  "crane": {
+    "repo": "https://github.com/ipetkov/crane",
+    "version": "v0.14.1",
+    "url": "https://github.com/ipetkov/crane/archive/refs/tags/v0.14.1.tar.gz",
+    "sha256": "0ln28wgfh3r8jv9d04n59q92vwr807yjcx6f4pzzvpmqnzi3awcs"
+  },
+  "dotfiles": {
+    "repo": "https://github.com/iliana/dotfiles",
+    "submodules": true,
+    "branch": "main",
+    "rev": "aa35617c0f126332f58b9138074f6da1b3399345",
+    "sha256": "14sr2zq9w3iphdic0k5s4knvhzyw5sa59fzjmbn42f16gdr988rg"
+  },
+  "emojos.in": {
+    "repo": "https://github.com/iliana/emojos.in",
+    "branch": "main",
+    "rev": "fdaf025192e8e7c897b416e7d83c30e20d33990d",
+    "url": "https://github.com/iliana/emojos.in/archive/fdaf025192e8e7c897b416e7d83c30e20d33990d.tar.gz",
+    "sha256": "0anc1fvqyjmr2i22kvh4xq2sdxzw3sk8llx732w40zay5dvlc03q"
+  },
+  "impermanence": {
+    "repo": "https://github.com/nix-community/impermanence",
+    "branch": "master",
+    "rev": "e9643d08d0d193a2e074a19d4d90c67a874d932e",
+    "url": "https://github.com/nix-community/impermanence/archive/e9643d08d0d193a2e074a19d4d90c67a874d932e.tar.gz",
+    "sha256": "1gx91lrdb50njs2yd71q8h5nbgmzf6ypqnm3v9f1yaz1w3wpnzyg"
+  },
+  "nixpkgs": {
+    "channel": "nixos-23.05",
+    "url": "https://releases.nixos.org/nixos/23.05/nixos-23.05.3725.715d72e967ec/nixexprs.tar.xz",
+    "sha256": "1hym5zl189caxdmhrrwybwfp6hjcd6xzphxlk900qa7sjfgias0j"
+  },
+  "nixpkgs-unstable": {
+    "channel": "nixos-unstable",
+    "url": "https://releases.nixos.org/nixos/unstable/nixos-23.11pre527911.e35dcc04a385/nixexprs.tar.xz",
+    "sha256": "09m9zlrbrhvn5qislk5ny9ffj91nc38s2nx5rybd0ypvaqf1pja0"
+  },
+  "swoomba": {
+    "repo": "https://git.iliana.fyi/swoomba",
+    "branch": "main",
+    "rev": "a4ef8a7ce5174bddad4f51d544c1176455de21a1",
+    "url": "https://git.iliana.fyi/swoomba/snapshot/swoomba-a4ef8a7ce5174bddad4f51d544c1176455de21a1.tar.gz",
+    "sha256": "1y3dj158xmfl3m86wy7zs7l6kq3lvkfhalndg8anb13mg838k5xd"
+  }
+}

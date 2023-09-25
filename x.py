@@ -7,11 +7,13 @@ import ipaddress
 import json
 import os
 import secrets
+import site
 import socket
 import string
 import subprocess
 import sys
 import tempfile
+import urllib.request
 from pathlib import Path
 
 subcommands = {}
@@ -75,7 +77,7 @@ def status(args):
 
 @subcommand
 def fmt(_args):
-    run([tool_bin("alejandra"), "-e", "./npins", "."])
+    run([tool_bin("alejandra"), "."])
 
 
 ########################################################################################
@@ -205,6 +207,113 @@ def encrypt(args):
                 input=cleartext,
             )
         )
+
+
+########################################################################################
+
+
+@subcommand
+def update(_args):
+    with open(Path(__file__).parent / "sources.json", encoding="utf-8") as file:
+        sources = json.load(file)
+
+    for name, source in sources.items():
+        if "channel" in source:
+            with urllib.request.urlopen(
+                f"https://channels.nixos.org/{source['channel']}"
+            ) as response:
+                url = f"{response.url}/nixexprs.tar.xz"
+            update_source_url(name, source, url)
+        elif "repo" in source:
+            update_repo(name, source)
+
+    with open(Path(__file__).parent / "sources.json", "w", encoding="utf-8") as file:
+        json.dump(sources, file, indent=2)
+        file.write("\n")
+
+
+def is_updated(name, old, new):
+    if old == new:
+        return False
+    print(f"{name}:")
+    print(color(f"  - {old}", "red"))
+    print(color(f"  + {new}", "green"))
+    return True
+
+
+def update_source_url(name, source, url):
+    if not is_updated(name, source["url"], url):
+        return False
+    source["url"] = url
+    source["sha256"] = run(
+        [
+            "nix-prefetch-url",
+            "--name",
+            "source",
+            "--unpack",
+            url,
+        ]
+    )
+    return True
+
+
+def update_repo(name, source):
+    refs = {
+        line.split()[1]: line.split()[0]
+        for line in run(
+            [
+                "git",
+                "ls-remote",
+                "--heads",
+                "--tags",
+                "--refs",
+                "--quiet",
+                "--exit-code",
+                source["repo"],
+            ]
+        ).splitlines()
+    }
+
+    if "branch" in source:
+        field = "rev"
+        new = refs[f"refs/heads/{source['branch']}"]
+    elif "version" in source:
+        add_tool_env()
+        # pylint: disable-next=import-error,import-outside-toplevel
+        from semver import Version
+
+        current = Version.parse(source["version"].removeprefix("v"))
+        field = "version"
+        new = source["version"]
+        for ref in refs:
+            if not ref.startswith("refs/tags/"):
+                continue
+            tag = ref.removeprefix("refs/tags/")
+            try:
+                version = Version.parse(tag.removeprefix("v"))
+            except ValueError:
+                continue
+            if version > current:
+                current = version
+                new = tag
+    if source.get("submodules"):
+        if is_updated(name, source[field], new):
+            source[field] = new
+            source["sha256"] = json.loads(
+                run(
+                    [
+                        tool_bin("nix-prefetch-git"),
+                        "--quiet",
+                        "--fetch-submodules",
+                        source["repo"],
+                        new,
+                    ]
+                )
+            )["sha256"]
+    else:
+        url = source["url"].replace(source[field], new)
+        if update_source_url(name, source, url):
+            source[field] = new
 
 
 ########################################################################################
@@ -413,10 +522,8 @@ def run_on(host, args, **kwargs):
     return run(["ssh", host, *args], **kwargs)
 
 
-def tool_bin(name, bin_name=None):
-    if bin_name is None:
-        bin_name = name
-    pkg = run(
+def nix_build(attr):
+    return run(
         [
             "nix",
             "build",
@@ -424,10 +531,16 @@ def tool_bin(name, bin_name=None):
             "--print-out-paths",
             "-f",
             "default.nix",
-            f"pkgs.{name}",
+            attr,
         ],
         env={"NIX_PATH": ""},
     )
+
+
+def tool_bin(name, bin_name=None):
+    if bin_name is None:
+        bin_name = name
+    pkg = nix_build(f"pkgs.{name}")
     return f"{pkg}/bin/{bin_name}"
 
 
@@ -520,6 +633,11 @@ def all_hosts():
             env={"NIX_PATH": ""},
         )
     )
+
+
+@functools.cache
+def add_tool_env():
+    site.addsitedir(nix_build("misc.tool-env"))
 
 
 def main():
