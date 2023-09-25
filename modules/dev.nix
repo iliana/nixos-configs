@@ -10,6 +10,15 @@
   ];
   iliana.tailscale.acceptRoutes = true;
   iliana.tailscale.advertiseServerTag = false;
+  iliana.tailscale.ssh = true;
+  iliana.tailscale.policy.ssh = [
+    {
+      action = "accept";
+      src = ["iliana@github"];
+      dst = ["iliana@github"];
+      users = ["iliana"];
+    }
+  ];
 
   users.users.iliana.packages = with pkgs; [
     actionlint

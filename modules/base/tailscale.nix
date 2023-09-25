@@ -22,6 +22,10 @@
       default = null;
       type = with lib.types; nullOr string;
     };
+    ssh = lib.mkOption {
+      default = false;
+      type = lib.types.bool;
+    };
 
     authKeyFile = lib.mkOption {
       default = null;
@@ -81,7 +85,7 @@
             --advertise-tags=${lib.optionalString cfg.advertiseServerTag "tag:server"} \
             --auth-key="${lib.optionalString (cfg.authKeyFile != null) "$(if [[ -f ${lib.escapeShellArg cfg.authKeyFile} ]]; then echo ${lib.escapeShellArg "file:${cfg.authKeyFile}"}; fi)"}" \
             --exit-node=${lib.optionalString (cfg.exitNode != null) (lib.escapeShellArg cfg.exitNode)} \
-            --ssh=true
+            --ssh=${lib.boolToString cfg.ssh}
           ${lib.optionalString (cfg.authKeyFile != null) "rm -fv ${lib.escapeShellArg cfg.authKeyFile}"}
         '';
 

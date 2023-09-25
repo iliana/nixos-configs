@@ -16,6 +16,9 @@
       })
     ];
     useDefaultShell = true;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICbNG+6CT7UjapOs489X46K/o4D3huSdAbKjplUB7zaF"
+    ];
   };
   users.groups.pdns-deploy = {};
   security.sudo.extraConfig = ''
@@ -66,7 +69,7 @@
   iliana.tailscale.policy = {
     acls = [
       # Our internal `home.arpa` zone is served by this setup, so all hosts on
-      # the tailnet need to be able to reach `tag:pdns:53`.
+      # the tailnet need to be able to reach us.
       {
         action = "accept";
         src = ["*"];
@@ -88,14 +91,6 @@
         dst = ["${config.networking.hostName}:22"];
       }
     ];
-    ssh = [
-      {
-        action = "accept";
-        src = ["iliana@github" "tag:pdns-admin"];
-        dst = ["tag:pdns"];
-        users = ["pdns-deploy"];
-      }
-    ];
-    tags = ["tag:pdns" "tag:pdns-admin"];
+    tags = ["tag:pdns-admin"];
   };
 }

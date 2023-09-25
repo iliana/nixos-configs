@@ -52,15 +52,6 @@ let
       }
     ];
 
-    ssh = [
-      {
-        action = "accept";
-        src = ["iliana@github"];
-        dst = ["iliana@github" "tag:server"];
-        users = ["iliana"];
-      }
-    ];
-
     tags = [
       "tag:home-assistant"
       "tag:server"

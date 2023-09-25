@@ -44,6 +44,11 @@
         group = "www-deploy";
         isSystemUser = true;
         useDefaultShell = true;
+        openssh.authorizedKeys.keys =
+          config.users.users.iliana.openssh.authorizedKeys.keys
+          ++ [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAWFZPxftVOnymQLLz4xq5G6ZLckmIJywUlN7gXXOQK+"
+          ];
       };
       users.groups.www-deploy = {};
     })
@@ -144,15 +149,7 @@
             dst = ["${config.networking.hostName}:22"];
           }
         ];
-        ssh = [
-          {
-            action = "accept";
-            src = ["iliana@github" "tag:www-deploy"];
-            dst = ["tag:www"];
-            users = ["www-deploy"];
-          }
-        ];
-        tags = ["tag:www" "tag:www-deploy"];
+        tags = ["tag:www-deploy"];
       };
     }
   ];

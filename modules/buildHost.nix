@@ -20,14 +20,6 @@
         dst = ["${config.networking.hostName}:22"];
       }
     ];
-    ssh = [
-      {
-        action = "accept";
-        src = ["iliana@github" "tag:nix-build-ci"];
-        dst = ["tag:nix-build"];
-        users = ["build"];
-      }
-    ];
-    tags = ["tag:nix-build" "tag:nix-build-ci"];
+    tags = ["tag:nix-build-ci"];
   };
 }
