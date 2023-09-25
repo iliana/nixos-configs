@@ -35,6 +35,8 @@ jobs:
         name: Run build
         run: |
           mkdir ~/.ssh; cp .github/workflows/known_hosts ~/.ssh/known_hosts
+          echo "$SSH_PRIVATE_KEY" >~/.ssh/id_ed25519
+          chmod 0600 ~/.ssh/id_ed25519
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git fetch origin refs/notes/nix-store:refs/notes/nix-store
@@ -43,6 +45,8 @@ jobs:
           # in the notes and will not be backed up.
           ./x.py fetch-notes # to merge in any potential remote changes
           git push origin refs/notes/nix-store
+        env:
+          SSH_PRIVATE_KEY: '${{ secrets.SSH_PRIVATE_KEY }}'
 
   # This runs as a separate job so that it occurs after the cachix-action post
   # run script, which uploads all the newly-built paths to a store, causing
