@@ -52,6 +52,8 @@ let
       }
     ];
 
+    ssh = [];
+
     tags = [
       "tag:home-assistant"
       "tag:server"
