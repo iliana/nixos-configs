@@ -114,7 +114,6 @@
 
         serviceConfig = {
           Type = "oneshot";
-          RemainAfterExit = true;
           RuntimeDirectoryPreserve = true;
           RuntimeDirectory = "ts-cert";
         };
