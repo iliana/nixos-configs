@@ -35,8 +35,8 @@
   },
   "nixpkgs": {
     "channel": "nixos-23.05",
-    "url": "https://releases.nixos.org/nixos/23.05/nixos-23.05.3725.715d72e967ec/nixexprs.tar.xz",
-    "sha256": "1hym5zl189caxdmhrrwybwfp6hjcd6xzphxlk900qa7sjfgias0j"
+    "url": "https://releases.nixos.org/nixos/23.05/nixos-23.05.3759.261abe8a44a7/nixexprs.tar.xz",
+    "sha256": "12c2d346dkrs529xwh3rc44hijkffnrmy57cahqjf5vwx9qq2bgj"
   },
   "nixpkgs-unstable": {
     "channel": "nixos-unstable",
