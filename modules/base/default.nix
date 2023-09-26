@@ -53,10 +53,8 @@
 
     time.timeZone = "Etc/UTC";
     services.chrony.enable = true;
-    # This is the default, but explicitly set it so we can add time servers in
-    # other profiles instead of overriding. (If we need to override, we can set
-    # `services.chrony.servers`.)
     networking.timeServers = [
+      "juice.cat-herring.ts.net"
       "0.nixos.pool.ntp.org"
       "1.nixos.pool.ntp.org"
       "2.nixos.pool.ntp.org"

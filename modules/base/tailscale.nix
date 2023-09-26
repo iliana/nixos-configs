@@ -126,7 +126,5 @@
           RandomizedDelaySec = "6h";
         };
       };
-
-      # networking.timeServers = ["hubble.cat-herring.ts.net"];
     };
 }
