@@ -14,7 +14,6 @@ import string
 import subprocess
 import sys
 import tempfile
-import urllib.request
 from pathlib import Path
 
 subcommands = {}
@@ -219,102 +218,63 @@ def update(_args):
         sources = json.load(file)
 
     for name, source in sources.items():
-        if "channel" in source:
-            with urllib.request.urlopen(
-                f"https://channels.nixos.org/{source['channel']}"
-            ) as response:
-                url = f"{response.url}/nixexprs.tar.xz"
-            update_source_url(name, source, url)
-        elif "repo" in source:
-            update_repo(name, source)
+        opts = ["--heads", "--tags", "--refs", "--quiet", "--exit-code"]
+        refs = dict(
+            line.split()[::-1]
+            for line in run(["git", "ls-remote", *opts, source["repo"]]).splitlines()
+        )
+
+        if "branch" in source:
+            field = "rev"
+            new = refs[f"refs/heads/{source['branch']}"]
+        elif "version" in source:
+            add_tool_env()
+            # pylint: disable-next=import-error,import-outside-toplevel
+            from semver import Version
+
+            field = "version"
+            new = source["version"]
+            current = Version.parse(source["version"].removeprefix("v"))
+            for ref in refs:
+                if not ref.startswith("refs/tags/"):
+                    continue
+                tag = ref.removeprefix("refs/tags/")
+                try:
+                    version = Version.parse(tag.removeprefix("v"))
+                except ValueError:
+                    continue
+                if version > current:
+                    current = version
+                    new = tag
+        else:
+            raise ValueError(f"not sure how to update {name}")
+
+        if source[field] != new:
+            print(f"{name}:")
+            print(color(f"  - {source[field]}", "red"))
+            print(color(f"  + {new}", "green"))
+            source[field] = new
+            if source.get("submodules"):
+                source["sha256"] = json.loads(
+                    run(
+                        [
+                            tool_bin("nix-prefetch-git"),
+                            "--quiet",
+                            "--fetch-submodules",
+                            source["repo"],
+                            new,
+                        ]
+                    )
+                )["sha256"]
+            else:
+                source["url"] = source["url"].replace(source[field], new)
+                source["sha256"] = run(
+                    ["nix-prefetch-url", "--name", "source", "--unpack", source["url"]]
+                )
 
     with open(Path(__file__).parent / "sources.json", "w", encoding="utf-8") as file:
         json.dump(sources, file, indent=2)
         file.write("\n")
-
-
-def is_updated(name, old, new):
-    if old == new:
-        return False
-    print(f"{name}:")
-    print(color(f"  - {old}", "red"))
-    print(color(f"  + {new}", "green"))
-    return True
-
-
-def update_source_url(name, source, url):
-    if not is_updated(name, source["url"], url):
-        return False
-    source["url"] = url
-    source["sha256"] = run(
-        [
-            "nix-prefetch-url",
-            "--name",
-            "source",
-            "--unpack",
-            url,
-        ]
-    )
-    return True
-
-
-def update_repo(name, source):
-    refs = {
-        line.split()[1]: line.split()[0]
-        for line in run(
-            [
-                "git",
-                "ls-remote",
-                "--heads",
-                "--tags",
-                "--refs",
-                "--quiet",
-                "--exit-code",
-                source["repo"],
-            ]
-        ).splitlines()
-    }
-
-    if "branch" in source:
-        field = "rev"
-        new = refs[f"refs/heads/{source['branch']}"]
-    elif "version" in source:
-        add_tool_env()
-        # pylint: disable-next=import-error,import-outside-toplevel
-        from semver import Version
-
-        current = Version.parse(source["version"].removeprefix("v"))
-        field = "version"
-        new = source["version"]
-        for ref in refs:
-            if not ref.startswith("refs/tags/"):
-                continue
-            tag = ref.removeprefix("refs/tags/")
-            try:
-                version = Version.parse(tag.removeprefix("v"))
-            except ValueError:
-                continue
-            if version > current:
-                current = version
-                new = tag
-    if source.get("submodules"):
-        if is_updated(name, source[field], new):
-            source[field] = new
-            source["sha256"] = json.loads(
-                run(
-                    [
-                        tool_bin("nix-prefetch-git"),
-                        "--quiet",
-                        "--fetch-submodules",
-                        source["repo"],
-                        new,
-                    ]
-                )
-            )["sha256"]
-    else:
-        url = source["url"].replace(source[field], new)
-        if update_source_url(name, source, url):
-            source[field] = new
 
 
 ########################################################################################
