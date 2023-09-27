@@ -253,7 +253,6 @@ def update(_args):
             print(f"{name}:")
             print(color(f"  - {source[field]}", "red"))
             print(color(f"  + {new}", "green"))
-            source[field] = new
             if source.get("submodules"):
                 source["sha256"] = json.loads(
                     run(
@@ -271,6 +270,7 @@ def update(_args):
                 source["sha256"] = run(
                     ["nix-prefetch-url", "--name", "source", "--unpack", source["url"]]
                 )
+            source[field] = new
 
     with open(Path(__file__).parent / "sources.json", "w", encoding="utf-8") as file:
         json.dump(sources, file, indent=2)
