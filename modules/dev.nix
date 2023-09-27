@@ -24,6 +24,7 @@
     actionlint
     black
     cachix
+    dig
     git
     go
     gopls

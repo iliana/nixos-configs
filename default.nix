@@ -23,7 +23,7 @@ let
         ./hardware/hetzner-v1.nix
         ./modules/backup.nix
         ./modules/irc
-        ./modules/pdns
+        ./modules/knot
       ];
       iliana.hardware.ipv6Address = "2a01:4ff:1f0:c2de::1/64";
       system.stateVersion = "23.05";
@@ -58,7 +58,7 @@ let
         ./hardware/virt-v1.nix
         ./modules/20020-bot
         ./modules/backup.nix
-        ./modules/pdns
+        ./modules/knot
         ./modules/swoomba
       ];
       iliana.hardware.ipv6Address = "2620:fc:c000::212/64";
@@ -102,7 +102,7 @@ let
       imports = [
         ./hardware/hetzner-v1.nix
         ./modules/buildHost.nix
-        ./modules/pdns
+        ./modules/knot
       ];
       iliana.hardware.ipv6Address = "2a01:4f8:c17:f980::1/64";
       nixpkgs.hostPlatform = "aarch64-linux";
@@ -120,7 +120,7 @@ let
   };
 
   tests = builtins.mapAttrs (import ./mkTest.nix {inherit hosts pkgs;}) {
-    pdns = import ./tests/pdns.nix;
+    knot = import ./tests/knot.nix;
     web = import ./tests/web.nix;
   };
 in {
