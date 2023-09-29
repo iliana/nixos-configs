@@ -25,6 +25,7 @@
     black
     cachix
     dig
+    gcc
     git
     go
     gopls
