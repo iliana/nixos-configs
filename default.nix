@@ -86,6 +86,8 @@ let
         ./modules/backup.nix
         ./modules/www/skyrabbit.7x6.net
       ];
+      iliana.hardware.ipv6Address = "2620:fc:c000::226/64";
+      iliana.hardware.networkInterfaceName = "ens2";
       system.stateVersion = "23.05";
     };
     stroopwafel = {
