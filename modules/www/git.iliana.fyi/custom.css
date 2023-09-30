@@ -6,6 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 @import url("cgit.css");
+@import url("dark.css");
 
 * { line-height: 1.25em; }
 

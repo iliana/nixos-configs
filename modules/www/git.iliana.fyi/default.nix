@@ -34,6 +34,7 @@ in {
       ${pkgs.xorg.lndir}/bin/lndir -silent ${pkgs.cgit-pink}/cgit $out
       rm $out/cgit.cgi
       cp ${./custom.css} $out/custom.css
+      cp ${./dark.css} $out/dark.css
     '';
   in ''
     root * ${gitDir}
