@@ -31,8 +31,10 @@
   services.chrony.enableNTS = true;
   services.chrony.extraConfig = ''
     allow 100.64.0.0/10
+    allow 192.168.0.0/24
     refclock PPS /dev/pps0 prefer
   '';
+  networking.firewall.allowedUDPPorts = [123];
 
   iliana.tailscale.policy.acls = [
     {
