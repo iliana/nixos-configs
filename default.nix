@@ -12,6 +12,7 @@ let
     pounce = pkgs.callPackage ./packages/pounce.nix {inherit (orig) pounce;};
     transmission = pkgs.callPackage ./packages/transmission {inherit (sources) nixpkgs-unstable;};
     weechat = pkgs.callPackage ./packages/weechat.nix {inherit (sources) nixpkgs-unstable;};
+    yt-dlp = pkgs.callPackage ./packages/yt-dlp {inherit (orig) yt-dlp;};
   };
 
   pkgs = import sources.nixpkgs {overlays = [overlay];};
