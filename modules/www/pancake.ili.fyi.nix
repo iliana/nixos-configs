@@ -5,6 +5,7 @@
   ...
 }: {
   iliana.www.virtualHosts."pancake.ili.fyi:80" = helpers.caddy.requireTailscale ''
+    bind ${config.iliana.tailscale.ip}
     root * /media
     file_server {
       hide /media/z *.part *.torrent
@@ -12,7 +13,7 @@
     }
   '';
   iliana.www.openFirewall = lib.mkDefault false;
-  services.caddy.virtualHosts."pancake.ili.fyi:80".listenAddresses = [config.iliana.tailscale.ip];
+  iliana.www.denyTailscale = false;
 
   iliana.tailscale.policy.acls = [
     {

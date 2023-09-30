@@ -1,7 +1,6 @@
 {
   config,
   helpers,
-  lib,
   pkgs,
   ...
 }: let
@@ -58,7 +57,7 @@ in {
       ${helpers.caddy.serve "${config.services.mediawiki.finalPackage}/share/mediawiki"}
     '';
   };
-  users.groups.mediawiki.members = [config.services.caddy.user];
+  users.groups.mediawiki.members = ["caddy"];
 
   iliana.persist.directories =
     [

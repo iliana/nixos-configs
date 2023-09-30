@@ -1,10 +1,63 @@
 {
   config,
+  helpers,
   lib,
+  pkgs,
   test,
   ...
 }: let
+  mkVHost = host: cfg: ''
+    ${host} {
+      log {
+        output file /var/log/caddy/access-${host}.log
+      }
+
+      encode zstd gzip
+      header {
+        ?cache-control "private, max-age=0, must-revalidate"
+        permissions-policy "interest-cohort=()"
+        ?referrer-policy "no-referrer-when-downgrade"
+      }
+      tls {
+        on_demand
+      }
+    ${
+      if builtins.isAttrs cfg
+      then
+        lib.concatStrings (lib.mapAttrsToList
+          (matcher: value: ''
+            handle ${matcher} {
+              ${value}
+            }
+          '')
+          ({"*" = "error 404";} // cfg))
+      else cfg
+    }
+    }
+  '';
+
   cfg = config.iliana.www;
+  user = "caddy";
+  dataDir = "/var/lib/caddy";
+
+  caddyfileUnformatted = pkgs.writeText "Caddyfile" ''
+    {
+      email ${config.security.acme.defaults.email}
+      acme_ca ${config.security.acme.defaults.server}
+      log {
+        level ERROR
+      }
+    ${lib.optionalString test ''
+      local_certs
+      skip_install_trust
+    ''}
+    }
+    ${builtins.concatStringsSep "\n" (lib.mapAttrsToList mkVHost cfg.virtualHosts)}
+  '';
+  caddyfile = pkgs.runCommand "Caddyfile-formatted" {} ''
+    cat ${caddyfileUnformatted} >$out
+    ${pkgs.caddy}/bin/caddy fmt --overwrite $out
+  '';
 in {
   options.iliana.www = with lib; {
     virtualHosts = mkOption {
@@ -12,6 +65,10 @@ in {
       type = with lib.types; attrsOf (either lines (attrsOf str));
     };
     openFirewall = mkOption {
+      default = true;
+      type = lib.types.bool;
+    };
+    denyTailscale = mkOption {
       default = true;
       type = lib.types.bool;
     };
@@ -23,68 +80,59 @@ in {
       allowedUDPPorts = [443];
     };
 
-    services.caddy = {
-      enable = true;
-      email = "iliana@buttslol.net";
-      globalConfig = lib.mkIf test ''
-        local_certs
-        skip_install_trust
-      '';
-      virtualHosts =
-        builtins.mapAttrs
-        (_: cfg: {
-          extraConfig = ''
-            encode zstd gzip
-            header {
-              ?cache-control "private, max-age=0, must-revalidate"
-              permissions-policy "interest-cohort=()"
-              ?referrer-policy "no-referrer-when-downgrade"
-            }
-            tls {
-              on_demand
-            }
-            ${
-              if builtins.isAttrs cfg
-              then
-                lib.concatStrings (lib.mapAttrsToList
-                  (matcher: value: ''
-                    handle ${matcher} {
-                      ${value}
-                    }
-                  '')
-                  ({"*" = "error 404";} // cfg))
-              else cfg
-            }
-          '';
-          logFormat = lib.mkIf test ''
-            output stderr
-          '';
-        })
-        cfg.virtualHosts;
-    };
+    environment.etc."caddy/Caddyfile".source = caddyfile;
 
-    # Unset the custom Exec* settings that the Caddy NixOS module sets. Instead,
-    # symlink the generated Caddyfile to /etc/caddy/Caddyfile as the upstream
-    # unit expects, and add `X-Reload-Triggers` with the path to the generated
-    # Caddyfile. This avoids restarting the unit unless it meaningfully changes
-    # (i.e. new version of Caddy).
-    systemd.services.caddy.serviceConfig = {
-      ExecReload = lib.mkForce [];
-      ExecStart = lib.mkForce [];
-      ExecStartPre = lib.mkForce [];
+    users.users.${user} = {
+      group = user;
+      uid = config.ids.uids.${user};
+      home = dataDir;
     };
-    environment.etc."caddy/Caddyfile".source = config.services.caddy.configFile;
-    systemd.services.caddy.reloadTriggers = [config.services.caddy.configFile];
-    # To reduce downtime even further, restart instead of stop-then-start. This
-    # can result in undesired behavior if any ExecStop* settings are set.
-    systemd.services.caddy.stopIfChanged = false;
+    users.groups.${user}.gid = config.ids.gids.${user};
+
+    systemd.services.caddy = {
+      after = ["network.target" "network-online.target"];
+      requires = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
+
+      reloadTriggers = [caddyfile];
+      stopIfChanged = false;
+
+      startLimitIntervalSec = 14400;
+      startLimitBurst = 10;
+
+      serviceConfig =
+        helpers.systemdSandbox {
+          user = "caddy";
+          inherit (cfg) denyTailscale;
+        }
+        // {
+          Type = "notify";
+          ExecStart = "${pkgs.caddy}/bin/caddy run --config /etc/caddy/Caddyfile";
+          ExecReload = "${pkgs.caddy}/bin/caddy reload --config /etc/caddy/Caddyfile --force";
+          Restart = "on-abnormal";
+
+          AmbientCapabilities = ["cap_net_admin" "cap_net_bind_service"];
+          CapabilityBoundingSet = ["cap_net_admin" "cap_net_bind_service"];
+          PrivateUsers = false;
+
+          LimitNOFILE = 1048576;
+          LimitNPROC = 512;
+          TimeoutStopSec = "5s";
+
+          LogsDirectory = "caddy";
+          StateDirectory = "caddy";
+        };
+    };
 
     iliana.persist.directories = [
       {
-        directory = "/var/lib/caddy";
-        user = "caddy";
-        group = "caddy";
+        directory = dataDir;
+        inherit user;
+        group = user;
       }
     ];
+
+    # https://github.com/lucas-clemente/quic-go/wiki/UDP-Receive-Buffer-Size
+    boot.kernel.sysctl."net.core.rmem_max" = 2500000;
   };
 }

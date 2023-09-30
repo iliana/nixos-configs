@@ -1,10 +1,10 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }: {
   imports = [
+    ./acme.nix
     ./dotfiles.nix
     ./nix-settings.nix
     ./persist.nix
