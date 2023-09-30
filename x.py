@@ -16,6 +16,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+TOP = Path(__file__).parent
+
 subcommands = {}
 
 
@@ -214,7 +216,7 @@ def encrypt(args):
 
 @subcommand
 def update(_args):
-    with open(Path(__file__).parent / "sources.json", encoding="utf-8") as file:
+    with open(TOP / "sources.json", encoding="utf-8") as file:
         sources = json.load(file)
 
     for name, source in sources.items():
@@ -272,7 +274,7 @@ def update(_args):
                 )
             source[field] = new
 
-    with open(Path(__file__).parent / "sources.json", "w", encoding="utf-8") as file:
+    with open(TOP / "sources.json", "w", encoding="utf-8") as file:
         json.dump(sources, file, indent=2)
         file.write("\n")
 
@@ -432,7 +434,7 @@ def update_hosts_file(_args):
     def is_ipv4(address):
         return ipaddress.ip_address(address).version == 4
 
-    path = Path(__file__).parent / "modules" / "base" / "hosts.json"
+    path = TOP / "modules" / "base" / "hosts.json"
     peers = json.loads(run(["tailscale", "status", "--json"]))["Peer"].values()
     output = sorted(
         (peer["HostName"], next(filter(is_ipv4, peer["TailscaleIPs"])))
