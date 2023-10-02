@@ -121,6 +121,9 @@ in {
 
           LogsDirectory = "caddy";
           StateDirectory = "caddy";
+
+          # caddy calls fchownat for unknown reasons
+          SystemCallFilter = ["@system-service" "~@resources @privileged" "@chown"];
         };
     };
 
