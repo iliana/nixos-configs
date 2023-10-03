@@ -118,12 +118,10 @@ in {
           LimitNOFILE = 1048576;
           LimitNPROC = 512;
           TimeoutStopSec = "5s";
+          SystemCallErrorNumber = "EPERM";
 
           LogsDirectory = "caddy";
           StateDirectory = "caddy";
-
-          # caddy calls fchownat for unknown reasons
-          SystemCallFilter = ["@system-service" "~@resources @privileged" "@chown"];
         };
     };
 
