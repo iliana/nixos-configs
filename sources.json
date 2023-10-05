@@ -36,9 +36,9 @@
   "nixpkgs": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixos-23.05",
-    "rev": "3b79cc4bcd9c09b5aa68ea1957c25e437dc6bc58",
-    "url": "https://github.com/NixOS/nixpkgs/archive/3b79cc4bcd9c09b5aa68ea1957c25e437dc6bc58.tar.gz",
-    "sha256": "0q95i9dgk6jzka5kj7ywj8gg4sighr3bcc0n92xbyybrp198pddv"
+    "rev": "8a4c17493e5c39769f79117937c79e1c88de6729",
+    "url": "https://github.com/NixOS/nixpkgs/archive/8a4c17493e5c39769f79117937c79e1c88de6729.tar.gz",
+    "sha256": "0pd8n09jnpghzc3v97h7pdsk22piiv0f30blyk9jrjibdpf03pw2"
   },
   "nixpkgs-unstable": {
     "repo": "https://github.com/NixOS/nixpkgs",
