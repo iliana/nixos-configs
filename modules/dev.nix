@@ -32,6 +32,7 @@
     grab-site
     isort
     moreutils
+    multipath-tools
     nil
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
