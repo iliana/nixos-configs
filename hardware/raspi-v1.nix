@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  modulesPath,
   pkgs,
   ...
 }: let
@@ -43,9 +42,6 @@
     ln -s ${pkgs.ubootRaspberryPi3_64bit.override cfg.ubootOverrides}/u-boot.bin $out/u-boot-rpi3.bin
     ln -s ${pkgs.ubootRaspberryPi4_64bit.override cfg.ubootOverrides}/u-boot.bin $out/u-boot-rpi4.bin
   '';
-
-  extlinuxBuilder = import (modulesPath + "/system/boot/loader/generic-extlinux-compatible/extlinux-conf-builder.nix") {inherit pkgs;};
-  extlinuxBuilderArgs = "-d /nix/boot -g 20 -t 3";
 in {
   options.iliana.hardware = {
     ubootOverrides = lib.mkOption {
@@ -69,6 +65,10 @@ in {
       autoResize = true;
       neededForBoot = true;
     };
+    fileSystems."/boot" = {
+      device = "/nix/boot";
+      options = ["bind"];
+    };
     fileSystems."/boot/firmware" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "vfat";
@@ -81,10 +81,9 @@ in {
         ${firmware}/ /boot/firmware/
     '';
 
-    boot.loader.generic-extlinux-compatible.populateCmd = "${extlinuxBuilder} ${extlinuxBuilderArgs}";
+    boot.loader.generic-extlinux-compatible.enable = true;
     boot.loader.grub.enable = false;
-    system.boot.loader.id = "generic-extlinux-compatible";
-    system.build.installBootLoader = "${extlinuxBuilder} ${extlinuxBuilderArgs} -c";
+    boot.loader.timeout = 3;
 
     # Adapted from `boot.growPartition`, which only works if the partition you
     # want to grow is `/`.
@@ -119,7 +118,8 @@ in {
         EOF
       '';
       firmwareMountPoint = "/boot/firmware";
-      preMountHook = ''
+      bootBindMount = "/nix/boot";
+      mkfsPhase = ''
         ${pkgs.dosfstools}/bin/mkfs.vfat -n NIXOS_SD /dev/vda1
       '';
     };

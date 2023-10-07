@@ -122,11 +122,9 @@ in {
           --print "$diskImage"
       '';
       firmwareMountPoint = "/efi";
-      preMountHook = ''
+      bootBindMount = "/nix/persist/boot";
+      mkfsPhase = ''
         ${pkgs.dosfstools}/bin/mkfs.vfat -F 12 -n ESP /dev/vda1
-      '';
-      postMountHook = ''
-        mount -o bind "$root"{/nix/persist/boot,/boot}
       '';
     };
   };

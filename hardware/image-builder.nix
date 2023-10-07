@@ -2,8 +2,8 @@
   config,
   diskPartitionScript,
   firmwareMountPoint,
-  preMountHook ? "",
-  postMountHook ? "",
+  bootBindMount,
+  mkfsPhase,
   closureInfo,
   e2fsprogs,
   lib,
@@ -64,17 +64,18 @@ in
     ''
       root="$TMPDIR/root"
 
-      mkdir -p "$root"/{etc,nix,var} "$root/${firmwareMountPoint}"
+      mkdir -p "$root"/{etc,var}
       touch "$root/etc/NIXOS"
-      ${preMountHook}
-      mount /dev/vda1 "$root/${firmwareMountPoint}"
-      mount /dev/vda2 "$root/nix"
+      mount --mkdir /dev/vda2 "$root/nix"
+      mkdir -p "$root/${bootBindMount}"
+      mount --mkdir --bind "$root/${bootBindMount}" "$root/boot"
+      ${mkfsPhase}
+      mount --mkdir /dev/vda1 "$root/${firmwareMountPoint}"
       # fix permissions
       nixos-enter --root "$root" -- chown -R root:root /nix/{store,var}
-      ${postMountHook}
       # install bootloader
       NIXOS_INSTALL_BOOTLOADER=1 nixos-enter --root "$root" -- /nix/var/nix/profiles/system/bin/switch-to-configuration boot
 
-      umount /dev/vda{1,2}
+      umount --all-targets --recursive /dev/vda2
       tune2fs -T now -c 0 -i 0 /dev/vda2
     '')
