@@ -21,6 +21,7 @@
       root-desc = "patches unwelcome: the movie: the game: the soundtrack";
       root-title = "da git z0ne";
       snapshots = "tar.gz";
+      strict-export = "git-daemon-export-ok";
     }
     {
       # scan-path must come after snapshots, and probably some other options
