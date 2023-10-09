@@ -33,6 +33,14 @@ let
         dst = ["100.64.31.59:*"];
       }
 
+      # temporary nyoom->woomy shenanigans
+      {
+        action = "accept";
+        src = ["100.108.35.69"];
+        proto = "tcp";
+        dst = ["100.110.112.4:22"];
+      }
+
       # Development Oxide control plane on onerous-tooth, via subnet router
       {
         action = "accept";
