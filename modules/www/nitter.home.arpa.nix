@@ -5,9 +5,10 @@
   ...
 }: {
   iliana.www.virtualHosts."nitter.home.arpa:80" = let
-    # https://github.com/zedeus/nitter/wiki/Instances
+    # https://status.d420.de/
     instances = [
-      "https://nitter.net"
+      "https://nitter.d420.de"
+      "https://nitter.x86-64-unknown-linux-gnu.zip"
     ];
 
     # Because different instances can set different default preferences, set
@@ -54,6 +55,7 @@
         header_down Which-Upstream {upstream_hostport}
       }
     '';
+  iliana.www.denyTailscale = false;
 
   iliana.tailscale.policy.acls = [
     {
