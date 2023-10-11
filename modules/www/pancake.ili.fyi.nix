@@ -14,6 +14,7 @@
   '';
   iliana.www.openFirewall = lib.mkDefault false;
   iliana.www.denyTailscale = false;
+  systemd.services.caddy.after = ["tailscale-up.service"];
 
   iliana.tailscale.policy.acls = [
     {
