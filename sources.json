@@ -43,9 +43,9 @@
   "nixpkgs-unstable": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixos-unstable",
-    "rev": "87828a0e03d1418e848d3dd3f3014a632e4a4f64",
-    "url": "https://github.com/NixOS/nixpkgs/archive/87828a0e03d1418e848d3dd3f3014a632e4a4f64.tar.gz",
-    "sha256": "1jllncg7xnl2n04qmnazixyvn7lyyk31hsn9hcww448b94ihsxb1"
+    "rev": "f99e5f03cc0aa231ab5950a15ed02afec45ed51a",
+    "url": "https://github.com/NixOS/nixpkgs/archive/f99e5f03cc0aa231ab5950a15ed02afec45ed51a.tar.gz",
+    "sha256": "01lri1a03i50r7zj4cq7d062khl583639bx61ka82wfch0grppji"
   },
   "swoomba": {
     "repo": "https://git.iliana.fyi/swoomba",
