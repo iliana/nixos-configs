@@ -9,6 +9,7 @@
     ./nix-settings.nix
     ./persist.nix
     ./policy.nix
+    ./syncthing.nix
     ./tailscale.nix
     ./www.nix
   ];
