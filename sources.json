@@ -16,8 +16,8 @@
     "repo": "https://github.com/iliana/dotfiles",
     "submodules": true,
     "branch": "main",
-    "rev": "aa35617c0f126332f58b9138074f6da1b3399345",
-    "sha256": "14sr2zq9w3iphdic0k5s4knvhzyw5sa59fzjmbn42f16gdr988rg"
+    "rev": "eb471d6456d69dad15b07826d9bc392051700b01",
+    "sha256": "0c6i9v2ag5irvssizlyqr12sfjhbs901mr2qwf0n7l8y2k1hm6av"
   },
   "emojos.in": {
     "repo": "https://github.com/iliana/emojos.in",
@@ -29,23 +29,23 @@
   "impermanence": {
     "repo": "https://github.com/nix-community/impermanence",
     "branch": "master",
-    "rev": "e9643d08d0d193a2e074a19d4d90c67a874d932e",
-    "url": "https://github.com/nix-community/impermanence/archive/e9643d08d0d193a2e074a19d4d90c67a874d932e.tar.gz",
-    "sha256": "1gx91lrdb50njs2yd71q8h5nbgmzf6ypqnm3v9f1yaz1w3wpnzyg"
+    "rev": "0f317c2e9e56550ce12323eb39302d251618f5b5",
+    "url": "https://github.com/nix-community/impermanence/archive/0f317c2e9e56550ce12323eb39302d251618f5b5.tar.gz",
+    "sha256": "120775fbfar2x1s5ijkxnvb8p0mmk3dlbq0lzfhsi0csfynp98ki"
   },
   "nixpkgs": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixos-23.05",
-    "rev": "bd1cde45c77891214131cbbea5b1203e485a9d51",
-    "url": "https://github.com/NixOS/nixpkgs/archive/bd1cde45c77891214131cbbea5b1203e485a9d51.tar.gz",
-    "sha256": "0sggiz653xf73jz3nc6lnx6i8mqs62nrqz48hg7jxfg099wb5c9g"
+    "rev": "898cb2064b6e98b8c5499f37e81adbdf2925f7c5",
+    "url": "https://github.com/NixOS/nixpkgs/archive/898cb2064b6e98b8c5499f37e81adbdf2925f7c5.tar.gz",
+    "sha256": "0ha53gbglrcnpzfc4lwzgyvlsagvm1m2q9z5i5b4nfahplnqpsbj"
   },
   "nixpkgs-unstable": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixos-unstable",
-    "rev": "f99e5f03cc0aa231ab5950a15ed02afec45ed51a",
-    "url": "https://github.com/NixOS/nixpkgs/archive/f99e5f03cc0aa231ab5950a15ed02afec45ed51a.tar.gz",
-    "sha256": "01lri1a03i50r7zj4cq7d062khl583639bx61ka82wfch0grppji"
+    "rev": "5e4c2ada4fcd54b99d56d7bd62f384511a7e2593",
+    "url": "https://github.com/NixOS/nixpkgs/archive/5e4c2ada4fcd54b99d56d7bd62f384511a7e2593.tar.gz",
+    "sha256": "13dfm5z6r37s7qxryr8jrqinz0xw4i7r0p4y3kpq64a2bwa5rlpl"
   },
   "swoomba": {
     "repo": "https://git.iliana.fyi/swoomba",
