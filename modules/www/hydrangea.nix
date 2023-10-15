@@ -29,6 +29,7 @@
         "buttslol.net" = "iliana";
         "files.iliana.fyi" = "iliana";
         "iliana.fyi" = "www-deploy";
+        "lipu-pi-pini-ala.7x6.net" = "spiders";
       };
       dirs = builtins.mapAttrs (host: _: "/var/www/${builtins.head (lib.splitString ":" host)}") hosts;
     in {

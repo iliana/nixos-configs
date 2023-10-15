@@ -68,7 +68,7 @@
 
       networking.firewall.checkReversePath = "loose";
       networking.firewall.trustedInterfaces = ["tailscale0"];
-      services.openssh.openFirewall = false;
+      services.openssh.openFirewall = lib.mkDefault false;
 
       systemd.services.tailscale-up = {
         description = "tailscale up";

@@ -33,6 +33,7 @@ let
         ./hardware/virt-v1.nix
         ./modules/backup.nix
         ./modules/obsidian-syncthing.nix
+        ./modules/users/spiders.nix
         ./modules/www/hydrangea.nix
       ];
       iliana.hardware.ipv6Address = "2620:fc:c000::209/64";
