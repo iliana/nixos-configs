@@ -22,6 +22,12 @@ let
       }
       {
         action = "accept";
+        src = ["100.108.35.69"];
+        proto = "tcp";
+        dst = ["hydrangea:22"];
+      }
+      {
+        action = "accept";
         src = ["autogroup:shared"];
         proto = "tcp";
         dst = ["100.113.241.94:22"];
