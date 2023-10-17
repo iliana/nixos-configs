@@ -8,9 +8,9 @@
   },
   "crane": {
     "repo": "https://github.com/ipetkov/crane",
-    "version": "v0.14.1",
-    "url": "https://github.com/ipetkov/crane/archive/refs/tags/v0.14.1.tar.gz",
-    "sha256": "0ln28wgfh3r8jv9d04n59q92vwr807yjcx6f4pzzvpmqnzi3awcs"
+    "version": "v0.14.2",
+    "url": "https://github.com/ipetkov/crane/archive/refs/tags/v0.14.2.tar.gz",
+    "sha256": "07d4p065xn3amcs0j2zy5izbj6mb910pfxin329zcdz59ihn4a81"
   },
   "dotfiles": {
     "repo": "https://github.com/iliana/dotfiles",
@@ -43,9 +43,9 @@
   "nixpkgs-unstable": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixos-unstable",
-    "rev": "5e4c2ada4fcd54b99d56d7bd62f384511a7e2593",
-    "url": "https://github.com/NixOS/nixpkgs/archive/5e4c2ada4fcd54b99d56d7bd62f384511a7e2593.tar.gz",
-    "sha256": "13dfm5z6r37s7qxryr8jrqinz0xw4i7r0p4y3kpq64a2bwa5rlpl"
+    "rev": "ca012a02bf8327be9e488546faecae5e05d7d749",
+    "url": "https://github.com/NixOS/nixpkgs/archive/ca012a02bf8327be9e488546faecae5e05d7d749.tar.gz",
+    "sha256": "1nlxb2jldq51mnb0japs5pqi82msrginm0kjhsgbzrlvpag9525f"
   },
   "swoomba": {
     "repo": "https://git.iliana.fyi/swoomba",
