@@ -89,6 +89,12 @@ in {
       else acl)
     combinedPolicy.acls;
   hosts = builtins.fromJSON (builtins.readFile ./modules/base/hosts.json);
+  nodeAttrs = [
+    {
+      target = ["iliana@github"];
+      attr = ["funnel"];
+    }
+  ];
   tagOwners = builtins.listToAttrs (builtins.map (name: {
       inherit name;
       value = ["iliana@github"];
