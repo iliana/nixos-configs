@@ -37,7 +37,7 @@ in
     systemd.timers.cohost-20020-bot = {
       wantedBy = ["timers.target"];
       timerConfig = {
-        OnActiveSec = "35h";
+        OnUnitActiveSec = "35h";
         RandomizedDelaySec = "1h";
         Persistent = true;
       };
