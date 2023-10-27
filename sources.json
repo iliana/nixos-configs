@@ -16,8 +16,8 @@
     "repo": "https://github.com/iliana/dotfiles",
     "submodules": true,
     "branch": "main",
-    "rev": "eb471d6456d69dad15b07826d9bc392051700b01",
-    "sha256": "0c6i9v2ag5irvssizlyqr12sfjhbs901mr2qwf0n7l8y2k1hm6av"
+    "rev": "660ab4bf2c14230163096484e496f8f69edc88be",
+    "sha256": "1wpz5a34q137ia9kdzzccpd55n7arad3xy699byxfb6i63lxxfbr"
   },
   "emojos.in": {
     "repo": "https://github.com/iliana/emojos.in",

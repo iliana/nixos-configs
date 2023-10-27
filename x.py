@@ -79,7 +79,7 @@ def status(args):
 
 @subcommand
 def fmt(_args):
-    run([tool_bin("alejandra"), "."])
+    run([tool_bin("alejandra"), ".", "-e", "./packages/helix.nix"])
 
 
 ########################################################################################
@@ -214,12 +214,15 @@ def encrypt(args):
 ########################################################################################
 
 
-@subcommand
-def update(_args):
+@subcommand(parser=lambda parser: parser.add_argument("sources", nargs="*"))
+def update(args):
     with open(TOP / "sources.json", encoding="utf-8") as file:
         sources = json.load(file)
 
     for name, source in sources.items():
+        if args.sources and name not in args.sources:
+            continue
+
         opts = ["--heads", "--tags", "--refs", "--quiet", "--exit-code"]
         refs = dict(
             line.split()[::-1]
