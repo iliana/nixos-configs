@@ -8,7 +8,7 @@ let
     bandcamp-dl = pkgs.callPackage ./packages/bandcamp-dl.nix {};
     caddy = pkgs.callPackage (sources.nixpkgs-unstable + "/pkgs/servers/caddy") {};
     craneLib = import sources.crane {inherit pkgs;};
-    helix = pkgs.callPackage ./packages/helix.nix {};
+    helix = pkgs.callPackage (sources.nixpkgs-unstable + "/pkgs/applications/editors/helix") {};
     litterbox = pkgs.callPackage ./packages/litterbox.nix {};
     pounce = pkgs.callPackage ./packages/pounce.nix {inherit (orig) pounce;};
     transmission = pkgs.callPackage ./packages/transmission {inherit (sources) nixpkgs-unstable;};

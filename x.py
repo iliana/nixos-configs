@@ -79,7 +79,7 @@ def status(args):
 
 @subcommand
 def fmt(_args):
-    run([tool_bin("alejandra"), ".", "-e", "./packages/helix.nix"])
+    run([tool_bin("alejandra"), "."])
 
 
 ########################################################################################
