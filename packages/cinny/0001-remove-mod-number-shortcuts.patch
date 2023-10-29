@@ -1,0 +1,51 @@
+From cc441d72a80963a6abea46c0335e3a4578fa4d9c Mon Sep 17 00:00:00 2001
+From: iliana etaoin <iliana@buttslol.net>
+Date: Sun, 29 Oct 2023 15:47:23 -0700
+Subject: [PATCH] remove mod+number shortcuts
+
+---
+ src/app/components/editor/keyboard.ts | 17 -----------------
+ 1 file changed, 17 deletions(-)
+
+diff --git a/src/app/components/editor/keyboard.ts b/src/app/components/editor/keyboard.ts
+index 19c05ba..d071921 100644
+--- a/src/app/components/editor/keyboard.ts
++++ b/src/app/components/editor/keyboard.ts
+@@ -15,15 +15,10 @@ export const INLINE_HOTKEYS: Record<string, MarkType> = {
+ const INLINE_KEYS = Object.keys(INLINE_HOTKEYS);
+ 
+ export const BLOCK_HOTKEYS: Record<string, BlockType> = {
+-  'mod+7': BlockType.OrderedList,
+-  'mod+8': BlockType.UnorderedList,
+   "mod+'": BlockType.BlockQuote,
+   'mod+;': BlockType.CodeBlock,
+ };
+ const BLOCK_KEYS = Object.keys(BLOCK_HOTKEYS);
+-const isHeading1 = isKeyHotkey('mod+1');
+-const isHeading2 = isKeyHotkey('mod+2');
+-const isHeading3 = isKeyHotkey('mod+3');
+ 
+ /**
+  * @return boolean true if shortcut is toggled.
+@@ -89,18 +84,6 @@ export const toggleKeyboardShortcut = (editor: Editor, event: KeyboardEvent<Elem
+     return false;
+   });
+   if (blockToggled) return true;
+-  if (isHeading1(event)) {
+-    toggleBlock(editor, BlockType.Heading, { level: 1 });
+-    return true;
+-  }
+-  if (isHeading2(event)) {
+-    toggleBlock(editor, BlockType.Heading, { level: 2 });
+-    return true;
+-  }
+-  if (isHeading3(event)) {
+-    toggleBlock(editor, BlockType.Heading, { level: 3 });
+-    return true;
+-  }
+ 
+   const inlineToggled = isBlockActive(editor, BlockType.CodeBlock)
+     ? false
+-- 
+2.42.0
+

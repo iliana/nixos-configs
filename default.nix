@@ -7,6 +7,7 @@ let
   overlay = pkgs: orig: {
     bandcamp-dl = pkgs.callPackage ./packages/bandcamp-dl.nix {};
     caddy = pkgs.callPackage (sources.nixpkgs-unstable + "/pkgs/servers/caddy") {};
+    cinny = pkgs.callPackage ./packages/cinny {inherit (sources) nixpkgs-unstable;};
     craneLib = import sources.crane {inherit pkgs;};
     helix = pkgs.callPackage (sources.nixpkgs-unstable + "/pkgs/applications/editors/helix") {};
     litterbox = pkgs.callPackage ./packages/litterbox.nix {};
