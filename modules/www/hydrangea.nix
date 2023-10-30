@@ -6,6 +6,7 @@
   ...
 }: {
   imports = [
+    ./cinny.nix
     ./daily.iliana.fyi.nix
     ./emojos.in.nix
     ./git.iliana.fyi
