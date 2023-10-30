@@ -119,6 +119,7 @@ in {
           LimitNPROC = 512;
           TimeoutStopSec = "5s";
           SystemCallErrorNumber = "EPERM";
+          SystemCallFilter = ["@system-service" "~@resources @privileged" "@chown"];
 
           LogsDirectory = "caddy";
           StateDirectory = "caddy";
