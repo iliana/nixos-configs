@@ -1,0 +1,51 @@
+From 3a256d284dfc705f15af1d4e4fdfc18a7dde44c5 Mon Sep 17 00:00:00 2001
+From: iliana etaoin <iliana@buttslol.net>
+Date: Sun, 29 Oct 2023 17:31:55 -0700
+Subject: [PATCH] indicate this is a fork
+
+---
+ src/app/organisms/settings/Settings.jsx | 2 +-
+ src/app/templates/auth/Auth.jsx         | 2 +-
+ src/client/state/cons.js                | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/app/organisms/settings/Settings.jsx b/src/app/organisms/settings/Settings.jsx
+index 1b04669..5c1f1ad 100644
+--- a/src/app/organisms/settings/Settings.jsx
++++ b/src/app/organisms/settings/Settings.jsx
+@@ -324,7 +324,7 @@ function AboutSection() {
+             <Text>Yet another matrix client</Text>
+ 
+             <div className="settings-about__btns">
+-              <Button onClick={() => window.open('https://github.com/ajbura/cinny')}>Source code</Button>
++              <Button onClick={() => window.open('https://github.com/iliana/nixos-configs/tree/main/packages/cinny')}>Source code</Button>
+               <Button onClick={() => window.open('https://cinny.in/#sponsor')}>Support</Button>
+               <Button onClick={() => initMatrix.clearCacheAndReload()} variant="danger">Clear cache & reload</Button>
+             </div>
+diff --git a/src/app/templates/auth/Auth.jsx b/src/app/templates/auth/Auth.jsx
+index 7c21173..3435016 100644
+--- a/src/app/templates/auth/Auth.jsx
++++ b/src/app/templates/auth/Auth.jsx
+@@ -579,7 +579,7 @@ function Auth() {
+             <a href="https://cinny.in" target="_blank" rel="noreferrer">About</a>
+           </Text>
+           <Text variant="b2">
+-            <a href="https://github.com/ajbura/cinny/releases" target="_blank" rel="noreferrer">{`v${cons.version}`}</a>
++            <a href="https://github.com/iliana/nixos-configs/tree/main/packages/cinny" target="_blank" rel="noreferrer">{`v${cons.version}`}</a>
+           </Text>
+           <Text variant="b2">
+             <a href="https://twitter.com/cinnyapp" target="_blank" rel="noreferrer">Twitter</a>
+diff --git a/src/client/state/cons.js b/src/client/state/cons.js
+index b8074d9..414759b 100644
+--- a/src/client/state/cons.js
++++ b/src/client/state/cons.js
+@@ -1,5 +1,5 @@
+ const cons = {
+-  version: '3.1.0',
++  version: '3.1.0-iliana',
+   secretKey: {
+     ACCESS_TOKEN: 'cinny_access_token',
+     DEVICE_ID: 'cinny_device_id',
+-- 
+2.42.0
+
