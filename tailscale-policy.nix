@@ -67,17 +67,18 @@ let
     ];
   };
 
-  inherit (import ./default.nix) sources hosts;
+  inherit (import ./default.nix) sources hosts flunks;
+  stubConfig = policy:
+    import (sources.nixpkgs + "/nixos/lib/eval-config.nix") {
+      modules = [
+        ./modules/base/policy.nix
+        {iliana.tailscale.policy = policy;}
+      ];
+    };
   configs =
-    [
-      (import (sources.nixpkgs + "/nixos/lib/eval-config.nix") {
-        modules = [
-          ./modules/base/policy.nix
-          {iliana.tailscale.policy = base;}
-        ];
-      })
-    ]
-    ++ builtins.attrValues hosts;
+    [(stubConfig base)]
+    ++ builtins.attrValues hosts
+    ++ builtins.attrValues (builtins.mapAttrs (_: flunk: stubConfig flunk.meta.flunk.tailscale.policy) flunks);
   combinedPolicy = builtins.mapAttrs (attr: _: builtins.concatMap (system: system.config.iliana.tailscale.policy.${attr}) configs) base;
 in {
   inherit (combinedPolicy) ssh;

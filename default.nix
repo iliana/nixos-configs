@@ -9,6 +9,7 @@ let
     caddy = pkgs.callPackage (sources.nixpkgs-unstable + "/pkgs/servers/caddy") {};
     cinny = pkgs.callPackage ./packages/cinny {inherit (sources) nixpkgs-unstable;};
     craneLib = import sources.crane {inherit pkgs;};
+    flunk-bin-path = pkgs.callPackage ./packages/flunk-bin-path.nix {};
     helix = pkgs.callPackage (sources.nixpkgs-unstable + "/pkgs/applications/editors/helix") {};
     litterbox = pkgs.callPackage ./packages/litterbox.nix {};
     pounce = pkgs.callPackage ./packages/pounce.nix {inherit (orig) pounce;};
@@ -124,14 +125,27 @@ let
     };
   };
 
+  flunks = builtins.mapAttrs (_: path: pkgs.callPackage path {}) {
+    gaia = ./flunks/gaia.nix;
+  };
+
+  targets =
+    (builtins.mapAttrs (_: _: {type = "nixos";}) hosts)
+    // (builtins.mapAttrs (_: flunk: {
+        type = "flunk";
+        inherit (flunk.meta.flunk) binPath;
+      })
+      flunks);
+
   tests = builtins.mapAttrs (import ./mkTest.nix {inherit hosts pkgs;}) {
     knot = import ./tests/knot.nix;
     web = import ./tests/web.nix;
   };
 in {
-  inherit sources pkgs hosts tests;
+  inherit sources pkgs hosts flunks targets tests;
   ciJobs = recurseIntoAttrs {
     hosts = recurseIntoAttrs (builtins.mapAttrs (_: system: system.config.system.build.toplevel) hosts);
+    flunks = recurseIntoAttrs flunks;
     tests = recurseIntoAttrs tests;
   };
   misc.tool-env = pkgs.python3.withPackages (ps: [ps.packaging]);

@@ -36,7 +36,7 @@ def subcommand(*args, **kwargs):
 
 @subcommand
 def hosts(_args):
-    print("\n".join(all_hosts()))
+    print("\n".join(all_hosts().keys()))
 
 
 ########################################################################################
@@ -46,10 +46,15 @@ def hosts(_args):
 def status(args):
     fetch_notes()
     local_rev = rev_parse("HEAD")
-    the_hosts = sorted(args.hosts or all_hosts())
-    format_string = f"{{:<{max(len(host) for host in the_hosts) + 2}}}{{}}"
-    for host in the_hosts:
-        remote_system = run_on(host, ["readlink", "/run/current-system"])
+    format_string = f"{{:<{max(len(host) for host in all_hosts()) + 2}}}{{}}"
+    for host, hostmeta in all_hosts().items():
+        if args.hosts and host not in args.hosts:
+            continue
+        system_link = {
+            "flunk": "~/.local/share/nix/root/nix/var/nix/profiles/system",
+            "nixos": "/run/current-system",
+        }[hostmeta["type"]]
+        remote_system = run_on(host, ["readlink", "-m", system_link])
         remote_rev = commit_for_output(remote_system)
         if not remote_rev:
             result = color("unknown", "red")
@@ -57,20 +62,21 @@ def status(args):
             result = color(remote_rev[:7], "red")
         else:
             result = color(remote_rev[:7], "green")
-        booted, current = run_on(
-            host,
-            [
-                "readlink",
-                "/run/booted-system/kernel",
-                "/run/current-system/kernel",
-            ],
-        ).splitlines()
-        if booted != current:
-            vercmp = " => ".join(
-                os.path.basename(os.path.dirname(x)).split("-", maxsplit=1)[1]
-                for x in (booted, current)
-            )
-            result += " " + color(f"(needs reboot, {vercmp})", "yellow")
+        if hostmeta["type"] == "nixos":
+            booted, current = run_on(
+                host,
+                [
+                    "readlink",
+                    "/run/booted-system/kernel",
+                    "/run/current-system/kernel",
+                ],
+            ).splitlines()
+            if booted != current:
+                vercmp = " => ".join(
+                    os.path.basename(os.path.dirname(x)).split("-", maxsplit=1)[1]
+                    for x in (booted, current)
+                )
+                result += " " + color(f"(needs reboot, {vercmp})", "yellow")
         print(format_string.format(host, result))
 
 
@@ -115,11 +121,77 @@ def tool(args):
     )
 )
 def deploy(args):
+    hostmeta = host_meta(args.host)
+
     # First, see if we have a note for our current commit.
     fetch_notes()
-    result = next(
-        (x for x in read_notes(args.rev) if f"nixos-system-{args.host}" in x), None
+    drv_search = {
+        "flunk": f"flunk-{args.host}",
+        "nixos": f"nixos-system-{args.host}",
+    }[hostmeta["type"]]
+    result = next((x for x in read_notes(args.rev) if drv_search in x), None)
+    if result is None and args.rev is not None:
+        raise ValueError("cannot evaluate configuration for another revision")
+
+    {"flunk": deploy_flunk, "nixos": deploy_nixos}[hostmeta["type"]](
+        args, result, hostmeta
     )
+
+
+def deploy_flunk(args, result, hostmeta):
+    bin_path = hostmeta["binPath"]
+
+    if result is not None:
+        try:
+            run(["nix-store", "--realise", result])
+        except subprocess.CalledProcessError:
+            result = None
+
+    if result is None:
+        result = run(
+            [
+                "nix",
+                "build",
+                "--no-link",
+                "--print-out-paths",
+                "-f",
+                "default.nix",
+                f"flunks.{args.host}",
+            ],
+            env={"NIX_PATH": ""},
+        )
+
+    run(
+        [
+            "nix",
+            "copy",
+            "--no-check-sigs",
+            "--to",
+            (
+                f"ssh-ng://{args.host}?remote-store=.local/share/nix/root"
+                f"&remote-program={bin_path}/nix-daemon"
+            ),
+            result,
+        ],
+        capture=False,
+    )
+
+    if not args.dry_run:
+        run_on(
+            args.host,
+            [
+                f"{bin_path}/nix-env",
+                "-p",
+                "~/.local/share/nix/root/nix/var/nix/profiles/system",
+                "--set",
+                result,
+            ],
+            capture=False,
+        )
+        run_on(args.host, [f"{bin_path}/flunk", "activate"], capture=False)
+
+
+def deploy_nixos(args, result, _hostmeta):
     if result is not None:
         try:
             run_on(args.host, ["nix-store", "--realise", result])
@@ -129,8 +201,6 @@ def deploy(args):
     # If we didn't find a note, or if we couldn't realise the noted path, we
     # need to evaluate the configuration and build it on the host.
     if result is None:
-        if args.rev is not None:
-            raise ValueError("cannot evaluate configuration for another revision")
         drv = run(
             [
                 "nix",
@@ -591,10 +661,24 @@ def all_hosts():
                 "eval",
                 "-f",
                 "default.nix",
-                "hosts",
+                "targets",
                 "--json",
-                "--apply",
-                "builtins.attrNames",
+            ],
+            env={"NIX_PATH": ""},
+        )
+    )
+
+
+def host_meta(host):
+    return json.loads(
+        run(
+            [
+                "nix",
+                "eval",
+                "-f",
+                "default.nix",
+                f"targets.{host}",
+                "--json",
             ],
             env={"NIX_PATH": ""},
         )

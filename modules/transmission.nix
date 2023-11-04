@@ -59,7 +59,7 @@ in {
     }
     {
       action = "accept";
-      src = ["tag:gaia"];
+      src = ["gaia"];
       proto = "tcp";
       dst = ["${config.networking.hostName}:${builtins.toString peerPort}"];
     }
@@ -70,5 +70,4 @@ in {
       dst = ["${config.networking.hostName}:9091"];
     }
   ];
-  iliana.tailscale.policy.tags = ["tag:gaia"];
 }
