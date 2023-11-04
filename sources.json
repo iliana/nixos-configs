@@ -36,16 +36,16 @@
   "nixpkgs": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixos-23.05",
-    "rev": "1a3c95e3b23b3cdb26750621c08cc2f1560cb883",
-    "url": "https://github.com/NixOS/nixpkgs/archive/1a3c95e3b23b3cdb26750621c08cc2f1560cb883.tar.gz",
-    "sha256": "1anlah5286li7iwsas86szq5x3wh5lk546220gxq4jhacpk6471y"
+    "rev": "621f51253edffa1d6f08d5fce4f08614c852d17e",
+    "url": "https://github.com/NixOS/nixpkgs/archive/621f51253edffa1d6f08d5fce4f08614c852d17e.tar.gz",
+    "sha256": "16867n4fr3n0hplk2jnizxgrkk25584aqhb2vqha2xw4x43sfjgx"
   },
   "nixpkgs-unstable": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixpkgs-unstable",
-    "rev": "90e85bc7c1a6fc0760a94ace129d3a1c61c3d035",
-    "url": "https://github.com/NixOS/nixpkgs/archive/90e85bc7c1a6fc0760a94ace129d3a1c61c3d035.tar.gz",
-    "sha256": "1a8mgzs6x7cwk5rdawnc6g7f6jpv9bh4r1gzzslclbaj43rlzzsg"
+    "rev": "27ead4fec31f241baed776d046b1dcac431a5919",
+    "url": "https://github.com/NixOS/nixpkgs/archive/27ead4fec31f241baed776d046b1dcac431a5919.tar.gz",
+    "sha256": "1f48jwhmxd4qr9p3nsfvr5w3vmm19njysksif6x384b8bnz80j2b"
   },
   "swoomba": {
     "repo": "https://git.iliana.fyi/swoomba",
