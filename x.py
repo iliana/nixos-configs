@@ -235,21 +235,21 @@ def update(args):
         elif "version" in source:
             add_tool_env()
             # pylint: disable-next=import-error,import-outside-toplevel
-            from semver import Version
+            from packaging import version
 
             field = "version"
             new = source["version"]
-            current = Version.parse(source["version"].removeprefix("v"))
+            current = version.parse(source["version"])
             for ref in refs:
                 if not ref.startswith("refs/tags/"):
                     continue
                 tag = ref.removeprefix("refs/tags/")
                 try:
-                    version = Version.parse(tag.removeprefix("v"))
+                    parsed = version.parse(tag)
                 except ValueError:
                     continue
-                if version > current:
-                    current = version
+                if parsed > current:
+                    current = parsed
                     new = tag
         else:
             raise ValueError(f"not sure how to update {name}")

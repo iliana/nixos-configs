@@ -134,5 +134,5 @@ in {
     hosts = recurseIntoAttrs (builtins.mapAttrs (_: system: system.config.system.build.toplevel) hosts);
     tests = recurseIntoAttrs tests;
   };
-  misc.tool-env = pkgs.python3.withPackages (ps: [ps.semver]);
+  misc.tool-env = pkgs.python3.withPackages (ps: [ps.packaging]);
 }
