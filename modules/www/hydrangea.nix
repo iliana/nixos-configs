@@ -12,6 +12,7 @@
     ./git.iliana.fyi
     ./nitter.home.arpa.nix
     ./pkgf
+    ./ublock-filters.nix
   ];
 
   config = lib.mkMerge [
