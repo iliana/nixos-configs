@@ -55,6 +55,13 @@
       "##body.page-profile div:has(> h2:has-text(/^Achievements$/))"
     ];
 
+    "kagi.com" = [
+      # Hide buttons for various AI features
+      "##._0_discuss_document"
+      "##._0_summarize_link"
+      "##._0_summarize_page"
+    ];
+
     ${mastodon} = [
       # Remove inline embed cards in the timelines
       "##.status-card:not(:upward(.detailed-status))"
