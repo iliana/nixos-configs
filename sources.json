@@ -16,8 +16,8 @@
     "repo": "https://github.com/iliana/dotfiles",
     "submodules": true,
     "branch": "main",
-    "rev": "660ab4bf2c14230163096484e496f8f69edc88be",
-    "sha256": "1wpz5a34q137ia9kdzzccpd55n7arad3xy699byxfb6i63lxxfbr"
+    "rev": "f285149b8d30dfa705b5610180b0c5a8cc795366",
+    "sha256": "1kazm08bxh3yba7y6qdb7cmlsqb7z1ykiyxbm66w1ryv00ynggf4"
   },
   "emojos.in": {
     "repo": "https://github.com/iliana/emojos.in",
@@ -43,9 +43,9 @@
   "nixpkgs-unstable": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixpkgs-unstable",
-    "rev": "27ead4fec31f241baed776d046b1dcac431a5919",
-    "url": "https://github.com/NixOS/nixpkgs/archive/27ead4fec31f241baed776d046b1dcac431a5919.tar.gz",
-    "sha256": "1f48jwhmxd4qr9p3nsfvr5w3vmm19njysksif6x384b8bnz80j2b"
+    "rev": "9d5d25bbfe8c0297ebe85324addcb5020ed1a454",
+    "url": "https://github.com/NixOS/nixpkgs/archive/9d5d25bbfe8c0297ebe85324addcb5020ed1a454.tar.gz",
+    "sha256": "1q3r8fhsp98l6qmad89zrpf0gvj5672kp33dms5zrm4rlby7kdk0"
   },
   "swoomba": {
     "repo": "https://git.iliana.fyi/swoomba",
