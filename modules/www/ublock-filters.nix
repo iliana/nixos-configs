@@ -31,6 +31,9 @@
     # https://bendodson.com/projects/itunes-artwork-finder/
     # Please do not stare into my soul
     "||bendodson.s3.amazonaws.com/ben-dodson.png$image"
+
+    # Various marketing chat providers
+    "||client.crisp.chat$script"
   ];
 
   cosmeticFilters = {
