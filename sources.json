@@ -8,16 +8,16 @@
   },
   "crane": {
     "repo": "https://github.com/ipetkov/crane",
-    "version": "v0.14.3",
-    "url": "https://github.com/ipetkov/crane/archive/refs/tags/v0.14.3.tar.gz",
-    "sha256": "1v1riz8b59y5kwhqkd0xrss49sxagm00db1prqljiyyjdn10pl4z"
+    "version": "v0.15.0",
+    "url": "https://github.com/ipetkov/crane/archive/refs/tags/v0.15.0.tar.gz",
+    "sha256": "1z3c2n7z8pkslvm5x4aj8fwdrsd9c53rg5jfa0x23vq6amabg5f6"
   },
   "dotfiles": {
     "repo": "https://github.com/iliana/dotfiles",
     "submodules": true,
     "branch": "main",
-    "rev": "f285149b8d30dfa705b5610180b0c5a8cc795366",
-    "sha256": "1kazm08bxh3yba7y6qdb7cmlsqb7z1ykiyxbm66w1ryv00ynggf4"
+    "rev": "15db09475f662a72b8f7580051a6f4e9b50525b7",
+    "sha256": "04hk0qx6lamckgfyihd1ph1f0plccpz6p59z3k9zc60angkiv977"
   },
   "emojos.in": {
     "repo": "https://github.com/iliana/emojos.in",
@@ -36,16 +36,16 @@
   "nixpkgs": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixos-23.05",
-    "rev": "621f51253edffa1d6f08d5fce4f08614c852d17e",
-    "url": "https://github.com/NixOS/nixpkgs/archive/621f51253edffa1d6f08d5fce4f08614c852d17e.tar.gz",
-    "sha256": "16867n4fr3n0hplk2jnizxgrkk25584aqhb2vqha2xw4x43sfjgx"
+    "rev": "aeefe2054617cae501809b82b44a8e8f7be7cc4b",
+    "url": "https://github.com/NixOS/nixpkgs/archive/aeefe2054617cae501809b82b44a8e8f7be7cc4b.tar.gz",
+    "sha256": "0712sbcrfjgbwsl2gk3xay2snf5dmmacmcv4bdvymg342vbipxbj"
   },
   "nixpkgs-unstable": {
     "repo": "https://github.com/NixOS/nixpkgs",
     "branch": "nixpkgs-unstable",
-    "rev": "9d5d25bbfe8c0297ebe85324addcb5020ed1a454",
-    "url": "https://github.com/NixOS/nixpkgs/archive/9d5d25bbfe8c0297ebe85324addcb5020ed1a454.tar.gz",
-    "sha256": "1q3r8fhsp98l6qmad89zrpf0gvj5672kp33dms5zrm4rlby7kdk0"
+    "rev": "a0b3b06b7a82c965ae0bb1d59f6e386fe755001d",
+    "url": "https://github.com/NixOS/nixpkgs/archive/a0b3b06b7a82c965ae0bb1d59f6e386fe755001d.tar.gz",
+    "sha256": "1iddhg1dwg6xdzqdfwclyk72nmrb9anymjas6vvw41i69zjz06iz"
   },
   "swoomba": {
     "repo": "https://git.iliana.fyi/swoomba",
