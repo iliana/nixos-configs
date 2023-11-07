@@ -55,6 +55,21 @@
       users.groups.www-deploy = {};
     })
 
+    # handle `gone.txt` for files.iliana.fyi
+    {
+      iliana.www.virtualHosts."files.iliana.fyi"."*" = ''
+        @gone file {
+          root /var/www/files.iliana.fyi
+          try_files {path.dir}/gone.txt
+        }
+        rewrite @gone {path.dir}/gone.txt
+        file_server @gone {
+          root /var/www/files.iliana.fyi
+          status 410
+        }
+      '';
+    }
+
     # go-get redirector
     {
       iliana.www.virtualHosts = let

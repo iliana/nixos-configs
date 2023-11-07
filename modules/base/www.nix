@@ -62,7 +62,7 @@ in {
   options.iliana.www = with lib; {
     virtualHosts = mkOption {
       default = {};
-      type = with lib.types; attrsOf (either lines (attrsOf str));
+      type = with lib.types; attrsOf (either lines (attrsOf lines));
     };
     openFirewall = mkOption {
       default = true;
