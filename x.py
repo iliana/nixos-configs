@@ -166,6 +166,7 @@ def deploy_flunk(args, result, hostmeta):
             "nix",
             "copy",
             "--no-check-sigs",
+            "--substitute-on-destination",
             "--to",
             (
                 f"ssh-ng://{args.host}?remote-store=.local/share/nix/root"

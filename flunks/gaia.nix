@@ -2,9 +2,12 @@
   buildEnv,
   buildGoModule,
   fetchFromGitHub,
+  lib,
   python3Packages,
   tailscale,
+  transmission,
   writeShellApplication,
+  writeText,
   writeTextDir,
 }: let
   hosts = builtins.fromJSON (builtins.readFile ../modules/base/hosts.json);
@@ -18,6 +21,24 @@
       hash = "sha256-aH6CrFRMRcP28gwWAOt4MKiVUKlv5NNpbh1CKY6Jye0=";
     };
     vendorHash = "sha256-3LJdx7h19fJPsujbamFRwSjDm4v97oGyGAv5yl4W0io=";
+  };
+
+  transmission-settings = writeText "settings.json" (builtins.toJSON {
+    incomplete-dir-enabled = false;
+    peer-port = 35366;
+    port-forwarding-enabled = false;
+    rpc-bind-address = "127.0.0.1";
+    rpc-host-whitelist = "gaia,gaia.cat-herring.ts.net";
+    rpc-port = 9091;
+    torrent-added-verify-mode = true;
+    umask = "022";
+  });
+  transmission-start = writeShellApplication {
+    name = "transmission-start";
+    text = ''
+      install -D -m 0600 ${transmission-settings} "$HOME"/.config/transmission-daemon/settings.json
+      exec ${transmission}/bin/transmission-daemon --foreground --download-dir ~/tx
+    '';
   };
 
   confstorepath = "etc/supervisord.conf";
@@ -46,6 +67,12 @@
     autorestart = true
     redirect_stderr = true
     stdout_logfile = %(ENV_HOME)s/.local/share/tailscale/tailscaled.log
+
+    [program:transmission-daemon]
+    command = ${lib.getExe transmission-start}
+    autorestart = true
+    redirect_stderr = true
+    stdout_logfile = %(ENV_HOME)s/.transmission-daemon.log
   '';
   confpath = "~/.local/share/nix/root/nix/var/nix/profiles/system/${confstorepath}";
 in
@@ -77,7 +104,15 @@ in
           exec supervisorctl -c ${confpath} "$@"
         '';
       })
+      (writeShellApplication {
+        name = "tailscale";
+        runtimeInputs = [tailscale];
+        text = ''
+          exec tailscale --socket ~/.tailscaled.sock "$@"
+        '';
+      })
       conf
+      transmission
     ];
     meta.flunk = {
       binPath = "~/bin";
@@ -86,7 +121,7 @@ in
           action = "accept";
           src = ["iliana@github"];
           proto = "tcp";
-          dst = ["gaia:22"];
+          dst = ["gaia:22" "gaia:9091"];
         }
       ];
       tailscale.policy.tags = ["tag:gaia"];
