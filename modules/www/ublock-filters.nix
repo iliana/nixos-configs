@@ -87,6 +87,7 @@
         "##.community-points-summary"
         "##nav button:has-text(Get Ad-Free)"
         "##.prime-offers"
+        "##.chat-room__content > :has([aria-label*=\"Top Gifters Leaderboard\"])"
       ]
       ++ (builtins.map (s: "##div:has(> button[aria-label=\"${s}\"])") ["Bits" "Get Bits" "Hype Chat"]);
 
